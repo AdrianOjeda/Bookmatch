@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: url('C:\Users\adria\Downloads\Bookmatch\my-react-app\src\assets\fondo4k.jpg') center/cover fixed;
+  background-color: rgba(255, 255, 255, 0.8); /* Ajusta la opacidad según sea necesario */
+  overflow: hidden; /* Esto es para evitar que la imagen de fondo se desplace con el contenido */
+}
+
+.form-container {
+  z-index: 1; /* Sirve para que el contenido del formulario esté por encima del fondo */
+  width: 100%;
+  max-width: 500px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus {
+  outline: none;
+  border-color: #333;
+}
+
+.label {
+  position: absolute;
+  top: 10%;
+  left: 10px;
+  transform: translateY(-100%);
+  color: #999;
+  font-size: 14px;
+  background-color: #fff;
+  transition: transform 0.3s ease;
+}
+
+input[type="text"]:focus ~ label,
+input[type="email"]:focus ~ label,
+input[type="password"]:focus ~ label,
+input[type="tel"]:focus ~ label {
+  transform: translateY(-150%);
+  color: #333;
+}
+
+.button-container {
+  margin-top: 30px;
+}
+
+.signup-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background-color: #555;
+}
+
+.footer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.login-link {
+  color: #333;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.terms {
+  margin-top: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.terms-link {
+  color: #333;
+  font-size: 14px;
+  text-decoration: underline;
+}
