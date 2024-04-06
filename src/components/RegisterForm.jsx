@@ -31,11 +31,17 @@ function RegisterForm() {
                     body: JSON.stringify(formData),
                 });
 
-                // Check if the request was successful
                 if (!response.ok) {
-                    throw new Error('Failed to register');
-                }
-
+                    // If the response is not OK (status code other than 2xx),
+                    // parse the error response JSON and throw an error
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Registration failed');
+                    alert(errorData.error)
+                  }
+              
+                  
+                 
+                  
                 // Reset the form data after successful registration
                 setFormData({
                     nombres: '',
@@ -49,6 +55,7 @@ function RegisterForm() {
                 const data = await response.json();
                 console.log('Registration successful:', data);
             } catch (error) {
+                alert('Registration failed: ' + error.message);
                 console.error('Registration failed:', error);
             }
         };
