@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: url('C:\Users\adria\Downloads\Bookmatch\my-react-app\src\assets\fondo4k.jpg') center/cover fixed;
+  background: url('../my-react-app/src/assets/fondo4k.jpg') center/cover fixed;
   background-color: rgba(255, 255, 255, 0.8); /* Ajusta la opacidad según sea necesario */
   overflow: hidden; /* Esto es para evitar que la imagen de fondo se desplace con el contenido */
 }

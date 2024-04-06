@@ -1,5 +1,5 @@
 import React from 'react'
-import Inputform from './InputForm'
+import InputForm from './InputForm'
 import InputPassword from './InputPassword'
 
 function LoginForm(){
@@ -8,7 +8,7 @@ function LoginForm(){
     <h1 className="header">Inicia sesión</h1>
     <form className="form">
         
-        <Inputform
+        <InputForm
             placeholder = 'CORREO INSTITUCIONAL'
             id = 'correo'        
         />

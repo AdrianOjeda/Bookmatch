@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react';
 
-function InputForm(props){
-    
+function InputForm(props) {
+    const handleChange = (event) => {
+        props.onChange(event.target.value);
+        console.log(event.target.value);
+    };
 
     return (
         <div className="input-container">
-            <input type="text" id={props.id} name="first_name" required></input>
-            <label htmlFor="fname" className="label">{props.placeholder}</label>
+            <input
+                type={props.type}
+                id={props.id}
+                name={props.name}
+                value={props.value}
+                onChange={handleChange}
+                required
+            ></input>
+            <label htmlFor={props.id} className="label">
+                {props.placeholder}
+            </label>
         </div>
-    )
+    );
 }
-
 
 export default InputForm;
