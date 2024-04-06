@@ -1,6 +1,6 @@
 import React from 'react'
 import InputForm from './InputForm'
-import InputPassword from './InputPassword'
+
 
 function LoginForm(){
 
@@ -10,11 +10,15 @@ function LoginForm(){
         
         <InputForm
             placeholder = 'CORREO INSTITUCIONAL'
-            id = 'correo'        
+            id = 'correo'    
+            type ='text'  
+            name = 'correo'  
         />
-        <InputPassword
+        <InputForm
             placeholder = "CONTRASEÑA"
             id = 'password'
+            type = 'password'
+            name = 'password'
         />
 
         
