@@ -5,6 +5,7 @@ function RegisterForm() {
     const [formData, setFormData] = useState({
         nombres: '',
         apellidos: '',
+        codigo: '',
         correo: '',
         password: '',
         repetirPassword: '',
@@ -28,6 +29,7 @@ function RegisterForm() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    
                     body: JSON.stringify(formData),
                 });
 
@@ -83,6 +85,14 @@ function RegisterForm() {
                     type="text"
                     value={formData.apellidos}
                     onChange={(value) => handleChange('apellidos', value)}
+                />
+                <InputForm
+                    placeholder="CODIGO ESTUDIANTE"
+                    id="codigo"
+                    name="codigo"
+                    type="text"
+                    value={formData.codigo}
+                    onChange={(value) => handleChange('codigo', value)}
                 />
                 <InputForm
                     placeholder="CORREO INSTITUCIONAL"
