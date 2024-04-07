@@ -57,7 +57,7 @@ app.post('/api/register', async (req, res) => {
                         console.log(hashedPassword);
                         const insertQuery = `
                         INSERT INTO usuario (nombres, apellidos, correo, password, is_verified, codigo)
-                        VALUES ($1, $2, $3, $4, $5)
+                        VALUES ($1, $2, $3, $4, $5, $6)
                         `;
                         await db.query(insertQuery, [nombres, apellidos, correo, hashedPassword, false, codigo]);
         
@@ -81,6 +81,31 @@ app.post('/api/register', async (req, res) => {
         res.status(500).json({ error: 'Failed to register user' });
     }
 });
+
+
+app.post('/api/login', async (req, res) => {
+    // Extract form data from the request body
+    const { correo, password } = req.body;
+    console.log(req.body);
+    try {
+        const hashedPassword = sha1(password);
+        const credentialsValidationQuery = `SELECT correo, password FROM usuario WHERE correo = $1 AND password = $2`;
+        const checkCredentialsValidation = await db.query(credentialsValidationQuery, [correo, hashedPassword]);
+
+        console.log(checkCredentialsValidation);
+          
+        if(checkCredentialsValidation.rowCount === 1){
+            res.status(200).json({ message: 'User registered successfully' });
+        }else{
+            res.setHeader('Content-Type', 'application/json');
+            res.status(400).json({ error: 'Incorrect password or email' });
+        }
+            
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to login user' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

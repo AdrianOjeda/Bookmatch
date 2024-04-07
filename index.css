@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 body {
@@ -20,6 +21,8 @@ body {
   padding: 30px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+  
 }
 
 
@@ -78,7 +81,7 @@ input[type="tel"]:focus ~ label {
 }
 
 .button-container {
-  margin-top: 30px;
+  margin-top: 0px;
 }
 
 .signup-button {
@@ -90,6 +93,7 @@ input[type="tel"]:focus ~ label {
   color: #fff;
   font-size: 16px;
   cursor: pointer;
+  margin-bottom: 0px;
 }
 
 .signup-button:hover {
@@ -97,7 +101,7 @@ input[type="tel"]:focus ~ label {
 }
 
 .footer {
-  margin-top: 30px;
+  margin-top: 10px;
   text-align: center;
 }
 
