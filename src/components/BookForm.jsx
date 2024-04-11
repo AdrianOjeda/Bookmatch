@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import InputForm from './InputForm';
 //import jwt_decode from 'jwt-decode';
 
-function Feed() {
+function BookForm() {
     const initialFormData = {
         titulo: '',
         autor: '',
@@ -23,10 +23,11 @@ function Feed() {
         event.preventDefault();
 
         try {
+            const tokenLibro = localStorage.getItem('tokenLibro');
             const token = localStorage.getItem('token');
-            const updatedFormData = { ...formBookData, idUsuario: token };
+            const updatedFormData = { ...formBookData, idUsuario: token, idLibro: tokenLibro };
 
-            const response = await fetch('/api/addBook', {
+            const response = await fetch('/api/editBook', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,21 +38,21 @@ function Feed() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Book registration failed');
+                throw new Error(errorData.error || 'Book update failed');
             }
 
             // Reset the form data after successful registration
             setFormData(initialFormData);
-            alert('Book added successfully');
+            alert('Book updated successfully');
         } catch (error) {
-            alert('Book registration failed: ' + error.message);
-            console.error('Book registration failed:', error);
+            alert('Book update failed: ' + error.message);
+            console.error('Book update failed:', error);
         }
     };
 
     return (
         <div className="form-container">
-            <h1 className="header">Ingresa el libro</h1>
+            <h1 className="header">Edita el libro</h1>
             <form className="form" onSubmit={handleSubmit}>
                 <InputForm
                     placeholder="TITULO"
@@ -87,17 +88,17 @@ function Feed() {
                 />
                 <div className="button-container">
                     <button type="submit" className="signup-button">
-                        INGRESAR LIBRO
+                        EDITAR
                     </button>
                 </div>
             </form>
             <div className="footer">
                 <a href="layoutLibros.html" className="login-link">
-                    Registro de libros
+                    Regresar
                 </a>
             </div>
         </div>
     );
 }
 
-export default Feed;
+export default BookForm;

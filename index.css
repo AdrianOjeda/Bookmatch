@@ -126,3 +126,14 @@ input[type="tel"]:focus ~ label {
 h1{
   text-align: center;
 }
+
+.books-container {
+  height: 100vh; /* Set the height of the container to 100% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+}
+
+.books-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

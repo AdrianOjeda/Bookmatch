@@ -144,8 +144,8 @@ app.post('/api/addBook',verifyToken, async (req, res)=>{
         // Insert book data into the database, associating it with the user ID
         const insertQuery = `
             INSERT INTO libro (titulo, autor, isbn, precio, idusuario)
-            VALUES ($1, $2, $3, $4, $5)
-        `;
+            VALUES ($1, $2, $3, $4, $5)`;
+
         await db.query(insertQuery, [titulo, autor, isbn, precio, userId]);
 
         // Respond with success message
@@ -166,7 +166,7 @@ app.get('/api/renderBooks',verifyToken, async (req, res)=>{
         const displayBooks = await db.query(displayBooksQuery, [userId]);
         console.log(displayBooks);
         res.status(200).json(displayBooks.rows);
-
+        
     }catch(error){
 
         res.status(500).json({error: "Failed to load books"})
@@ -174,6 +174,47 @@ app.get('/api/renderBooks',verifyToken, async (req, res)=>{
 
 });
 
+
+app.delete('/api/deleteBook/:id', verifyToken, async (req, res)=>{
+    try{
+        const userId = req.user.userId;
+        const bookId = req.params.id;
+        console.log("user id: "+ userId);
+        console.log("book id "+ bookId);
+
+        const deleteBookQuery = `DELETE FROM libro where id_libro =$1 AND idusuario = $2`;
+        await db.query(deleteBookQuery, [bookId, userId]);
+        
+         
+
+        res.status(200).json({message: "so far so good!"})
+
+    }catch(error){
+
+        res.status(500).json({error: 'Couldnt delete book!'})
+    }
+    
+
+});
+app.post('/api/editBook', verifyToken, async (req, res)=>{
+    try{
+        const idUsuario =  req.user.userId;
+        const {titulo, autor, isbn, precio, idLibro} = req.body;
+        console.log("Id Usuario " + idUsuario);
+        console.log({titulo, autor, isbn, precio, idLibro});
+
+        const updateBookQuery = `update libro set titulo = $1, autor = $2, isbn = $3, precio = $4 where id_libro = $5 and idusuario = $6 `;
+
+        await db.query(updateBookQuery, [titulo, autor, isbn, precio, idLibro, idUsuario])
+
+        res.status(200).json({message: "So far so good"});
+
+    }catch (error){
+
+        res.status(500).json({error: "Book update failed"})
+
+    }
+});
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
