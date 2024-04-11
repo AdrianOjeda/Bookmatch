@@ -15,44 +15,32 @@ function LoginForm(){
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        
-        const registerUser = async () => {
-            try {
-                // Make an HTTP POST request to your backend API endpoint
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    
-                    body: JSON.stringify(formData),
-                });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Login failed');
-                    alert(errorData.error)
-                  }
-                // Reset the form data after successful registration
-                setFormData({
-                    correo: '',
-                    password: '',
-                });
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
 
-                // Optionally, you can handle the response from the backend
-                const data = await response.json();
-                console.log('Login successful:', data);
-
-            } catch (error) {
-                alert('Login failed: ' + error.message);
-                console.error('Login failed:', error);
+            if (!response.ok) {
+                throw new Error('Login failed');
             }
-        };
 
-        // Call the async function to register the user
-        registerUser();
+            const data = await response.json();
+            const token = data.token;
+            // Assuming the API response contains a token
+            localStorage.setItem('token', token);
+            // Redirect to feed page or handle login success in other ways
+            window.location.href = '/feed';
+        } catch (error) {
+            alert('Login failed: ' + error.message);
+            console.error('Login failed:', error);
+        }
     };
 
     return (<div className="form-container">
@@ -90,7 +78,4 @@ function LoginForm(){
 
 }
 
-export default LoginForm
-
-
-
+export default LoginForm;
