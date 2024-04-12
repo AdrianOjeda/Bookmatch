@@ -14,22 +14,29 @@ function BookEntry(props){
   }
 
     return (
-        <div className="form-container">
-          <dt>
-            <span className="emoji" role="img" aria-label="Tense Biceps">
-              Titulo: {props.titulo} 
-            </span>
-            <span> Autor: {props.autor} </span>
-            <span>ISBN: {props.isbn} </span>
-            <span>Precio: {props.precio} </span>
-          </dt>
-          <button onClick={handleDeleteClick}>
-                <DeleteIcon />
-          </button>
-          <button onClick={handleEditClick}>
-                <EditIcon />
-          </button>
+
+      <div className="form-container">
+            <div className="book-detail-container">
+                <img src={`/uploads/${props.coverimage}`} alt={props.titulo} />
+                <div className="book-info">
+                    <h2>{props.titulo}</h2>
+                    <p>Autor: {props.autor}</p>
+                    <p>ISBN: {props.isbn}</p>
+                    <p>Precio: ${props.precio}</p>
+                    
+                </div>
+                <div className="actions">
+                <button onClick={handleDeleteClick}>
+                  <DeleteIcon />
+                </button>
+                <button onClick={handleEditClick}>
+                  <EditIcon />
+                </button>
+                </div>
+            </div>
         </div>
+
+
       );
 
 

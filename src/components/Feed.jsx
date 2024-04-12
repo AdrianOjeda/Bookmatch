@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import InputForm from './InputForm';
 //import jwt_decode from 'jwt-decode';
+import FolderIcon from '@mui/icons-material/Folder';
 
 function Feed() {
     const initialFormData = {
@@ -8,6 +9,7 @@ function Feed() {
         autor: '',
         isbn: '',
         precio: 0,
+        image: null,
     };
 
     const [formBookData, setFormData] = useState(initialFormData);
@@ -19,29 +21,47 @@ function Feed() {
         });
     };
 
+    const [selectedFile, setSelectedFile] = useState(null);
+
+   
+    const handleImageChange = (event) => {
+        const imageFile = event.target.files[0];
+        console.log(imageFile);
+        setFormData({ ...formBookData, image: imageFile });
+        setSelectedFile(imageFile);
+        
+    };
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         try {
             const token = localStorage.getItem('token');
-            const updatedFormData = { ...formBookData, idUsuario: token };
-
+            const formData = new FormData();
+            formData.append('titulo', formBookData.titulo);
+            formData.append('autor', formBookData.autor);
+            formData.append('isbn', formBookData.isbn);
+            formData.append('precio', formBookData.precio);
+            formData.append('image', formBookData.image);
+            formData.append('idUsuario', token);
+    
             const response = await fetch('/api/addBook', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify(updatedFormData),
+                body: formData,
             });
-
+    
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Book registration failed');
             }
-
+    
             // Reset the form data after successful registration
             setFormData(initialFormData);
+            setSelectedFile(null);
             alert('Book added successfully');
         } catch (error) {
             alert('Book registration failed: ' + error.message);
@@ -85,6 +105,20 @@ function Feed() {
                     value={formBookData.precio}
                     onChange={(value) => handleChange('precio', value)}
                 />
+                <label htmlFor="fileInput">
+                {selectedFile ? <p style={{marginBottom: '3px'}}>Imagen: {selectedFile.name}</p> : <p style={{marginBottom: '3px'}}>Imagen: </p> }
+                    <FolderIcon style={{marginBottom: '10px'}} />
+                    
+                </label>
+                <input
+                    type="file"
+                    id="fileInput"
+                    style={{ display: 'none' }}
+                    onChange={handleImageChange}
+                    accept="image/*"
+                />
+                
+
                 <div className="button-container">
                     <button type="submit" className="signup-button">
                         INGRESAR LIBRO

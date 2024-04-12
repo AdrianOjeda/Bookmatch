@@ -4,7 +4,7 @@ import cors from 'cors';
 import pg from "pg";
 import sha1 from 'sha1'
 import jwt from 'jsonwebtoken';
-
+import multer from 'multer';
 
 const app = express();
 const port = 3000;
@@ -25,6 +25,8 @@ app.use(express.static("public"));
 app.use(cors());
 app.use(bodyParser.json());
 
+
+//Token id user middleware
 function verifyToken(req, res, next) {
     const authHeader = req.headers["authorization"];
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -40,6 +42,21 @@ function verifyToken(req, res, next) {
         return res.status(403).json({ error: "Invalid token" });
     }
 }
+
+
+//Multer middleware 
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Specify the directory where you want to store the files
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname); // Use the original filename for storing the file
+    }
+});
+
+// Configure multer upload middleware
+const upload = multer({ storage: storage });
 
 app.post('/api/register', async (req, res) => {
     // Extract form data from the request body
@@ -132,48 +149,41 @@ app.post('/api/login', async (req, res) => {
 });
 
 
-app.post('/api/addBook',verifyToken, async (req, res)=>{
-    console.log(req.body);
+app.post('/api/addBook', verifyToken, upload.single('image'), async (req, res) => {
     try {
-        // Extract user ID from the decoded token (set by verifyToken middleware)
         const userId = req.user.userId;
-        console.log(userId);
-        // Extract book data from request body
-        const { titulo, autor, isbn, precio} = req.body;
-
-        // Insert book data into the database, associating it with the user ID
+        const { titulo, autor, isbn, precio } = req.body;
+        const image = req.file; // Access the uploaded file
+        const imageName = image.filename; // Store the filename
+        console.log(imageName);
+        // Insert book data into the database, including the image filename or URL
         const insertQuery = `
-            INSERT INTO libro (titulo, autor, isbn, precio, idusuario)
-            VALUES ($1, $2, $3, $4, $5)`;
-
-        await db.query(insertQuery, [titulo, autor, isbn, precio, userId]);
-
+            INSERT INTO libro (titulo, autor, isbn, precio, idusuario, coverimage)
+            VALUES ($1, $2, $3, $4, $5, $6)`;
+        const result = await db.query(insertQuery, [titulo, autor, isbn, precio, userId, imageName]); // Assuming filename is used to store the image
+        console.log(result.rows);
+        
         // Respond with success message
         res.status(200).json({ message: 'Book added successfully' });
     } catch (error) {
         console.error('Error adding book:', error);
         res.status(500).json({ error: 'Failed to add book' });
     }
-
-})
-
-
-app.get('/api/renderBooks',verifyToken, async (req, res)=>{
-    const userId = req.user.userId;
-
-    try{
-        const displayBooksQuery = `SELECT libro.id_libro, libro.titulo, libro.autor, libro.isbn, libro.precio, usuario.nombres, usuario.id FROM libro INNER JOIN usuario on usuario.id = libro.idusuario WHERE usuario.id = $1`;
-        const displayBooks = await db.query(displayBooksQuery, [userId]);
-        console.log(displayBooks);
-        res.status(200).json(displayBooks.rows);
-        
-    }catch(error){
-
-        res.status(500).json({error: "Failed to load books"})
-    }
-
 });
 
+app.get('/api/renderBooks', verifyToken, async (req, res) => {
+    const userId = req.user.userId;
+
+    try {
+        const displayBooksQuery = `SELECT libro.id_libro, libro.titulo, libro.autor, libro.isbn, libro.precio, libro.coverimage, usuario.nombres, usuario.id FROM libro INNER JOIN usuario on usuario.id = libro.idusuario WHERE usuario.id = $1`;
+        const displayBooks = await db.query(displayBooksQuery, [userId]);
+        console.log(displayBooks.rows);
+        res.status(200).json(displayBooks.rows);
+
+    } catch (error) {
+        res.status(500).json({ error: "Failed to load books" });
+    }
+});
 
 app.delete('/api/deleteBook/:id', verifyToken, async (req, res)=>{
     try{

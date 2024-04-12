@@ -1,10 +1,9 @@
-import {useState, useEffect} from 'react'
-import BookEntry from './BookEntry'
+import { useState, useEffect } from 'react';
+import BookEntry from './BookEntry';
 
-
-function DisplayBooks(){
+function DisplayBooks() {
     const [books, setBooks] = useState([]);
-    const [showForm, setShowForm] = useState(false);
+
     useEffect(() => {
         async function fetchBooks() {
             try {
@@ -38,7 +37,7 @@ function DisplayBooks(){
         console.log(id);
         try {
             const token = localStorage.getItem('token');
-            
+
             const response = await fetch(`/api/deleteBook/${id}`, {
                 method: 'DELETE',
                 headers: {
@@ -46,7 +45,7 @@ function DisplayBooks(){
                     'Authorization': `Bearer ${token}`
                 }
             });
-    
+
             if (response.ok) {
                 // Remove the deleted book from the local state
                 setBooks(books => books.filter(book => book.id_libro !== id));
@@ -58,17 +57,16 @@ function DisplayBooks(){
         }
     }
 
-    async function editBook(id){
+    async function editBook(id) {
         try {
-            
             localStorage.setItem('tokenLibro', id);
         } catch (error) {
             alert('Login failed: ' + error.message);
             console.error('Login failed:', error);
         }
         window.location.href = '/editBookForm';
-        
     }
+
     return (
         <div className="books-container">
             <h1 className="form-container">Mis libros</h1>
@@ -76,20 +74,19 @@ function DisplayBooks(){
                 {books.map(bookItem => (
                     <BookEntry
                         key={bookItem.id_libro}
-                        id = {bookItem.id_libro}
+                        id={bookItem.id_libro}
                         titulo={bookItem.titulo}
                         autor={bookItem.autor}
                         isbn={bookItem.isbn}
                         precio={bookItem.precio}
+                        coverimage={bookItem.coverimage} // Render the image from Base64 string
                         onDelete={deleteBook}
-                        onClick = {editBook}
+                        onClick={editBook}
                     />
                 ))}
             </div>
         </div>
     );
-
 }
-
 
 export default DisplayBooks;

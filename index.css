@@ -75,7 +75,7 @@ input[type="number"]:focus {
 input[type="text"]:focus ~ label,
 input[type="email"]:focus ~ label,
 input[type="password"]:focus ~ label,
-input[type="tel"]:focus ~ label {
+input[type="image"]:focus ~ label {
   transform: translateY(-150%);
   color: #333;
 }
@@ -136,4 +136,24 @@ h1{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.book-detail-container {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Adjust the gap as needed */
+}
+
+.book-detail-container img {
+  max-width: 200px; /* Adjust the maximum width of the image */
+  height: auto;
+}
+
+.book-detail-container .book-info {
+  flex: 1; /* Take remaining space */
+}
+
+.book-detail-container .actions {
+  display: flex;
+  gap: 10px; /* Adjust the gap between buttons */
 }
