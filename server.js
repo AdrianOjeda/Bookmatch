@@ -70,7 +70,7 @@ app.post('/api/register', async (req, res) => {
         console.log(checkEmailValidation);
         const checkEmailDomain = "@alumnos.udg.mx";
 
-        console.log();
+        
         if (correo.includes(checkEmailDomain)){
 
             if(checkEmailValidation.rowCount > 0){
