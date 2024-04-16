@@ -71,7 +71,7 @@ function Feed() {
 
     return (
         <div className="form-container">
-            <h1 className="header">Ingresa el libro</h1>
+            <h1 className="header">Registra el libro</h1>
             <form className="form" onSubmit={handleSubmit}>
                 <InputForm
                     placeholder="TITULO"

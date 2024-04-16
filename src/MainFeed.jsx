@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Feed from './components/Feed'
-import '../index.css'
+import '../registro_libro.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   

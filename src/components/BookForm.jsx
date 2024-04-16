@@ -43,7 +43,8 @@ function BookForm() {
 
             // Reset the form data after successful registration
             setFormData(initialFormData);
-            alert('Book updated successfully');
+            alert('Libro editado correctamente');
+            window.location.href = '/feed';
         } catch (error) {
             alert('Book update failed: ' + error.message);
             console.error('Book update failed:', error);

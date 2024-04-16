@@ -2,18 +2,17 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
 }
 
 body {
   font-family: Arial, sans-serif;
   background: url('../my-react-app/src/assets/fondo4k.jpg') center/cover fixed;
-  background-color: rgba(255, 255, 255, 0.8); /* Ajusta la opacidad según sea necesario */
-  overflow: hidden; /* Esto es para evitar que la imagen de fondo se desplace con el contenido */
+  background-color: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
 }
 
 .form-container {
-  z-index: 1; /* Sirve para que el contenido del formulario esté por encima del fondo */
+  z-index: 1;
   width: 100%;
   max-width: 500px;
   margin: 50px auto;
@@ -21,10 +20,7 @@ body {
   padding: 30px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  
-  
 }
-
 
 .header {
   text-align: center;
@@ -53,14 +49,6 @@ input[type="number"] {
   font-size: 16px;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="number"]:focus {
-  outline: none;
-  border-color: #333;
-}
-
 .label {
   position: absolute;
   top: 10%;
@@ -70,14 +58,6 @@ input[type="number"]:focus {
   font-size: 14px;
   background-color: #fff;
   transition: transform 0.3s ease;
-}
-
-input[type="text"]:focus ~ label,
-input[type="email"]:focus ~ label,
-input[type="password"]:focus ~ label,
-input[type="image"]:focus ~ label {
-  transform: translateY(-150%);
-  color: #333;
 }
 
 .button-container {
@@ -128,8 +108,8 @@ h1{
 }
 
 .books-container {
-  height: 100vh; /* Set the height of the container to 100% of the viewport height */
-  overflow-y: auto; /* Enable vertical scrolling if needed */
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .books-list {
@@ -141,19 +121,34 @@ h1{
 .book-detail-container {
   display: flex;
   align-items: center;
-  gap: 20px; /* Adjust the gap as needed */
+  gap: 20px;
 }
 
 .book-detail-container img {
-  max-width: 200px; /* Adjust the maximum width of the image */
+  max-width: 200px;
   height: auto;
 }
 
 .book-detail-container .book-info {
-  flex: 1; /* Take remaining space */
+  flex: 1;
 }
 
 .book-detail-container .actions {
   display: flex;
-  gap: 10px; /* Adjust the gap between buttons */
+  gap: 10px;
+}
+
+/* Media Query for smaller screens */
+@media screen and (max-width: 600px) {
+  .form-container {
+    width: 90%; /* Adjust the width for smaller screens */
+    margin: 20px auto; /* Adjust the margin for smaller screens */
+  }
+}
+
+/* Media Query for even smaller screens */
+@media screen and (max-width: 400px) {
+  .form-container {
+    padding: 20px; /* Adjust the padding for smaller screens */
+  }
 }
