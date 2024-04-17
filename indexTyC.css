@@ -1,0 +1,85 @@
+body{
+    background: url('../my-react-app/src/assets/terminosYcondiciones.png') center/cover fixed;
+    line-height: 24px;
+}
+
+
+.container{
+    height: 650px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.divCenter{
+    width: 1000px;
+    height: 550px;
+    background-color: rgb(255, 229, 204);
+    overflow-y: scroll;
+    padding: 35px;
+}
+
+.divBack{
+    color: #8d4925;
+    text-align:center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+    text-align: center;
+    letter-spacing: 5px;
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: hwb(0 0% 100%);
+}
+
+h2{
+    margin: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+h3{
+    margin: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+p{
+    text-align: justify;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    margin: 15px;
+}
+
+button{
+    width: 1000px;
+    padding: 10px;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 0px;
+}
+
+::-webkit-scrollbar {
+    width: 12px; /* Ancho de la barra de desplazamiento vertical */
+    height: 12px; /* Altura de la barra de desplazamiento horizontal */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Color de fondo del track */
+    border-radius: 10px; /* Borde redondeado para el track */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #333; /* Color del thumb */
+    border-radius: 10px; /* Borde redondeado para el thumb */
+    background-image: linear-gradient(to bottom, #333, #000); /* Gradiente sutil para el thumb */
+    -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra interna para un efecto elegante */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #222; /* Color ligeramente más oscuro al pasar el ratón */
+}

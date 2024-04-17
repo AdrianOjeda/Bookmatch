@@ -71,7 +71,7 @@ function LoginForm(){
     </form>
     <div className="footer">
         No tienes una cuenta? <a href="index.html" className="login-link">Registrate</a>
-        <p className="terms">Al registrarse, estas aceptando nuestros <a href="#" className="terms-link">Terminos y condiciones</a></p>
+        <p className="terms">Al registrarse, estas aceptando nuestros <a href="./terminosYcondiciones" className="terms-link">Terminos y condiciones</a></p>
     </div>
 </div>)
 
