@@ -3,6 +3,16 @@ body{
     line-height: 24px;
 }
 
+.footer {
+    position: fixed;
+    font-family: Arial, sans-serif;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #dbc1ac;
+    color: black;
+    text-align: center;
+  }
 
 .container{
     height: 650px;

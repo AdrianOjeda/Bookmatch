@@ -50,12 +50,14 @@ function RegisterForm() {
                     apellidos: '',
                     correo: '',
                     password: '',
+                    codigo: ' ',
                     repetirPassword: '',
                 });
 
                 // Optionally, you can handle the response from the backend
                 const data = await response.json();
                 console.log('Registration successful:', data);
+                alert("Usuario registrado exitosamente :)");
             } catch (error) {
                 alert('Registration failed: ' + error.message);
                 console.error('Registration failed:', error);

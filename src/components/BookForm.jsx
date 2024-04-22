@@ -7,7 +7,7 @@ function BookForm() {
         titulo: '',
         autor: '',
         isbn: '',
-        precio: 0,
+        precio: '',
     };
 
     const [formBookData, setFormData] = useState(initialFormData);

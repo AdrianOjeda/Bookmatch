@@ -33,10 +33,27 @@ function LoginForm(){
 
             const data = await response.json();
             const token = data.token;
+
+            const typeAccount =  data.tokenTypeAccount;
+            const isVerified = data.isVerified;
+            alert("is admin " + typeAccount + " is verified "+isVerified );
             // Assuming the API response contains a token
             localStorage.setItem('token', token);
             // Redirect to feed page or handle login success in other ways
-            window.location.href = '/feed';
+            if(typeAccount === false && isVerified === false){
+                
+                window.location.href = "/notVerified";
+
+            }if(typeAccount === true && isVerified === true){
+
+                window.location.href = '/adminFeed';
+            }
+            if (typeAccount === false && isVerified ===  true){
+                window.location.href = '/feed';
+            }
+
+            
+            
         } catch (error) {
             alert('Login failed: ' + error.message);
             console.error('Login failed:', error);

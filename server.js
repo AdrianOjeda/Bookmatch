@@ -88,10 +88,10 @@ app.post('/api/register', async (req, res) => {
                         const hashedPassword = sha1(password);
                         console.log(hashedPassword);
                         const insertQuery = `
-                        INSERT INTO usuario (nombres, apellidos, correo, password, is_verified, codigo)
-                        VALUES ($1, $2, $3, $4, $5, $6)
+                        INSERT INTO usuario (nombres, apellidos, correo, password, is_verified, codigo, is_admin)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7)
                         `;
-                        await db.query(insertQuery, [nombres, apellidos, correo, hashedPassword, false, codigo]);
+                        await db.query(insertQuery, [nombres, apellidos, correo, hashedPassword, false, codigo, false]);
         
                         // Respond with a success message
                         res.status(200).json({ message: 'User registered successfully' });
@@ -125,14 +125,21 @@ app.post('/api/login', async (req, res) => {
        
         const tokenIdQuery = `SELECT id FROM usuario WHERE correo = $1`;
         const resTokenIdQuery =  await  db.query(tokenIdQuery, [correo]);
-       
         
+        const tokenTypeAccount = `SELECT is_admin, is_verified FROM usuario where correo = $1`;
+        const resTokenTypeAccount =  await db.query(tokenTypeAccount, [correo]); 
+
+        console.log(resTokenTypeAccount.rows[0].is_admin);
+        console.log("is verified "+resTokenTypeAccount.rows[0].is_verified);
+
         if(checkCredentialsValidation.rowCount === 1 && resTokenIdQuery.rowCount === 1){
             
             try {
                 const token = jwt.sign({ userId: resTokenIdQuery.rows[0].id }, 'your-secret-key');
-                
-                res.status(200).json({ message: 'User logged in successfully', token });
+                //const tokenTypeAccount = jwt.sign({typeAccount: resTokenTypeAccount.rows[0].typeAccount}, 'secret-key');
+                const tokenTypeAccount = resTokenTypeAccount.rows[0].is_admin;
+                const isVerified = resTokenTypeAccount.rows[0].is_verified;
+                res.status(200).json({ message: 'User logged in successfully', token, tokenTypeAccount, isVerified });
             } catch (error) {
                 console.error('Error generating token or setting user ID:', error);
             }

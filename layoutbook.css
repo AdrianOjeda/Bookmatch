@@ -155,3 +155,14 @@ h1 {
         width: 90%; /* Further adjusted width for even smaller screens */
     }
 }
+
+.footer {
+    position: fixed;
+    font-family: Arial, sans-serif;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #dbc1ac;
+    color: black;
+    text-align: center;
+  }
