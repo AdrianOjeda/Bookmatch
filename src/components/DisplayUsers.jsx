@@ -10,7 +10,6 @@ function DisplayUsers(){
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        
                     }
                 });
 
@@ -18,7 +17,7 @@ function DisplayUsers(){
                     const usersData = await response.json();
                     setUsers(usersData);
                 } else {
-                    console.error('Failed to fetch books:', response.statusText);
+                    console.error('Failed to fetch users:', response.statusText);
                 }
             } catch (error) {
                 console.error('Error fetching books:', error.message);
