@@ -1,0 +1,39 @@
+body {
+    background-color: #f7e8ae;
+  }
+  
+  .header {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    background-color: #efc57e;
+    color: black;
+    text-align: center;
+    position: absolute;
+    height: 56px;
+    top: 0;
+    left: 0;
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    
+  }
+  
+  .title {
+    margin: 0;
+    flex-grow: 1; 
+    text-align: center;
+    padding-left:150px;
+  }
+  
+  .botonRegresar {
+    font-family: Arial, sans-serif;
+    margin-left: 20px; 
+    padding: 0 70px;
+    text-decoration: underline; 
+    cursor: pointer;
+  }
+
+  .listContainer{
+
+    margin-top: 300px;
+  }

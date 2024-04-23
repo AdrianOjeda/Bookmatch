@@ -25,7 +25,9 @@ app.use(express.static("public"));
 app.use(cors());
 app.use(bodyParser.json());
 
-
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
 //Token id user middleware
 function verifyToken(req, res, next) {
     const authHeader = req.headers["authorization"];
@@ -51,10 +53,15 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/'); // Specify the directory where you want to store the files
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname); // Use the original filename for storing the file
+        
+        const ext = file.originalname.split('.').pop();
+        const randomNumber = getRandomInt(100000);
+
+        const newFilename = file.originalname.replace('.' + ext, `_${randomNumber}.${ext}`);
+        //console.log(newFilename);
+        cb(null, newFilename); 
     }
 });
-
 // Configure multer upload middleware
 const upload = multer({ storage: storage });
 
@@ -231,6 +238,23 @@ app.post('/api/editBook', verifyToken, async (req, res)=>{
         res.status(500).json({error: "Book update failed"})
 
     }
+});
+
+app.get('/api/getUsers', async (req, res)=>{
+    try{
+        const getUsersQuery = `SELECT nombres, apellidos, correo, codigo FROM usuario where is_verified = false`
+        const responseGetUsers = await db.query(getUsersQuery);
+
+        console.log(responseGetUsers.rows);
+        const usersInfo = responseGetUsers.rows;
+
+        res.status(200).json({message: "Query succesful", usersInfo });
+    }catch(err){
+
+        res.status(500).json({error:"Cannot get users"})
+    }
+
+
 });
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
