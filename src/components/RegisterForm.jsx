@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import InputForm from './InputForm';
-
+import FolderIcon from '@mui/icons-material/Folder';
 function RegisterForm() {
-    const [formData, setFormData] = useState({
+
+    const initialFormData = {
         nombres: '',
         apellidos: '',
         codigo: '',
         correo: '',
         password: '',
         repetirPassword: '',
-    });
+        image: null,
+    };
+
+    const [formData, setFormData] = useState(initialFormData);
+
 
     const handleChange = (fieldName, value) => {
         setFormData({
@@ -17,57 +22,50 @@ function RegisterForm() {
             [fieldName]: value,
         });
     };
+    
+    const [selectedFile, setSelectedFile] = useState(null);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleImageChange = (event) => {
+        const imageFile = event.target.files[0];
+        console.log(imageFile);
+        setFormData({ ...formData, image: imageFile });
+        setSelectedFile(imageFile);
+        console.log(selectedFile);
         
-        const registerUser = async () => {
-            try {
-                // Make an HTTP POST request to your backend API endpoint
-                const response = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    
-                    body: JSON.stringify(formData),
-                });
-
-                if (!response.ok) {
-                    // If the response is not OK (status code other than 2xx),
-                    // parse the error response JSON and throw an error
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Registration failed');
-                    alert(errorData.error)
-                  }
-              
-                  
-                 
-                  
-                // Reset the form data after successful registration
-                setFormData({
-                    nombres: '',
-                    apellidos: '',
-                    correo: '',
-                    password: '',
-                    codigo: ' ',
-                    repetirPassword: '',
-                });
-
-                // Optionally, you can handle the response from the backend
-                const data = await response.json();
-                console.log('Registration successful:', data);
-                alert("Usuario registrado exitosamente :)");
-            } catch (error) {
-                alert('Registration failed: ' + error.message);
-                console.error('Registration failed:', error);
-            }
-        };
-
-        // Call the async function to register the user
-        registerUser();
     };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    
+        try {
+            const formDataToSend = new FormData(); // Use a different variable name to avoid confusion
+            formDataToSend.append('nombres', formData.nombres);
+            formDataToSend.append('apellidos', formData.apellidos);
+            formDataToSend.append('codigo', formData.codigo);
+            formDataToSend.append('correo', formData.correo);
+            formDataToSend.append('password', formData.password);
+            formDataToSend.append('repetirPassword', formData.repetirPassword);
+            formDataToSend.append('image', selectedFile); // Use selectedFile, not formData.image
+    
+            console.log(formDataToSend);
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                body: formDataToSend,
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Registration failed');
+            }
+    
+            setFormData(initialFormData);
+            setSelectedFile(null);
+            alert('User registered successfully');
+        } catch (error) {
+            alert('User registration failed: ' + error.message);
+            console.error('User registration failed:', error);
+        }
+    };
     return (
         <div className="form-container">
             <h1 className="header">Registrate</h1>
@@ -120,6 +118,18 @@ function RegisterForm() {
                     type="password"
                     value={formData.repetirPassword}
                     onChange={(value) => handleChange('repetirPassword', value)}
+                />
+                <label htmlFor="fileInput">
+                {selectedFile ? <p style={{marginBottom: '3px'}}>Credencial: {selectedFile.name}</p> : <p style={{marginBottom: '3px'}}>Credencial: </p> }
+                    <FolderIcon style={{marginBottom: '10px', cursor: "pointer"}} />
+                    
+                </label>
+                <input
+                    type="file"
+                    id="fileInput"
+                    style={{ display: 'none' }}
+                    onChange={handleImageChange}
+                    accept="image/*"
                 />
                 <div className="button-container">
                     <button type="submit" className="signup-button">

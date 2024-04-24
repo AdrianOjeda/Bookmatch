@@ -65,7 +65,7 @@ const storage = multer.diskStorage({
 // Configure multer upload middleware
 const upload = multer({ storage: storage });
 
-app.post('/api/register', async (req, res) => {
+app.post('/api/register', upload.single('image'), async (req, res) => {
     // Extract form data from the request body
     const { nombres, apellidos, codigo, correo, password, repetirPassword } = req.body;
     console.log(req.body);
@@ -77,7 +77,14 @@ app.post('/api/register', async (req, res) => {
         console.log(checkEmailValidation);
         const checkEmailDomain = "@alumnos.udg.mx";
 
-        
+        if (!req.file) {
+            // Handle the case where no file was uploaded
+            return res.status(400).json({ error: 'No image uploaded' });
+        }
+        const image = req.file; // Access the uploaded file
+        const imageName = image.filename; // Store the filename
+        console.log(imageName);
+        console.log(correo);
         if (correo.includes(checkEmailDomain)){
 
             if(checkEmailValidation.rowCount > 0){
@@ -95,10 +102,10 @@ app.post('/api/register', async (req, res) => {
                         const hashedPassword = sha1(password);
                         console.log(hashedPassword);
                         const insertQuery = `
-                        INSERT INTO usuario (nombres, apellidos, correo, password, is_verified, codigo, is_admin)
-                        VALUES ($1, $2, $3, $4, $5, $6, $7)
+                        INSERT INTO usuario (nombres, apellidos, correo, password, is_verified, codigo, is_admin, credencial)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
                         `;
-                        await db.query(insertQuery, [nombres, apellidos, correo, hashedPassword, false, codigo, false]);
+                        await db.query(insertQuery, [nombres, apellidos, correo, hashedPassword, false, codigo, false, imageName]);
         
                         // Respond with a success message
                         res.status(200).json({ message: 'User registered successfully' });
@@ -220,6 +227,32 @@ app.delete('/api/deleteBook/:id', verifyToken, async (req, res)=>{
     
 
 });
+
+app.post('/api/verifyUser/:id', async (req, res)=>{
+    const idUser =  req.params.id;
+    console.log(idUser);
+    try{
+        const validateUserQuery = `UPDATE usuario SET is_verified = true WHERE id = $1`;
+        await db.query(validateUserQuery, [idUser]);
+        res.status(200).json({message: "Usuario validado con exito"});
+    }catch(err){
+        res.status(500).json({err: 'no se pudo validar el usuario'})
+    }
+})
+
+app.delete('/api/verifyUser/deleteUser/:id', async (req, res)=>{
+    const idUser =  req.params.id;
+    console.log(idUser);
+    try{
+        const deleteUserQuery = `DELETE FROM usuario where id = $1`;
+        await db.query(deleteUserQuery, [idUser]);
+        res.status(200).json({message: "Usuario eliminado con exito"});
+    }catch(err){
+        res.status(500).json({err: "No se pudo borrar el usuario"})
+    }
+})
+
+
 app.post('/api/editBook', verifyToken, async (req, res)=>{
     try{
         const idUsuario =  req.user.userId;
@@ -242,7 +275,7 @@ app.post('/api/editBook', verifyToken, async (req, res)=>{
 
 app.get('/api/getUsers', async (req, res)=>{
     try{
-        const getUsersQuery = `SELECT nombres, apellidos, correo, codigo FROM usuario where is_verified = false`
+        const getUsersQuery = `SELECT id, nombres, apellidos, correo, codigo, credencial FROM usuario where is_verified = false`
         const responseGetUsers = await db.query(getUsersQuery);
 
         console.log(responseGetUsers.rows);

@@ -106,7 +106,7 @@ function Feed() {
                     onChange={(value) => handleChange('precio', value)}
                 />
                 <label htmlFor="fileInput">
-                {selectedFile ? <p style={{marginBottom: '3px'}}>Imagen: {selectedFile.name}</p> : <p style={{marginBottom: '3px'}}>Imagen: </p> }
+                {selectedFile ? <p style={{marginBottom: '3px'}}>credencial: {selectedFile.name}</p> : <p style={{marginBottom: '3px'}}>credencial: </p> }
                     <FolderIcon style={{marginBottom: '10px'}} />
                     
                 </label>

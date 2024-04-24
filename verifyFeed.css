@@ -1,11 +1,11 @@
 body {
-    background-color: #f7e8ae;
+    background-color: #ece0d1
   }
   
   .header {
     font-family: Arial, sans-serif;
     width: 100%;
-    background-color: #efc57e;
+    background-color: #967259;
     color: black;
     text-align: center;
     position: absolute;
@@ -33,7 +33,59 @@ body {
     cursor: pointer;
   }
 
-  .listContainer{
+  .profilePic {
+    width: 180px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed */
+     border-radius: 2%;/* Make it circular */
+    border-color: black;
+    margin-right: 20px; /* Add margin for separation */
+}
 
-    margin-top: 300px;
-  }
+.listContainer {
+    margin-top: 100px;
+    
+    padding: 10px;
+    margin-left: 30%;
+    margin-right: 30%;
+    
+    background-clip: padding-box;
+}
+
+.usersContainer {
+    background-color: #634832;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 2%;
+    margin-bottom: 20px; /* Add space between user containers */
+    padding: 10px; /* Add padding to maintain the dark coffee background */
+}
+
+.userDetail {
+    background-color: #ece0d1;
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    border-radius: 5px;
+    height: 190px;
+    flex-grow: 1;
+    overflow: auto; 
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.checkIcon{
+
+    cursor: pointer;
+}
+
+.validateUserContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+    height: 30px;
+}
+
+.validateUserContainer p {
+    margin-right: 8px; /* Adjust the spacing between the text and the icon */
+}

@@ -37,7 +37,7 @@ function DisplayBooks() {
         console.log(id);
         try {
             const token = localStorage.getItem('token');
-
+            
             const response = await fetch(`/api/deleteBook/${id}`, {
                 method: 'DELETE',
                 headers: {

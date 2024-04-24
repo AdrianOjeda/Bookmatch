@@ -9,7 +9,7 @@ function VerifyUserFeed(){
             <div >
                 <Header/>
             </div>
-            <div className="listContainer">
+            <div>
                 <DisplayUsers/>
             </div>
         </div>
