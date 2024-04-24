@@ -16,6 +16,7 @@ body {
   width: 100%;
   max-width: 500px;
   margin: 50px auto;
+  margin-top: 10px;
   background-color: #fff;
   padding: 30px;
   border-radius: 5px;
@@ -35,7 +36,7 @@ body {
 
 .input-container {
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 input[type="text"],

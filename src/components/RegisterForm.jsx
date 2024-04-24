@@ -120,7 +120,7 @@ function RegisterForm() {
                     onChange={(value) => handleChange('repetirPassword', value)}
                 />
                 <label htmlFor="fileInput">
-                {selectedFile ? <p style={{marginBottom: '3px'}}>Credencial: {selectedFile.name}</p> : <p style={{marginBottom: '3px'}}>Credencial: </p> }
+                {selectedFile ? <p style={{marginBottom: '3px', marginTop: '3px'}}>Credencial: {selectedFile.name}</p> : <p style={{marginBottom: '3px',  marginTop: '3px'}}>Credencial: </p> }
                     <FolderIcon style={{marginBottom: '10px', cursor: "pointer"}} />
                     
                 </label>
