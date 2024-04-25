@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from 'cors';
 import pg from "pg";
-import sha1 from 'sha1'
+import sha1 from 'sha1';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 

@@ -8,3 +8,38 @@ body{
     text-align: center;
     font-family: Arial, sans-serif;
 }
+.tituloImagen{
+    margin-top: 5px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    
+}
+
+.centerImage{
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: white;
+}
+.container {
+    text-align: center; /* Centra el contenido horizontalmente */
+}
+.boton {
+    background-color: #faf1ea;
+    font-family: Arial, sans-serif;
+    border-radius: 5%;
+    font-size: large;
+    cursor: pointer;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-color: black;
+    padding: 5px 10px; /* Añadimos un poco de relleno alrededor del texto */
+    display: inline-block; /* Cambiamos de block a inline-block */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.boton:hover {
+    background-color: #ffffff;
+  }
