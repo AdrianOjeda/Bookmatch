@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import InputForm from './InputForm';
-import FolderIcon from '@mui/icons-material/Folder';
+
+import BadgeIcon from '@mui/icons-material/Badge';
+
 function RegisterForm() {
 
     const initialFormData = {
@@ -61,6 +63,7 @@ function RegisterForm() {
             setFormData(initialFormData);
             setSelectedFile(null);
             alert('User registered successfully');
+            window.location.href = "/customizeProfile"
         } catch (error) {
             alert('User registration failed: ' + error.message);
             console.error('User registration failed:', error);
@@ -121,7 +124,7 @@ function RegisterForm() {
                 />
                 <label htmlFor="fileInput">
                 {selectedFile ? <p style={{marginBottom: '3px', marginTop: '3px'}}>Credencial: {selectedFile.name}</p> : <p style={{marginBottom: '3px',  marginTop: '3px'}}>Credencial: </p> }
-                    <FolderIcon style={{marginBottom: '10px', cursor: "pointer"}} />
+                    <BadgeIcon style={{marginBottom: '10px', cursor: "pointer"}} />
                     
                 </label>
                 <input
