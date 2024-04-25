@@ -289,6 +289,23 @@ app.get('/api/getUsers', async (req, res)=>{
 
 
 });
+
+app.get('/api/tags', async(req, res) =>{
+    try{
+        const getTagsQuery = `SELECT * FROM tags`;
+        const responseTagQuery = await db.query(getTagsQuery);
+        
+        const tagsInfo = responseTagQuery.rows;
+        console.log(tagsInfo);
+        res.status(200).json({message: "Tags obtenidos correctamente", tagsInfo})
+
+    }catch(err){
+        res.status(500).json({err: "No se pudieron obtener los tags!"});
+    }
+
+
+
+});
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

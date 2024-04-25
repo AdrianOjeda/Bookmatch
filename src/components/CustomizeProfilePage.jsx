@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import TagSelection from './TagSelection';
 function CustomizeProfilePage() {
     const [fileName, setFileName] = useState(""); // Estado para almacenar el nombre del archivo
 
@@ -21,6 +21,9 @@ function CustomizeProfilePage() {
                 <input type="file" id="fileInput" style={{ display: "none" }} onChange={handleImageUpload} />
             </div>
             <p className='tituloImagen'>{fileName}</p> {}
+            <div>
+                <TagSelection/>
+            </div>
         </div>
     );
 }
