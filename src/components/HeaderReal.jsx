@@ -12,22 +12,22 @@ function HeaderReal() {
                 <SearchBar/>
             </div>
             <div>
-                <p className="pageLink" onClick={()=>{window.location.href= "/feed"}} >Inicio</p>
+                <p className="pageLink" onClick={()=>{window.location.href= "/feedreal"}} >Inicio</p>
             </div>
             <div>
-                <p className="pageLink" onClick={()=>{window.location.href= "/feed"}} >Mi perfil</p>
+                <p className="pageLink" onClick={()=>{window.location.href= "/profile"}} >Mi perfil</p>
             </div>
             <div>
-                <p className="pageLink" onClick={()=>{window.location.href= "/feed"}} >Mensajes</p>
+                <p className="pageLink" onClick={()=>{window.location.href= "/messages"}} >Mensajes</p>
             </div>
             <div>
-                <p className="pageLink" onClick={()=>{window.location.href= "/feed"}} >Lista de espera</p>
+                <p className="pageLink" onClick={()=>{window.location.href= "/waitingList"}} >Lista de espera</p>
             </div>
             <div>
-                <p className="pageLink" onClick={()=>{window.location.href= "/feed"}} >Solicitudes</p>
+                <p className="pageLink" onClick={()=>{window.location.href= "/requests"}} >Solicitudes</p>
             </div>
             <div>
-                <p className="pageLink" onClick={()=>{window.location.href= "/feed"}} >Cerrar sesion</p>
+                <p className="pageLink" onClick={()=>{window.location.href= "/login"}} >Cerrar sesion</p>
             </div>
             <div className="profilepic-container">
                 <ProfilePic/>
