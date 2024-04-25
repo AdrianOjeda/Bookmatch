@@ -53,8 +53,10 @@ function ParentComponent() {
 
     return (
         <div>
-            <h2>Tag Selection</h2>
-            <form onSubmit={handleSubmit}>
+            <h2 className='titulo'>Selecciona tus generos preferidos</h2>
+            <div className='form-container'>
+            
+            <form onSubmit={handleSubmit} className = 'form-grid'>
                 {tags.map(tag => (
                     <TagEntry
                         key={tag.idtag}
@@ -64,9 +66,12 @@ function ParentComponent() {
                         onChange={() => handleCheckboxChange(tag.idtag)}
                     />
                 ))}
-                <button type="submit">Submit</button>
+                
             </form>
         </div>
+        <button type="submit" className='submit-button'>Aceptar</button>
+        </div>
+        
     );
 }
 
