@@ -4,12 +4,13 @@ body {
 }
 
 .divHeader {
-    display: flex; /* Utilizamos flexbox */
-    justify-content: space-between; /* Alineamos los elementos horizontalmente */
-    align-items: center; /* Centramos verticalmente */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
-    height: 125px;
+    height: 15%;
     background-color: #AC8E6C;
+    padding: 0 20px; /* Add padding to the sides */
 }
 
 .container-inputSearch {
@@ -17,7 +18,7 @@ body {
 }
 
 .inputSearch {
-    width: 550px;
+    width: 400px;
     height: 40px;
     border-radius: 9999px;
     border: solid 1px #ffffff;
@@ -28,12 +29,10 @@ body {
     background-size: 15px; 
     padding-left: 40px; 
     margin-top: 10px;
-    margin-right: 250px;
-    margin-left: 40px;
 }
 
 .imagenLogo {
-    width: 120px;
+    width: 90px;
     height: auto;
     margin-right: 20px;
 }
@@ -41,10 +40,9 @@ body {
 .ProfilePic {
     border-radius: 50%;
     background-color: #ffffff;
-    width: 90px;
-    height: 90px;
+    width: 60px;
+    height: 60px;
     margin-right: 10px;
-    margin-left: auto;
 }
 
 .header-container {
@@ -53,14 +51,17 @@ body {
     align-items: center;
     height: 80px;
     background-color: #AC8E6C;
+    padding: 0 20px; /* Add padding to the sides */
 }
 
 .logo-container,
-.searchbar-container,
 .profilepic-container {
     margin: 0 10px; /* Ajusta el margen entre los contenedores si es necesario */
 }
-
+.searchbar-container{
+    margin-right: 30px;
+    
+}
 .pageLink{
     margin-right: 20px;
     margin-left: 20px;
@@ -69,4 +70,27 @@ body {
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
     text-decoration: underline;
+}
+
+/* Media queries */
+@media screen and (max-width: 768px) {
+    .divHeader {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+    }
+
+    .inputSearch {
+        margin: 10px 0;
+    }
+
+    .pageLink {
+        margin-right: 10px; /* Reduce the right margin */
+        margin-left: 10px; /* Reduce the left margin */
+        margin-top: 10px; /* Reduce the top margin */
+    }
+
+    .ProfilePic {
+        margin-right: 0; /* Remove right margin */
+    }
 }
