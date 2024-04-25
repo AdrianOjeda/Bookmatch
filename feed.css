@@ -94,3 +94,15 @@ body {
         margin-right: 0; /* Remove right margin */
     }
 }
+
+.footerFeed {
+    position: fixed;
+    font-family: Arial, sans-serif;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    text-align: center;
+  }
+  /*No supe donde ponerlo aqui esta de prueba*/
