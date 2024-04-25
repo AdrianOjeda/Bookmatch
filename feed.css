@@ -1,0 +1,72 @@
+body {
+    background-color: #FBEED3;
+    margin: 0;
+}
+
+.divHeader {
+    display: flex; /* Utilizamos flexbox */
+    justify-content: space-between; /* Alineamos los elementos horizontalmente */
+    align-items: center; /* Centramos verticalmente */
+    position: relative;
+    height: 125px;
+    background-color: #AC8E6C;
+}
+
+.container-inputSearch {
+    position: relative;
+}
+
+.inputSearch {
+    width: 550px;
+    height: 40px;
+    border-radius: 9999px;
+    border: solid 1px #ffffff;
+    outline: none;
+    background-image: url("src/assets/magnifying-glass-1976105_1280.webp");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 15px; 
+    padding-left: 40px; 
+    margin-top: 10px;
+    margin-right: 250px;
+    margin-left: 40px;
+}
+
+.imagenLogo {
+    width: 120px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.ProfilePic {
+    border-radius: 50%;
+    background-color: #ffffff;
+    width: 90px;
+    height: 90px;
+    margin-right: 10px;
+    margin-left: auto;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    background-color: #AC8E6C;
+}
+
+.logo-container,
+.searchbar-container,
+.profilepic-container {
+    margin: 0 10px; /* Ajusta el margen entre los contenedores si es necesario */
+}
+
+.pageLink{
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 25px;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: underline;
+}
