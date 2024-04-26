@@ -58,6 +58,10 @@ function RegisterForm() {
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Registration failed');
+            }if(response.ok){
+                const idUsuario =  await response.json();
+                console.log(idUsuario);
+                localStorage.setItem('idRegisteredUsuario', idUsuario);
             }
     
             setFormData(initialFormData);

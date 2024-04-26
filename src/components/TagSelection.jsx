@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import TagEntry from './TagEntry'; // Import the TagEntry component
 
-function ParentComponent() {
+function ParentComponent({ onSubmit }) {
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
 
     useEffect(() => {
-        // Fetch tags from your backend API
+        
         fetchTags();
     }, []);
 
-    // Fetch tags from backend
+    
     async function fetchTags() {
         try {
             const response = await fetch('/api/tags');
@@ -25,17 +25,17 @@ function ParentComponent() {
         }
     }
 
-    // Handle checkbox change event
+   
     function handleCheckboxChange(tagId) {
         console.log('Tag ID:', tagId);
         setSelectedTags(prevSelectedTags => {
             if (prevSelectedTags.includes(tagId)) {
-                // If tagId is already in the selectedTags, remove it
+                
                 const updatedTags = prevSelectedTags.filter(id => id !== tagId);
                 console.log('Updated Tags (Removed):', updatedTags);
                 return updatedTags;
             } else {
-                // Otherwise, add it
+               
                 const updatedTags = [...prevSelectedTags, tagId];
                 console.log('Updated Tags (Added):', updatedTags);
                 return updatedTags;
@@ -49,7 +49,9 @@ function ParentComponent() {
         alert( selectedTags);
         console.log(selectedTags);
         
+        
     }
+    
 
     return (
         <div>
@@ -68,8 +70,14 @@ function ParentComponent() {
                 ))}
                 
             </form>
+            
         </div>
-        <button type="submit" className='submit-button'>Aceptar</button>
+        <div>
+        <button type="button" className='submit-button' onClick={() => onSubmit(selectedTags)}>
+                Aceptar
+            </button>
+        </div>
+        
         </div>
         
     );

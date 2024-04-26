@@ -32,13 +32,13 @@ function LoginForm(){
             }
 
             const data = await response.json();
-            const token = data.token;
+            const tokenId = data.token;
 
             const typeAccount =  data.tokenTypeAccount;
             const isVerified = data.isVerified;
             alert("is admin " + typeAccount + " is verified "+isVerified );
             // Assuming the API response contains a token
-            localStorage.setItem('token', token);
+            localStorage.setItem('token id', tokenId);
             // Redirect to feed page or handle login success in other ways
             if(typeAccount === false && isVerified === false){
                 

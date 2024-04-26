@@ -2,6 +2,8 @@ import React from 'react';
 
 
 function TagEntry(props) {
+
+
     return (
         <div className="tag-container">
             <label className='tagText'>
@@ -11,7 +13,7 @@ function TagEntry(props) {
                     checked={props.selected}
                     onChange={props.onChange}
                 />
-                <span className="checkmark"></span> {/* Checkmark element */}
+                <span className="checkmark"></span> 
                 {props.tag}
             </label>
         </div>

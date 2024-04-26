@@ -117,3 +117,14 @@ body{
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.footerFeed {
+    position: fixed;
+    font-family: Arial, sans-serif;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    text-align: center;
+  }
