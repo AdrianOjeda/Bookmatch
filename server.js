@@ -313,11 +313,12 @@ app.get('/api/tags', async(req, res) =>{
 
 
 });
+
 app.post('/api/customizeProfile/:idUsuario', upload.single('image'), async (req, res)=>{
     const idUsuario = req.params.idUsuario;
     console.log(idUsuario);
     const tags = JSON.parse(req.body.tags);
-    //console.log(tags);
+    
     const profilePicture =  req.file;
     const profilePicName =  profilePicture.filename;
     const idUsuarioInt = Number(idUsuario);
@@ -326,30 +327,24 @@ app.post('/api/customizeProfile/:idUsuario', upload.single('image'), async (req,
         const profilePicQuery = `INSERT INTO perfil_usuario (user_id, profile_pic)
                                 VALUES ($1, $2)`;
         console.log("Es tipo: "+typeof(idUsuario));
-        //db.query(profilePicQuery, [idUsuarioInt, profilePicName]);
+        db.query(profilePicQuery, [idUsuarioInt, profilePicName]);
 
         const getIdQuery =  `SELECT id FROM perfil_usuario WHERE user_id = $1`;
         const getIdQueryResponse = await db.query(getIdQuery, [idUsuarioInt]);
 
-        //console.log(getIdQueryResponse.rows[0].id);
+       
         const idProfileUser = getIdQueryResponse.rows[0].id;
         console.log("Hola: " + idProfileUser);
         try{
-            //console.log(typeof(tags));
-            //console.log(tags[0]);
+            
             console.log(tags.length);
             console.log(Array.isArray(tags));
             console.log(tags);
             for (let i = 0; i<tags.length; i++){
                 let tagId = tags[i];
-                console.log(tagId);
-                console.log(idUsuario);
-                console.log(typeof(tagId));
-               
-                console.log("tipo de :" +typeof(idUsuarioInt));
                 const insertTagsQuery = `INSERT INTO user_tags (user_id, tag_id) VALUES ($1, $2)`;
                 await db.query(insertTagsQuery, [idProfileUser, tagId]);
-                console.log(tagId);
+                
             }
             
             res.status(200).json({message: "Todo piola"});

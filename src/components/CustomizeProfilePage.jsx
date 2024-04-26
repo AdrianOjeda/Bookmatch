@@ -45,6 +45,10 @@ function CustomizeProfilePage() {
 
                 if(postProfile.ok){
                     alert("Perfil actualizado!");
+                    window.location.href = 'notVerified.html';
+
+                    // Replace the current history entry with a new one
+                    window.history.replaceState({}, '', '/login');
                 }
             }catch(error){
                 console.log(error);
