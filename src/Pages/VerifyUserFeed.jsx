@@ -1,5 +1,5 @@
-import Header from "./Header";
-import DisplayUsers from "./DisplayUsers";
+import Header from "../components/Header";
+import DisplayUsers from "../components/DisplayUsers";
 
 function VerifyUserFeed(){
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import TagSelection from './TagSelection';
-import Footer from './Footer.jsx'
+import TagSelection from '../components/TagSelection.jsx';
+import Footer from '../components/Footer.jsx'
 
 
 function CustomizeProfilePage() {

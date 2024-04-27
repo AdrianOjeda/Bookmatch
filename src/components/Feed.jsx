@@ -37,7 +37,7 @@ function Feed() {
         event.preventDefault();
     
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token id');
             const formData = new FormData();
             formData.append('titulo', formBookData.titulo);
             formData.append('autor', formBookData.autor);

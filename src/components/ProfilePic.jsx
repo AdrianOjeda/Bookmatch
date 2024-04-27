@@ -1,8 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function ProfilePic()
-{
-    return <img src="https://owcdn.net/img/65c5156b87691.png" alt="" className="ProfilePic"/>
+function ProfilePic() {
+    const [profilePicName, setProfilePicName] = useState(null);
+
+    useEffect(() => {
+        getProfilePic();
+    }, []);
+
+    async function getProfilePic(){
+
+        try{
+            const userId = localStorage.getItem("token id");
+            console.log("token "+userId);
+            const profilePic = await fetch('/api/getProfilePic', {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${userId}`,
+                },
+    
+            });
+            if(!profilePic.ok){
+                throw new Error("500: No se pudo obtener la foto de perfil");
+            }else {
+                const profile_pic = await profilePic.json();
+                const fileName = profile_pic.profile_pic;
+                
+                setProfilePicName(fileName);
+                console.log(profilePicName);
+
+            }
+            
+            
+        }catch(err){
+
+            console.log("No se pudo obetener la foto de perfil!");
+        }
+    
+    }
+    return <img src={`/uploads/${profilePicName}`} alt="" className="ProfilePic" onClick = {()=>{window.location.href = "/profile"}}/>
 }
 
 export default ProfilePic;

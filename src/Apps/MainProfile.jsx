@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import VerifyUserFeed from './Pages/VerifyUserFeed'
-import '../verifyFeed.css'
+import ProfilePage from '../Pages/ProfilePage'
+import '../styles/profile.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   
-    <VerifyUserFeed />
+    <ProfilePage />
   
 )

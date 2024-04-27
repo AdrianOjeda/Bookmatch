@@ -39,6 +39,7 @@ function verifyToken(req, res, next) {
     try {
         const decoded = jwt.verify(token, "your-secret-key");
         req.user = decoded;
+        
         next();
     } catch (error) {
         return res.status(403).json({ error: "Invalid token" });
@@ -266,7 +267,7 @@ app.delete('/api/verifyUser/deleteUser/:id', async (req, res)=>{
                     const deleteUserQuery = `DELETE FROM usuario where id = $1`;
                     await db.query(deleteUserQuery, [idUser]);
                     res.status(200).json({message: "Usuario eliminado con exito"});
-                    
+
                 }catch(err){
                     res.status.json({err: "No se pudo borrar el usuario!"})
                 }
@@ -383,6 +384,25 @@ app.post('/api/customizeProfile/:idUsuario', upload.single('image'), async (req,
     }
     
 
+});
+
+app.get("/api/getProfilePic", verifyToken, async (req, res)=>{
+    const userId =  req.user.userId;
+    console.log(userId);
+    try{
+        const getProfilePicQuery = `SELECT profile_pic FROM perfil_usuario where user_id =$1`;
+        const responseProfilePic = await db.query(getProfilePicQuery, [userId]);
+        const profile_pic = responseProfilePic.rows[0].profile_pic;
+        console.log(profile_pic);
+
+        res.status(200).json({profile_pic});
+
+
+    }catch(err){
+
+
+        res.status.json({erro:"No se pudo obetener la foto de perfil!"});
+    }    
 });
 
 
