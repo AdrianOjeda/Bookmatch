@@ -251,11 +251,35 @@ app.delete('/api/verifyUser/deleteUser/:id', async (req, res)=>{
     const idUser =  req.params.id;
     console.log(idUser);
     try{
-        const deleteUserQuery = `DELETE FROM usuario where id = $1`;
-        await db.query(deleteUserQuery, [idUser]);
-        res.status(200).json({message: "Usuario eliminado con exito"});
+        const getProfileId = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
+        const idResponse = await db.query(getProfileId, [idUser]);
+        const profileId = idResponse.rows[0].id;
+        console.log(profileId);
+
+        try{
+            const deleteTags = `DELETE FROM user_tags WHERE user_id = $1`;
+            await db.query(deleteTags, [profileId]);
+            try{
+                const deleteUserProfile = `DELETE FROM perfil_usuario WHERE id = $1`;
+                await db.query(deleteUserProfile, [profileId]);
+                try{
+                    const deleteUserQuery = `DELETE FROM usuario where id = $1`;
+                    await db.query(deleteUserQuery, [idUser]);
+                    res.status(200).json({message: "Usuario eliminado con exito"});
+                    
+                }catch(err){
+                    res.status.json({err: "No se pudo borrar el usuario!"})
+                }
+            }catch(err){
+                res.status.json({err: "No se pudo borrar el perfil"})
+            }
+        }catch(err){
+
+            res.status(500).json({err: "No se pudieron borrar los tags!"});
+        }
+        
     }catch(err){
-        res.status(500).json({err: "No se pudo borrar el usuario"})
+        res.status(500).json({err: "No se pudo obtener el id del perfil del usuario"})
     }
 })
 

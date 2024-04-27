@@ -49,7 +49,7 @@ function LoginForm(){
                 window.location.href = '/adminFeed';
             }
             if (typeAccount === false && isVerified ===  true){
-                window.location.href = '/feed';
+                window.location.href = '/feedreal';
             }
 
             
