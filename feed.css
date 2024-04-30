@@ -65,7 +65,7 @@ body {
 .pageLink{
     margin-right: 20px;
     margin-left: 20px;
-    margin-top: 25px;
+    margin-top: 0px;
     cursor: pointer;
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
@@ -105,4 +105,4 @@ body {
     color: rgb(255, 255, 255);
     text-align: center;
   }
-  /*No supe donde ponerlo aqui esta de prueba*/
+  /*No supe donde ponerlo aqui esta de prueba ya que el color del antiguo footer es el mismo que el background*/
