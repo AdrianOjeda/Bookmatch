@@ -1,0 +1,112 @@
+body {
+    background-color: #FBEED3;
+    margin: 0;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.header {
+    background-color: #AC8E6C;
+    color: #ffffff;
+    text-align: center;
+    padding: 7px 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    background-color: #AC8E6C;
+    padding: 0 20px; 
+}
+
+.title-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+.pageLink {
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 25px;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: underline;
+}
+.solicitud {
+    z-index: 1; /* Sirve para que el contenido del formulario esté por encima del fondo */
+    width: 90%; /* Adjusted width for responsiveness */
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+  }
+
+.solicitud img {
+    width: 100px;
+    border-radius: 5%;
+    float: left;
+    margin-right: 20px;
+  }
+
+.solicitud-info {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    height: 250px;
+    overflow-y: scroll;
+  }
+
+.solicitud-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button {
+    padding: 10px 20px;
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 5px;
+    background-color: #895324;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* Añade margen derecho al primer botón */
+.button:first-child {
+    margin-right: 10px;
+}
+
+/* Añade margen izquierdo al segundo botón */
+.button:last-child {
+    margin-left: 10px;
+}
+
+.solicitud-buttons p {
+    margin: 0;
+    flex-grow: 1; /* Para que el párrafo ocupe todo el espacio restante */
+}
+
+
+
+Footer {
+    position: fixed;
+    font-family: Arial, sans-serif;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    text-align: center;
+  }
+.solicitud-buttons p {
+    text-align: left;
+}
