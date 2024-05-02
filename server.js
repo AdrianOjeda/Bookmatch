@@ -5,6 +5,7 @@ import pg from "pg";
 import sha1 from 'sha1';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
+import { verify } from "crypto";
 
 const app = express();
 const port = 3000;
@@ -181,15 +182,15 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/addBook', verifyToken, upload.single('image'), async (req, res) => {
     try {
         const userId = req.user.userId;
-        const { titulo, autor, isbn, precio } = req.body;
+        const { titulo, autor, isbn, descripcion } = req.body;
         const image = req.file; // Access the uploaded file
         const imageName = image.filename; // Store the filename
         console.log(imageName);
         // Insert book data into the database, including the image filename or URL
         const insertQuery = `
-            INSERT INTO libro (titulo, autor, isbn, precio, idusuario, coverimage)
+            INSERT INTO libro (titulo, autor, isbn, descripcion, idusuario, coverimage)
             VALUES ($1, $2, $3, $4, $5, $6)`;
-        const result = await db.query(insertQuery, [titulo, autor, isbn, precio, userId, imageName]); // Assuming filename is used to store the image
+        const result = await db.query(insertQuery, [titulo, autor, isbn, descripcion, userId, imageName]); // Assuming filename is used to store the image
         console.log(result.rows);
         
         // Respond with success message
@@ -202,9 +203,10 @@ app.post('/api/addBook', verifyToken, upload.single('image'), async (req, res) =
 
 app.get('/api/renderBooks', verifyToken, async (req, res) => {
     const userId = req.user.userId;
-
+    console.log("User ID: ");
+    console.log(userId);
     try {
-        const displayBooksQuery = `SELECT libro.id_libro, libro.titulo, libro.autor, libro.isbn, libro.precio, libro.coverimage, usuario.nombres, usuario.id FROM libro INNER JOIN usuario on usuario.id = libro.idusuario WHERE usuario.id = $1`;
+        const displayBooksQuery = `SELECT libro.id_libro, libro.titulo, libro.autor, libro.isbn, libro.descripcion, libro.coverimage, usuario.nombres, usuario.id FROM libro INNER JOIN usuario on usuario.id = libro.idusuario WHERE usuario.id = $1`;
         const displayBooks = await db.query(displayBooksQuery, [userId]);
         console.log(displayBooks.rows);
         res.status(200).json(displayBooks.rows);
@@ -404,6 +406,29 @@ app.get("/api/getProfilePic", verifyToken, async (req, res)=>{
         res.status.json({erro:"No se pudo obetener la foto de perfil!"});
     }    
 });
+
+app.get("/api/getName", verifyToken, async (req, res)=>{
+    
+    
+    try{
+        const userId =  req.user.userId;
+        console.log("usuario id " +userId);
+
+        const getNameQuery = `SELECT nombres, apellidos FROM usuario WHERE id = $1`;
+
+        const nameResponse =  await db.query(getNameQuery, [userId]);
+        const fullName = nameResponse.rows[0].nombres + " "+ nameResponse.rows[0].apellidos;
+        console.log(fullName);
+
+        res.status(200).json({fullName});
+
+    }catch(err){
+
+        res.status(500).json({err: "No se pudo obtener el nombre"})
+    }
+
+
+})
 
 
 app.listen(port, () => {

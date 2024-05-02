@@ -7,7 +7,7 @@ function BookForm() {
         titulo: '',
         autor: '',
         isbn: '',
-        precio: '',
+        descripcion: '',
     };
 
     const [formBookData, setFormData] = useState(initialFormData);
@@ -80,12 +80,12 @@ function BookForm() {
                     onChange={(value) => handleChange('isbn', value)}
                 />
                 <InputForm
-                    placeholder="PRECIO"
-                    id="precio"
-                    name="precio"
-                    type="number"
-                    value={formBookData.precio}
-                    onChange={(value) => handleChange('precio', value)}
+                    placeholder="DESCRIPCION"
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    value={formBookData.descripcion}
+                    onChange={(value) => handleChange('descripcion', value)}
                 />
                 <div className="button-container">
                     <button type="submit" className="signup-button">

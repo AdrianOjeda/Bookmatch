@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function ProfilePic() {
+function ProfilePic(props) {
     const [profilePicName, setProfilePicName] = useState(null);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ function ProfilePic() {
         }
     
     }
-    return <img src={`/uploads/${profilePicName}`} alt="" className="ProfilePic" onClick = {()=>{window.location.href = "/profile"}}/>
+    return <img src={`/uploads/${profilePicName}`} alt="" className={props.className} onClick = {()=>{window.location.href = "/profile"}}/>
 }
 
 export default ProfilePic;

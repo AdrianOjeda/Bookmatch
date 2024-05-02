@@ -8,7 +8,7 @@ function Feed() {
         titulo: '',
         autor: '',
         isbn: '',
-        precio: 0,
+        precio: '',
         image: null,
     };
 
@@ -98,16 +98,16 @@ function Feed() {
                     onChange={(value) => handleChange('isbn', value)}
                 />
                 <InputForm
-                    placeholder="PRECIO"
-                    id="precio"
-                    name="precio"
-                    type="number"
-                    value={formBookData.precio}
-                    onChange={(value) => handleChange('precio', value)}
+                    placeholder="DESCRIPCION"
+                    id="descripcion"
+                    name="descripcion"
+                    type="text"
+                    value={formBookData.descripcion}
+                    onChange={(value) => handleChange('descripcion', value)}
                 />
                 <label htmlFor="fileInput">
                 {selectedFile ? <p style={{marginBottom: '3px'}}>portada: {selectedFile.name}</p> : <p style={{marginBottom: '3px'}}>portada: </p> }
-                    <FolderIcon style={{marginBottom: '10px'}} />
+                    <FolderIcon style={{marginBottom: '10px', cursor: 'pointer'}} />
                     
                 </label>
                 <input

@@ -35,6 +35,7 @@ body {
     width: 90px;
     height: auto;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .ProfilePic {
@@ -52,7 +53,7 @@ body {
     justify-content: space-between;
     align-items: center;
     height: 80px;
-    background-color: #AC8E6C;
+    background-color: #967259;
     padding: 0 20px; /* Add padding to the sides */
 }
 
@@ -110,3 +111,52 @@ body {
     color: rgb(255, 255, 255);
     text-align: center;
   }
+
+  .profile-info {
+    width: 30%;
+    height: auto;
+    background-color: 	#967259;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    margin: 10px;
+    border-radius: 10%;
+}
+
+.Profile-Pic {
+    
+    width: 250px; /* Set the width to make it bigger */
+    height: 250px; /* Set the height to maintain a perfect circle */
+    border-radius: 50%; /* Create a perfect circle */
+    display: block; /* Ensure it behaves as a block element */
+    margin: 0 auto 10px; /* Center horizontally and add space below */
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.profilepic-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+}
+
+.profile-name {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    
+}
+
+.upload-button {
+    background-color: #FBEED3; /* Green */
+    border: none;
+    color: black;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 10px auto; /* Center horizontally and add some top margin */
+}
+.upload-button:hover {
+    background-color: #fef7e6; /* Darker green */
+}

@@ -7,7 +7,7 @@ function DisplayBooks() {
     useEffect(() => {
         async function fetchBooks() {
             try {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('token id');
 
                 const response = await fetch('/api/renderBooks', {
                     method: 'GET',
@@ -19,6 +19,8 @@ function DisplayBooks() {
 
                 if (response.ok) {
                     const booksData = await response.json();
+                    console.log("Books data");
+                    console.log(booksData);
                     setBooks(booksData);
                 } else {
                     console.error('Failed to fetch books:', response.statusText);
@@ -78,7 +80,7 @@ function DisplayBooks() {
                         titulo={bookItem.titulo}
                         autor={bookItem.autor}
                         isbn={bookItem.isbn}
-                        precio={bookItem.precio}
+                        descripcion={bookItem.descripcion}
                         coverimage={bookItem.coverimage} // Render the image from Base64 string
                         onDelete={deleteBook}
                         onClick={editBook}
