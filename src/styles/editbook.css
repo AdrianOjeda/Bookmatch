@@ -7,7 +7,7 @@
   
   body {
     font-family: Arial, sans-serif;
-    background: url('../my-react-app/src/assets/open-book.jpg') center/cover fixed;
+    background: url('../assets/open-book.jpg') center/cover fixed;
     background-color: rgba(255, 255, 255, 0.8); /* Ajusta la opacidad según sea necesario */
     
   }
@@ -166,6 +166,12 @@
   .book-detail-container .actions {
     display: flex;
     gap: 10px; /* Adjust the gap between buttons */
+  }
+
+  .regresar{
+
+    margin-top: 10px;
+    text-align: center;
   }
   
   /* Media Query for smaller screens */

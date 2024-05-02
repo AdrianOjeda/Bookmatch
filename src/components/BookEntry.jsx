@@ -17,7 +17,7 @@ function BookEntry(props){
 
       <div className="form-container">
             <div className="book-detail-container">
-                <img src={`/uploads/${props.coverimage}`} alt={props.titulo} />
+                <img className = 'book-cover-container' src={`/uploads/${props.coverimage}`} alt={props.titulo} />
                 <div className="book-info">
                     <h2>{props.titulo}</h2>
                     <p>Autor: {props.autor}</p>
@@ -26,12 +26,11 @@ function BookEntry(props){
                     
                 </div>
                 <div className="actions">
-                <button onClick={handleDeleteClick}>
-                  <DeleteIcon />
-                </button>
-                <button onClick={handleEditClick}>
-                  <EditIcon />
-                </button>
+                
+                  <DeleteIcon onClick={handleDeleteClick} />
+                
+                  <EditIcon onClick={handleEditClick}/>
+                
                 </div>
             </div>
         </div>

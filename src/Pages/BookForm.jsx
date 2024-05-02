@@ -93,8 +93,8 @@ function BookForm() {
                     </button>
                 </div>
             </form>
-            <div className="footer">
-                <a href="layoutLibros.html" className="login-link">
+            <div className="regresar">
+                <a href="/profile" className="login-link">
                     Regresar
                 </a>
             </div>

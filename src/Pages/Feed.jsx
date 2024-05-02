@@ -42,7 +42,7 @@ function Feed() {
             formData.append('titulo', formBookData.titulo);
             formData.append('autor', formBookData.autor);
             formData.append('isbn', formBookData.isbn);
-            formData.append('precio', formBookData.precio);
+            formData.append('descripcion', formBookData.descripcion);
             formData.append('image', formBookData.image);
             formData.append('idUsuario', token);
     
@@ -126,8 +126,8 @@ function Feed() {
                 </div>
             </form>
             <div className="footer">
-                <a href="layoutLibros.html" className="login-link">
-                    Registro de libros
+                <a href="/profile" className="login-link">
+                    Perfil
                 </a>
             </div>
         </div>

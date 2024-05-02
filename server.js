@@ -6,6 +6,7 @@ import sha1 from 'sha1';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import { verify } from "crypto";
+import { profile } from "console";
 
 const app = express();
 const port = 3000;
@@ -203,7 +204,7 @@ app.post('/api/addBook', verifyToken, upload.single('image'), async (req, res) =
 
 app.get('/api/renderBooks', verifyToken, async (req, res) => {
     const userId = req.user.userId;
-    console.log("User ID: ");
+    console.log("User");
     console.log(userId);
     try {
         const displayBooksQuery = `SELECT libro.id_libro, libro.titulo, libro.autor, libro.isbn, libro.descripcion, libro.coverimage, usuario.nombres, usuario.id FROM libro INNER JOIN usuario on usuario.id = libro.idusuario WHERE usuario.id = $1`;
@@ -215,6 +216,9 @@ app.get('/api/renderBooks', verifyToken, async (req, res) => {
         res.status(500).json({ error: "Failed to load books" });
     }
 });
+
+
+
 
 app.delete('/api/deleteBook/:id', verifyToken, async (req, res)=>{
     try{
@@ -430,6 +434,36 @@ app.get("/api/getName", verifyToken, async (req, res)=>{
 
 })
 
+
+app.post('/api/profile/updatePic', verifyToken, upload.single('image'), async (req, res)=>{
+
+    const userId = req.user.userId;
+
+    console.log(userId);
+    const profilePicture =  req.file;
+    
+    const profilePicName =  profilePicture.filename;
+    console.log(profilePicName);
+
+    try{
+        const getIdProfileQuery = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
+        const idProfileResponse =  await db.query(getIdProfileQuery, [userId]);
+        
+        const profileId = idProfileResponse.rows[0].id;
+        console.log(profileId);
+        try{
+            const updatePicQuery = `UPDATE perfil_usuario SET profile_pic = $1 WHERE id = $2`;
+            await db.query(updatePicQuery, [profilePicName, profileId]);
+            res.status(200).json({message: "Foto de perfil actualizada con exito"});
+        }catch(err){
+            res.status.json({err: "No se pudo actualizar la foto de perfil"});
+        }
+    }catch(err){
+        res.status(500).json({err: "No se pudo obtener el ID del perfil"});
+        
+    }
+
+})
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
