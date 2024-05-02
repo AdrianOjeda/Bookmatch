@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import VerifyUserFeed from './Pages/VerifyUserFeed'
-import '../verifyFeed.css'
+import Feed from '../Pages/Feed'
+import '../registro_libro.css'
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   
-    <VerifyUserFeed />
+    <Feed />
   
 )

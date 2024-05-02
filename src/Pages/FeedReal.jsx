@@ -1,7 +1,7 @@
 import React from "react";
-import HeaderReal from "./HeaderReal";
-import DisplayBooks from "./DisplayBooks";
-import Footer from "./Footer";
+import HeaderReal from "../components/HeaderReal";
+import DisplayBooks from "../components/DisplayBooks";
+import Footer from "../components/Footer";
 
 function FeedReal()
 {

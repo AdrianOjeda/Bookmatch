@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputForm from './InputForm';
+import InputForm from '../components/InputForm';
 //import jwt_decode from 'jwt-decode';
 import FolderIcon from '@mui/icons-material/Folder';
 

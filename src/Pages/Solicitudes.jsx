@@ -1,6 +1,6 @@
 import React from "react";
-import Request from "./Request";
-import Footer from "./Footer.jsx"
+import Request from "../components/Request.jsx";
+import Footer from "../components/Footer.jsx"
 function Solicitudes() {
     return (
         <div>
