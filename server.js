@@ -465,6 +465,30 @@ app.post('/api/profile/updatePic', verifyToken, upload.single('image'), async (r
 
 })
 
+app.get('/api/getTags', verifyToken, async (req, res)=>{
+
+    const userId = req.user.userId;
+    console.log(userId);
+    try{
+        const getIdProfileQuery = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
+        const idProfileResponse =  await db.query(getIdProfileQuery, [userId]);
+        
+        const profileId = idProfileResponse.rows[0].id;
+        console.log(profileId);
+        try{
+            const getTagsQuery = `SELECT tags.tagname FROM tags INNER JOIN user_tags ON tags.idtag = user_tags.tag_id WHERE user_tags.user_id =$1`;
+            const tagResponse = await db.query(getTagsQuery, [profileId]);
+            const sentTags = tagResponse.rows;
+            console.log(sentTags);
+            res.status(200).json({message: "Foto de perfil actualizada con exito", sentTags});
+        }catch(err){
+            res.status.json({err: "No se pudo actualizar la foto de perfil"});
+        }
+    }catch(err){
+        res.status(500).json({err: "No se pudo obtener el ID del perfil"});
+        
+    }
+})
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

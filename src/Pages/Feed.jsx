@@ -8,7 +8,7 @@ function Feed() {
         titulo: '',
         autor: '',
         isbn: '',
-        precio: '',
+        descripcion: '',
         image: null,
     };
 

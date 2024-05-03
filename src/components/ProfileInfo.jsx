@@ -1,15 +1,52 @@
 import { useEffect, useState } from "react";
 import ProfilePic from "./ProfilePic";
+import TagProfileInfo from "./TagProfileInfo";
 
 function ProfileInfo() {
     const [profileName, setProfileName] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileName, setFileName] = useState('');
 
+    const [tags, setTags] = useState([]);
+
+
+    useEffect(()=>{
+        getTags();
+
+    }, []);
+
     useEffect(() => {
         getProfileName();
     }, []);
 
+    async function getTags() {
+        try {
+            const userId = localStorage.getItem("token id");
+            const tagsFetched = await fetch('/api/getTags', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${userId}`,
+                },
+            });
+            if (!tagsFetched.ok) {
+                throw new Error('Failed to fetch tags');
+            }
+            
+            const tagsResponse = await tagsFetched.json();
+            console.log(tagsResponse);
+            const newTags = tagsResponse.sentTags;
+            console.log("los tags: ");
+            console.log(newTags.tagname);
+    
+            // Set the state to the new tags received
+            setTags(newTags);
+    
+            console.log(tags);
+    
+        } catch (error) {
+            console.error("No se pudieron obtener los tags", error);
+        }
+    }
     async function getProfileName() {
         try {
             const userId = localStorage.getItem("token id");
@@ -89,6 +126,17 @@ function ProfileInfo() {
             )}
 
             <button className="upload-button" onClick={() => { window.location.href = "/feed.html" }}>Añade un nuevo libro</button>
+            <button className="upload-button" onClick={() => { window.location.href = "/feed.html" }}>Agrega nuevos tags</button>
+            <div className='tag-container'>
+                
+            {tags.map((tag, index) => (
+            <TagProfileInfo
+                className = 'tag-entry'
+                key={index} // Remember to add a unique key when using map
+                tagname={tag.tagname}
+            />
+            ))}
+            </div>
         </div>
     );
 }

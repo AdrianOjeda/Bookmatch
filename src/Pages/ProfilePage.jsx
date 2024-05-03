@@ -16,7 +16,7 @@ function ProfilePage() {
                 </div>
             </div>
            
-            <Footer />
+            
         
             
         </div>

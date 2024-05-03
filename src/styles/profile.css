@@ -248,3 +248,19 @@ body {
     border-radius: 8px;
     
 }
+
+.tag-container {
+    background-color: #FBEED3;
+    font-family: Arial, Helvetica, sans-serif;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Create four columns */
+    grid-gap: 0px; /* Add gap between grid items */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.tag-entry {
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 5px;
+    margin-left: 5px;
+}
