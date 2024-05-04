@@ -126,7 +126,7 @@ function ProfileInfo() {
             )}
 
             <button className="upload-button" onClick={() => { window.location.href = "/feed.html" }}>Añade un nuevo libro</button>
-            <button className="upload-button" onClick={() => { window.location.href = "/feed.html" }}>Agrega nuevos tags</button>
+            <button className="upload-button" onClick={() => { window.location.href = "/customizeTags.html" }}>Agrega nuevos tags</button>
             <div className='tag-container'>
                 
             {tags.map((tag, index) => (

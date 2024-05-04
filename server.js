@@ -489,6 +489,59 @@ app.get('/api/getTags', verifyToken, async (req, res)=>{
         
     }
 })
+
+app.post('/api/customizeTags/', verifyToken, async (req, res) => {
+    const userId = req.user.userId;
+    console.log(userId);
+    
+    const tags = req.body; 
+    console.log("los tags");
+    console.log(tags);
+    try {
+        const getIdProfileQuery = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
+        const idProfileResponse =  await db.query(getIdProfileQuery, [userId]);
+        const profileId = idProfileResponse.rows[0].id;
+        console.log("id perfil " + profileId);
+
+        try{
+
+            try{
+                const deleteTagsQuery = `DELETE FROM user_tags WHERE user_id = $1`;
+                await db.query(deleteTagsQuery, [profileId]);
+
+                try {
+                    console.log(tags.length);
+                    console.log(Array.isArray(tags));
+                    console.log(tags);
+                    for (let i = 0; i<tags.length; i++){
+                        let tagId = tags[i];
+                        const insertTagsQuery = `INSERT INTO user_tags (user_id, tag_id) VALUES ($1, $2)`;
+                        await db.query(insertTagsQuery, [profileId, tagId]);
+                
+                    }
+            
+                    res.status(200).json({message: "Todo piola"});
+
+                } catch (error) {
+                    res.status(500).json({error: "No "})
+                }
+
+                
+            }catch(err){
+                res.status(500).json({err: 'No se pudieron borrar los tags'});
+            }
+            
+
+
+        }catch(err){
+            res.status(500).json({ err: 'No se pudieron optimizar los tags' });
+        }
+    } catch (err) {
+        
+        res.status(500).json({err: "No se pudo obtener el ID del perfil"});
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
