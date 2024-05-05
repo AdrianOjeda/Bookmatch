@@ -294,13 +294,13 @@ app.delete('/api/verifyUser/deleteUser/:id', async (req, res)=>{
 app.post('/api/editBook', verifyToken, async (req, res)=>{
     try{
         const idUsuario =  req.user.userId;
-        const {titulo, autor, isbn, precio, idLibro} = req.body;
+        const {titulo, autor, isbn, descripcion, idLibro} = req.body;
         console.log("Id Usuario " + idUsuario);
-        console.log({titulo, autor, isbn, precio, idLibro});
+        console.log({titulo, autor, isbn, descripcion, idLibro});
 
-        const updateBookQuery = `update libro set titulo = $1, autor = $2, isbn = $3, precio = $4 where id_libro = $5 and idusuario = $6 `;
+        const updateBookQuery = `update libro set titulo = $1, autor = $2, isbn = $3, descripcion = $4 where id_libro = $5 and idusuario = $6 `;
 
-        await db.query(updateBookQuery, [titulo, autor, isbn, precio, idLibro, idUsuario])
+        await db.query(updateBookQuery, [titulo, autor, isbn, descripcion, idLibro, idUsuario])
 
         res.status(200).json({message: "So far so good"});
 

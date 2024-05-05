@@ -24,7 +24,9 @@ function BookForm() {
 
         try {
             const tokenLibro = localStorage.getItem('tokenLibro');
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token id');
+
+            console.log(token, tokenLibro);
             const updatedFormData = { ...formBookData, idUsuario: token, idLibro: tokenLibro };
 
             const response = await fetch('/api/editBook', {
