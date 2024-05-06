@@ -187,12 +187,30 @@ app.post('/api/addBook', verifyToken, upload.single('image'), async (req, res) =
         const image = req.file; // Access the uploaded file
         const imageName = image.filename; // Store the filename
         console.log(imageName);
+        const tags = JSON.parse(req.body.tags);
+        console.log("SelectedTags");
+        console.log(tags);
         // Insert book data into the database, including the image filename or URL
         const insertQuery = `
             INSERT INTO libro (titulo, autor, isbn, descripcion, idusuario, coverimage)
-            VALUES ($1, $2, $3, $4, $5, $6)`;
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING id_libro`;
         const result = await db.query(insertQuery, [titulo, autor, isbn, descripcion, userId, imageName]); // Assuming filename is used to store the image
         console.log(result.rows);
+
+        const bookId = result.rows[0].id_libro;
+
+        console.log(bookId);
+        try{
+            for (const tagId of tags) {
+                const insertTagQuery = `
+                    INSERT INTO libro_tags (libroid, tagid)
+                    VALUES ($1, $2)`;
+                await db.query(insertTagQuery, [bookId, tagId]);
+            }
+
+        }catch(error){
+            res.status(500).json({error: "No se pudieron agregar los tags"});
+        }
         
         // Respond with success message
         res.status(200).json({ message: 'Book added successfully' });
