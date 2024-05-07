@@ -67,6 +67,13 @@ function Feed() {
         event.preventDefault();
     
         try {
+            console.log(selectedTags);
+            console.log(formBookData.image);
+            if(selectedTags.length === 0){
+                alert("Elige al menos 1 tag")
+            }else if(!formBookData.image){
+                alert("Debes subir una foto de portada")
+            }else{
             const token = localStorage.getItem('token id');
             const formData = new FormData();
             formData.append('titulo', formBookData.titulo);
@@ -94,6 +101,7 @@ function Feed() {
             setFormData(initialFormData);
             setSelectedFile(null);
             alert('Book added successfully');
+            }
         } catch (error) {
             alert('Book registration failed: ' + error.message);
             console.error('Book registration failed:', error);
@@ -142,8 +150,8 @@ function Feed() {
                 id="tag-select" 
                 multiple 
                 className="tag-select"
-                value={selectedTags} // Reflect selected tags state
-                onChange={handleTagChange} // Handle tag selection change
+                value={selectedTags} 
+                onChange={handleTagChange} 
                 >
                 <option value="">--Elija una o mas opciones--</option>
                 {tags.map((tag) => (

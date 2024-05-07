@@ -23,6 +23,9 @@ function BookEntry(props){
                     <p>Autor: {props.autor}</p>
                     <p>ISBN: {props.isbn}</p>
                     <p>Descripcion: {props.descripcion}</p>
+   
+                    <p >Categorias: {props.tags.join(", ") }</p>
+
                     
                 </div>
                 <div className="actions">

@@ -225,7 +225,36 @@ app.get('/api/renderBooks', verifyToken, async (req, res) => {
     console.log("User");
     console.log(userId);
     try {
-        const displayBooksQuery = `SELECT libro.id_libro, libro.titulo, libro.autor, libro.isbn, libro.descripcion, libro.coverimage, usuario.nombres, usuario.id FROM libro INNER JOIN usuario on usuario.id = libro.idusuario WHERE usuario.id = $1`;
+        const displayBooksQuery = `SELECT 
+        libro.id_libro, 
+        libro.titulo, 
+        libro.autor, 
+        libro.isbn, 
+        libro.descripcion, 
+        libro.coverimage, 
+        usuario.nombres, 
+        usuario.id,
+        ARRAY_AGG(tags.tagname) AS tagsArray
+    FROM 
+        libro 
+    INNER JOIN 
+        usuario ON usuario.id = libro.idusuario 
+    LEFT JOIN 
+        libro_tags ON libro_tags.libroid = libro.id_libro
+    LEFT JOIN 
+        tags ON tags.idtag = libro_tags.tagid
+    WHERE 
+        usuario.id = $1
+    GROUP BY 
+        libro.id_libro, 
+        libro.titulo, 
+        libro.autor, 
+        libro.isbn, 
+        libro.descripcion, 
+        libro.coverimage, 
+        usuario.nombres, 
+        usuario.id;
+    `;
         const displayBooks = await db.query(displayBooksQuery, [userId]);
         console.log(displayBooks.rows);
         res.status(200).json(displayBooks.rows);
@@ -245,16 +274,20 @@ app.delete('/api/deleteBook/:id', verifyToken, async (req, res)=>{
         console.log("user id: "+ userId);
         console.log("book id "+ bookId);
 
-        const deleteBookQuery = `DELETE FROM libro where id_libro =$1 AND idusuario = $2`;
-        await db.query(deleteBookQuery, [bookId, userId]);
-        
-         
+        const deleteTagsQuery = `DELETE FROM libro_tags WHERE libroid = $1`;
+        await db.query(deleteTagsQuery, [bookId]);
 
-        res.status(200).json({message: "so far so good!"})
+        try {
+            const deleteBookQuery = `DELETE FROM libro where id_libro =$1 AND idusuario = $2`;
+            await db.query(deleteBookQuery, [bookId, userId]);
+            res.status(200).json({message: "so far so good!"})
+        } catch (error) {
+            res.status(500).json({error: "No se pudo borrar el libro"})
+        }
 
     }catch(error){
 
-        res.status(500).json({error: 'Couldnt delete book!'})
+        res.status(500).json({error: 'No se pudieron borrar los tags'})
     }
     
 
@@ -309,18 +342,45 @@ app.delete('/api/verifyUser/deleteUser/:id', async (req, res)=>{
 })
 
 
-app.post('/api/editBook', verifyToken, async (req, res)=>{
+app.post('/api/editBook/:bookId', verifyToken, upload.single('image'), async (req, res)=>{
     try{
         const idUsuario =  req.user.userId;
-        const {titulo, autor, isbn, descripcion, idLibro} = req.body;
+        const idLibro = req.params.bookId;
+        const {titulo, autor, isbn, descripcion} = req.body;
         console.log("Id Usuario " + idUsuario);
         console.log({titulo, autor, isbn, descripcion, idLibro});
+        const image = req.file; // Access the uploaded file
+        const imageName = image.filename; // Store the filename
+        console.log(imageName);
+        const tags = JSON.parse(req.body.tags);
+        console.log("SelectedTags");
+        console.log(tags);
+        console.log("ID del libro "+idLibro);
 
-        const updateBookQuery = `update libro set titulo = $1, autor = $2, isbn = $3, descripcion = $4 where id_libro = $5 and idusuario = $6 `;
+        const updateBookQuery = `update libro set titulo = $1, autor = $2, isbn = $3, descripcion = $4, coverimage= $5 where id_libro = $6 and idusuario = $7 `;
 
-        await db.query(updateBookQuery, [titulo, autor, isbn, descripcion, idLibro, idUsuario])
+        await db.query(updateBookQuery, [titulo, autor, isbn, descripcion,imageName, idLibro, idUsuario])
 
-        res.status(200).json({message: "So far so good"});
+        try {
+            const deleteTagsQuery = `DELETE FROM libro_tags WHERE libroid = $1`;
+            await db.query(deleteTagsQuery, [idLibro]);
+            try {
+                for (const tagId of tags) {
+                    const insertTagQuery = `
+                        INSERT INTO libro_tags (libroid, tagid)
+                        VALUES ($1, $2)`;
+                    await db.query(insertTagQuery, [idLibro, tagId]);
+                }
+                res.status(200).json({message: "Libro actualizado"})
+            } catch (error) {
+                res.status.json({error: "No se pudieron insertar nuevos tags!"});
+            }
+
+        } catch (error) {
+            res.status(500).json({error: "No se pudieron borrar los tags"})
+        }
+
+        
 
     }catch (error){
 

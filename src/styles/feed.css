@@ -108,3 +108,7 @@ body {
     text-align: center;
   }
   /*No supe donde ponerlo aqui esta de prueba ya que el color del antiguo footer es el mismo que el background*/
+
+  .tags{
+    background-color: antiquewhite;
+  }

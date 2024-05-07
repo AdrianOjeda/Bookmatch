@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputForm from '../components/InputForm';
 //import jwt_decode from 'jwt-decode';
+import FolderIcon from '@mui/icons-material/Folder';
 
 function BookForm() {
     const initialFormData = {
@@ -8,6 +9,8 @@ function BookForm() {
         autor: '',
         isbn: '',
         descripcion: '',
+        image: null,
+        tags: [],
     };
 
     const [formBookData, setFormData] = useState(initialFormData);
@@ -19,37 +22,83 @@ function BookForm() {
         });
     };
 
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [tags, setTags] = useState([]);
+
+    useEffect(() => {
+        
+        fetchTags();
+    }, []);
+
+    async function fetchTags() {
+        try {
+            const response = await fetch('/api/tags');
+            if (response.ok) {
+                const tagsData = await response.json();
+                setTags(tagsData.tagsInfo);
+            } else {
+                console.error('Failed to fetch tags:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching tags:', error);
+        }
+    }
+
+    console.log(tags);
+   
+
+    const handleTagChange = (event) => {
+        const selectedTagsArray = Array.from(event.target.selectedOptions, option => option.value);
+        setSelectedTags(selectedTagsArray);
+        console.log("Selected Tags:", selectedTagsArray);
+    };
+
+    const handleImageChange = (event) => {
+        const imageFile = event.target.files[0];
+        console.log(imageFile);
+        setFormData({ ...formBookData, image: imageFile });
+        setSelectedFile(imageFile);
+        
+    };
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         try {
-            const tokenLibro = localStorage.getItem('tokenLibro');
             const token = localStorage.getItem('token id');
-
-            console.log(token, tokenLibro);
-            const updatedFormData = { ...formBookData, idUsuario: token, idLibro: tokenLibro };
-
-            const response = await fetch('/api/editBook', {
+            const bookId = localStorage.getItem("tokenLibro")
+            const formData = new FormData();
+            formData.append('titulo', formBookData.titulo);
+            formData.append('autor', formBookData.autor);
+            formData.append('isbn', formBookData.isbn);
+            formData.append('descripcion', formBookData.descripcion);
+            formData.append('image', formBookData.image);
+            formData.append('idUsuario', token);
+            formData.append('tags', JSON.stringify(selectedTags));
+    
+            const response = await fetch(`/api/editBook/${bookId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify(updatedFormData),
+                body: formData,
             });
-
+    
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || 'Book update failed');
+                throw new Error(errorData.error || 'Book registration failed');
             }
-
+    
             // Reset the form data after successful registration
             setFormData(initialFormData);
-            alert('Libro editado correctamente');
-            window.location.href = '/feed';
+            setSelectedFile(null);
+            alert('Libro actualizado :)');
+            window.location.href = "/profile"
         } catch (error) {
-            alert('Book update failed: ' + error.message);
-            console.error('Book update failed:', error);
+            alert('Book registration failed: ' + error.message);
+            console.error('Book registration failed:', error);
         }
     };
 
@@ -89,6 +138,34 @@ function BookForm() {
                     value={formBookData.descripcion}
                     onChange={(value) => handleChange('descripcion', value)}
                 />
+                <label htmlFor="tag-select">Elige tags para el libro:</label>
+                <select 
+                name="tags" 
+                id="tag-select" 
+                multiple 
+                className="tag-select"
+                value={selectedTags} 
+                onChange={handleTagChange} 
+                >
+                <option value="">--Elija una o mas opciones--</option>
+                {tags.map((tag) => (
+                    <option key={tag.idtag} value={tag.idtag}>{tag.tagname}</option>
+                ))}
+                </select>
+
+                <label htmlFor="fileInput">
+                {selectedFile ? <p style={{marginBottom: '3px'}}>portada: {selectedFile.name}</p> : <p style={{marginBottom: '3px'}}>portada: </p> }
+                    <FolderIcon style={{marginBottom: '10px', cursor: 'pointer'}} />
+                    
+                </label>
+                <input
+                    type="file"
+                    id="fileInput"
+                    style={{ display: 'none' }}
+                    onChange={handleImageChange}
+                    accept="image/*"
+                />
+                
                 <div className="button-container">
                     <button type="submit" className="signup-button">
                         EDITAR

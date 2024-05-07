@@ -31,14 +31,16 @@ function DisplayBooks() {
         }
 
         fetchBooks();
+        
+        
     }, []);
 
     console.log(books);
 
     async function deleteBook(id) {
-        console.log(id);
+        console.log("Holaaa "+id);
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token id');
             
             const response = await fetch(`/api/deleteBook/${id}`, {
                 method: 'DELETE',
@@ -74,6 +76,7 @@ function DisplayBooks() {
             <h1 className="form-container" style = {{textAlign: 'center'}}>Mi estantería</h1>
             <div className="books-list">
                 {books.map(bookItem => (
+                    
                     <BookEntry
                         key={bookItem.id_libro}
                         id={bookItem.id_libro}
@@ -82,6 +85,7 @@ function DisplayBooks() {
                         isbn={bookItem.isbn}
                         descripcion={bookItem.descripcion}
                         coverimage={bookItem.coverimage} // Render the image from Base64 string
+                        tags={bookItem.tagsarray}
                         onDelete={deleteBook}
                         onClick={editBook}
                     />
