@@ -9,6 +9,15 @@ function BooksFeed() {
         fetchBooks();
     }, []);
 
+    async function solicitarPrestamo(id){
+
+        console.log("clicked "+ id);
+    }
+
+    async function perfilPropietario(idPropietario){
+        console.log("Propietario "+idPropietario);
+
+    }
     async function fetchBooks() {
         const userId = localStorage.getItem("token id");
         try {
@@ -30,7 +39,7 @@ function BooksFeed() {
 
     return (
         <div className="books-feed-container">
-            <h1>Hola Mundo</h1>
+            <h1 style={{fontFamily:"Arial, Helvetica, sans-serif", paddingLeft: '20px'}}>Para ti</h1>
             <div className="books-grid">
                 {books.map(bookItem => (
                     <BookFeedEntry
@@ -40,9 +49,12 @@ function BooksFeed() {
                         autor={bookItem.autor}
                         isbn={bookItem.isbn}
                         propietario={bookItem.nombres}
+                        propietarioId={bookItem.id}
                         descripcion={bookItem.descripcion}
                         coverimage={bookItem.coverimage}
                         tags={bookItem.tagsarray}
+                        onClick={solicitarPrestamo}
+                        onClickPropietario={perfilPropietario}
                     />
                 ))}
             </div>

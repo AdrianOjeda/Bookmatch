@@ -5,8 +5,7 @@ import pg from "pg";
 import sha1 from 'sha1';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
-import { verify } from "crypto";
-import { profile } from "console";
+
 
 const app = express();
 const port = 3000;
@@ -30,6 +29,7 @@ app.use(bodyParser.json());
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
+
 //Token id user middleware
 function verifyToken(req, res, next) {
     const authHeader = req.headers["authorization"];
@@ -53,7 +53,7 @@ function verifyToken(req, res, next) {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Specify the directory where you want to store the files
+        cb(null, 'uploads/'); 
     },
     filename: function (req, file, cb) {
         

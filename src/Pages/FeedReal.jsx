@@ -14,9 +14,7 @@ function FeedReal()
         <div>
             <BooksFeed/>
         </div>
-        <div>
-            <Footer/>
-        </div>
+        
 
     </div>
 
