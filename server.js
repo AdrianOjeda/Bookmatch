@@ -620,6 +620,75 @@ app.post('/api/customizeTags/', verifyToken, async (req, res) => {
     }
 });
 
+
+app.get('/api/feedBooks', verifyToken,  async (req, res)=>{
+    const userId = req.user.userId;
+    
+    console.log("El id del usuario: " +userId);
+
+    try {
+        const getIdProfileQuery = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
+        const idProfileResponse =  await db.query(getIdProfileQuery, [userId]);
+        const profileId = idProfileResponse.rows[0].id;
+        console.log("id perfil " + profileId);
+        
+        try {
+            const matchingBooksQuery = `SELECT 
+            libro.id_libro, 
+            libro.titulo, 
+            libro.autor, 
+            libro.isbn, 
+            libro.descripcion, 
+            libro.coverimage, 
+            usuario.nombres, 
+            usuario.id,
+            ARRAY_AGG(tags.tagname) AS tagsArray
+        FROM 
+            libro 
+        INNER JOIN 
+            usuario ON usuario.id = libro.idusuario 
+        LEFT JOIN 
+            libro_tags ON libro_tags.libroid = libro.id_libro
+        LEFT JOIN 
+            tags ON tags.idtag = libro_tags.tagid
+        WHERE 
+            usuario.id != $1 
+            AND EXISTS (
+                SELECT 1 
+                FROM 
+                    user_tags 
+                WHERE 
+                    user_tags.user_id = $2 
+                    AND user_tags.tag_id = tags.idtag
+            )
+        GROUP BY 
+            libro.id_libro, 
+            libro.titulo, 
+            libro.autor, 
+            libro.isbn, 
+            libro.descripcion, 
+            libro.coverimage, 
+            usuario.nombres, 
+            usuario.id;`;
+
+            const matchingBooksResponse =  await db.query(matchingBooksQuery, [userId, profileId]);
+
+
+            const booksJSON = matchingBooksResponse.rows; 
+            console.log(booksJSON);
+
+            res.status(200).json(booksJSON); 
+        } catch (error) {
+            res.status(500).json({error: "No se pudieron obtener los libros"})
+        }
+
+        
+        
+    } catch (error) {
+        res.status(500).json({error: "No se pudieron cargar los libros"})
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

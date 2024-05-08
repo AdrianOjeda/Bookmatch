@@ -2,6 +2,7 @@ import React from "react";
 import HeaderReal from "../components/HeaderReal";
 import DisplayBooks from "../components/DisplayBooks";
 import Footer from "../components/Footer";
+import BooksFeed from "../components/BooksFeed";
 
 function FeedReal()
 {
@@ -11,7 +12,7 @@ function FeedReal()
             <HeaderReal/>
         </div>
         <div>
-            <DisplayBooks/>
+            <BooksFeed/>
         </div>
         <div>
             <Footer/>

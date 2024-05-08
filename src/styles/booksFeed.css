@@ -1,0 +1,28 @@
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    gap: 20px; /* Gap between grid items */
+}
+
+.book-feed-container {
+    padding: 20px;
+}
+
+/* Additional styling for book entry */
+.book-info {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.book-cover-container {
+    width: 200px; /* Set the width of the container */
+    height: 300px; /* Set the height of the container */
+    overflow: hidden; /* Ensure the image doesn't overflow the container */
+}
+
+.book-cover-container img {
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Ensure the image covers the container */
+}
