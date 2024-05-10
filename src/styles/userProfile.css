@@ -1,0 +1,266 @@
+body {
+    background-color: #FBEED3;
+    margin: 0;
+}
+
+.divHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 15%;
+    background-color: #AC8E6C;
+    padding: 0 20px; /* Add padding to the sides */
+}
+
+.container-inputSearch {
+    position: relative;
+}
+
+.inputSearch {
+    width: 400px;
+    height: 40px;
+    border-radius: 9999px;
+    border: solid 1px #ffffff;
+    outline: none;
+    background-image: url("src/assets/magnifying-glass-1976105_1280.webp");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 15px; 
+    padding-left: 40px; 
+    margin-top: 10px;
+}
+
+.imagenLogo {
+    width: 90px;
+    height: auto;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.ProfilePic {
+    border-radius: 50%;
+    background-color: #ffffff;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    background-color: #967259;
+    padding: 0 20px; /* Add padding to the sides */
+}
+
+.logo-container,
+.profilepic-container {
+    margin: 0 10px; /* Ajusta el margen entre los contenedores si es necesario */
+}
+.searchbar-container{
+    margin-right: 60px;
+    
+}
+.pageLink{
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 25px;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: underline;
+}
+
+/* Media queries */
+@media screen and (max-width: 768px) {
+    .divHeader {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+    }
+
+    .inputSearch {
+        margin: 10px 0;
+    }
+
+    .pageLink {
+        margin-right: 10px; /* Reduce the right margin */
+        margin-left: 10px; /* Reduce the left margin */
+        margin-top: 10px; /* Reduce the top margin */
+    }
+
+    .ProfilePic {
+        margin-right: 0; /* Remove right margin */
+    }
+}
+
+.footerFeed {
+    position: fixed;
+    font-family: Arial, sans-serif;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    
+}
+
+.profile-info {
+    width: 60%;
+    height: auto;
+    background-color: #967259; /* Change background color to match header */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    margin: 10px;
+    border-radius: 10%;
+}
+
+.Profile-Pic {
+    width: 250px; /* Set the width to make it bigger */
+    height: 250px; /* Set the height to maintain a perfect circle */
+    border-radius: 50%; /* Create a perfect circle */
+    display: block; /* Ensure it behaves as a block element */
+    margin: 0 auto 10px; /* Center horizontally and add space below */
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.profilepic-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+}
+
+.profile-name {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.upload-button {
+    background-color: #FBEED3; /* Green */
+    border: none;
+    color: black;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 10px auto; /* Center horizontally and add some top margin */
+}
+
+.upload-button:hover {
+    background-color: #fef7e6; /* Darker green */
+}
+
+/*Books containers */
+
+.books-container {
+    height: 100vh;
+    width: 70%; /* Set width to take the remaining space */
+    margin-bottom: 20px;
+}
+
+.books-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center items horizontally */
+    margin-bottom: 20px;
+    
+}
+
+.form-container {
+    margin-bottom: 20px;
+    width: 600px;
+    
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.book-detail-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Align items horizontally */
+    gap: 40px; /* Increase the gap between books */
+    background-color: #967259;
+    padding: 5%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 2%;
+}
+
+.book-detail-container img {
+    max-width: 200px;
+    height: auto;
+}
+
+.book-detail-container .book-info {
+    flex: 1;
+}
+
+.book-detail-container .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.profile-info-container {
+    flex: 1;
+}
+
+.book-cover-container {
+    width: 200px; /* Set the width of the container */
+    height: 300px; /* Set the height of the container */
+    overflow: hidden; /* Ensure the image doesn't overflow the container */
+}
+
+.book-cover-container img {
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Ensure the image covers the container */
+}
+
+.actions{
+    cursor: pointer;
+}
+
+.fileName{
+    text-align: center;
+    font-family:Arial, Helvetica, sans-serif;
+    margin: 2px;
+}
+
+.submit-button{
+
+    padding: 5px;
+    margin: 5px;
+
+    background-color: #FBEED3; /* Green */
+    border: none;
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    
+}
+
+.tag-container {
+    background-color: #FBEED3;
+    font-family: Arial, Helvetica, sans-serif;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Create four columns */
+    grid-gap: 0px; /* Add gap between grid items */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.tag-entry {
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 5px;
+    margin-left: 5px;
+}

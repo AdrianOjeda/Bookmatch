@@ -12,10 +12,14 @@ function BooksFeed() {
     async function solicitarPrestamo(id){
 
         console.log("clicked "+ id);
+       
     }
 
     async function perfilPropietario(idPropietario){
         console.log("Propietario "+idPropietario);
+        localStorage.setItem('id propietario', idPropietario);
+
+        window.location.href = "/userProfile.html";
 
     }
     async function fetchBooks() {

@@ -689,7 +689,54 @@ app.get('/api/feedBooks', verifyToken,  async (req, res)=>{
     }
 })
 
+
+
+app.get("/api/getUserName/:userId", async (req, res)=>{
+    
+    const userId =  req.params.userId;
+    console.log("usuario id " +userId);
+    
+    try{
+
+        const getNameQuery = `SELECT nombres, apellidos FROM usuario WHERE id = $1`;
+
+        const nameResponse =  await db.query(getNameQuery, [userId]);
+        const fullName = nameResponse.rows[0].nombres + " "+ nameResponse.rows[0].apellidos;
+        console.log(fullName);
+
+        res.status(200).json({fullName});
+
+    }catch(err){
+
+        res.status(500).json({err: "No se pudo obtener el nombre"})
+    }
+
+
+})
+
+app.get("/api/getUserProfilePic/:userId", async (req, res)=>{
+    const userId =  req.params.userId;
+    console.log("fotico " +userId);
+    try{
+        const getProfilePicQuery = `SELECT profile_pic FROM perfil_usuario where user_id =$1`;
+        const responseProfilePic = await db.query(getProfilePicQuery, [userId]);
+        const profile_pic = responseProfilePic.rows[0].profile_pic;
+        console.log(profile_pic);
+
+        res.status(200).json({profile_pic});
+
+
+    }catch(err){
+
+
+        res.status(500).json({err:"No se pudo obetener la foto de perfil!"});
+    }    
+});
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
+  
+
+
   
