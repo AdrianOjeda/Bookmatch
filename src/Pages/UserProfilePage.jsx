@@ -1,7 +1,7 @@
 import Footer from "../components/Footer";
 import HeaderReal from "../components/HeaderReal";
 import ProfileUserInfo from "../components/ProfileUserInfo";
-import DisplayBooks from "../components/DisplayBooks";
+import DisplayUserBooks from "../components/DisplayUserBooks";
 
 function UserProfilePage() {
     return (
@@ -13,7 +13,7 @@ function UserProfilePage() {
                     <ProfileUserInfo />
                 </div>
                 <div style={{ flex: 1 }}>
-                    <DisplayBooks />
+                    <DisplayUserBooks />
                 </div>
             </div>
             

@@ -733,6 +733,69 @@ app.get("/api/getUserProfilePic/:userId", async (req, res)=>{
     }    
 });
 
+app.get('/api/renderUserBooks/:token',  async (req, res) => {
+    const userId = req.params.token;
+    console.log("User");
+    console.log(userId);
+    try {
+        const displayBooksQuery = `SELECT 
+        libro.id_libro, 
+        libro.titulo, 
+        libro.autor, 
+        libro.isbn, 
+        libro.descripcion, 
+        libro.coverimage, 
+        usuario.nombres, 
+        usuario.id,
+        ARRAY_AGG(tags.tagname) AS tagsArray
+    FROM 
+        libro 
+    INNER JOIN 
+        usuario ON usuario.id = libro.idusuario 
+    LEFT JOIN 
+        libro_tags ON libro_tags.libroid = libro.id_libro
+    LEFT JOIN 
+        tags ON tags.idtag = libro_tags.tagid
+    WHERE 
+        usuario.id = $1
+    GROUP BY 
+        libro.id_libro, 
+        libro.titulo, 
+        libro.autor, 
+        libro.isbn, 
+        libro.descripcion, 
+        libro.coverimage, 
+        usuario.nombres, 
+        usuario.id;
+    `;
+        const displayBooks = await db.query(displayBooksQuery, [userId]);
+        console.log(displayBooks.rows);
+        res.status(200).json(displayBooks.rows);
+
+    } catch (error) {
+        res.status(500).json({ error: "Failed to load books" });
+    }
+});
+
+
+app.post('/api/reportUser/:userReportedId', upload.single('image'), async (req, res)=>{
+
+    const reportedUserId = req.params.userReportedId;
+    const evidence =  req.file;
+    const evidenceFile =  evidence.filename;
+    const motivo = req.body.motivo;
+
+    try {
+        const reportQuery = `INSERT INTO reportes (motivo, evidencia, id_usuario) VALUES ($1, $2, $3)`;
+        await db.query(reportQuery, [motivo, evidenceFile, reportedUserId]);
+        res.status(200).json({message: "El reporte se realizo con exito!"});
+    } catch (error) {
+        res.status(500).json({error: "No se pudo realizar el reporte!"})
+    }
+
+
+})
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

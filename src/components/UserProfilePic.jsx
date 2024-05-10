@@ -35,7 +35,7 @@ function UserProfilePic(props) {
         }
     
     }
-    return <img src={`/uploads/${profilePicName}`} alt="" className={props.className} onClick = {()=>{window.location.href = "/profile"}}/>
+    return <img src={`/uploads/${profilePicName}`} alt="" className={props.className} />
 }
 
 export default UserProfilePic;
