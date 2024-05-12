@@ -1,5 +1,7 @@
 
 import ReportEntry from "./ReportEntry";
+import {useState, useEffect} from 'react';
+
 
 function DisplayReports(){
 
@@ -7,7 +9,7 @@ function DisplayReports(){
 
     return(
 
-        <div>
+        <div className='listContainer'>
             <ReportEntry/>
         </div>
     )
