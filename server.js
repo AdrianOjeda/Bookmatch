@@ -796,6 +796,27 @@ app.post('/api/reportUser/:userReportedId', upload.single('image'), async (req, 
 
 })
 
+app.get('/api/renderReports', async (req, res)=>{
+    try {
+        const fetchReportQuery = `SELECT perfil_usuario.profile_pic, reportes.motivo, reportes.id_reporte, reportes.evidencia, reportes.id_usuario, usuario.nombres, usuario.apellidos, usuario.correo, usuario.codigo 
+        FROM reportes 
+        INNER JOIN perfil_usuario ON reportes.id_usuario = perfil_usuario.user_id 
+        INNER JOIN usuario ON reportes.id_usuario = usuario.id;`;
+
+        const responseReportQuery = await db.query(fetchReportQuery);
+
+        console.log(responseReportQuery.rows);
+
+        const reportsInfo = responseReportQuery.rows;
+        res.status(200).json({message: "Todo bien", reportsInfo})
+        
+    } catch (error) {
+        res.status(500).json({error: "No se pudieron cargar los reportes"})
+    }
+
+
+})
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

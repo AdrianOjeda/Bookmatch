@@ -1,0 +1,27 @@
+body{
+
+    background-image: url('../assets/librobonito.jpg');
+}
+
+.report-info-container {
+    display: block;
+    max-width: 50%;
+    margin: 0 auto; /* Horizontally center the container */
+    background-color: #dbc1ac; /* Adjust the background color */
+    padding: 10px; /* Add padding for better spacing */
+    border-radius: 10px;
+    margin-top: 100px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+  }
+  
+  .evidence-image {
+    display: flex;
+    align-items: center; /* Vertically center the content */
+  }
+  
+  .evidence-image img {
+    margin-right: 10px; /* Adjust the spacing between the image and other content */
+    max-width: 250px; /* Adjust the maximum width of the image */
+    height: auto; /* Maintain aspect ratio */
+  }
