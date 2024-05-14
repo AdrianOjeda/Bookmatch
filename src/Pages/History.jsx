@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "../components/Footer.jsx"
-import ElementHistorial from "../components/HistoryComponent.jsx";
-function Historial()
+import ElementHistory from "../components/HistoryComponent.jsx";
+function History()
 {
     return (
         <div>
@@ -16,11 +16,11 @@ function Historial()
                 </div>
             </div>
             {/* Despues de este header sigue los componentes */}
-                <ElementHistorial status="Por confirmar" owner ="Adrian" date="09/05/2024"/>
-                <ElementHistorial status="Rechazado" owner = "Jhovany" date="10-05-2024"/>
-                <ElementHistorial status="Confirmado" owner = "Leo" date="11 de Mayo del 2024"/>
+                <ElementHistory status="Por confirmar" owner ="Adrian" date="09/05/2024"/>
+                <ElementHistory status="Rechazado" owner = "Jhovany" date="10-05-2024"/>
+                <ElementHistory status="Confirmado" owner = "Leo" date="11 de Mayo del 2024"/>
                 <Footer/>
         </div>
     );
 }
-export default Historial;
+export default History;
