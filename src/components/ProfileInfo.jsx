@@ -106,6 +106,7 @@ function ProfileInfo() {
             <div>
                 <p className="profile-name">{profileName}</p>
             </div>
+            
 
             <label htmlFor="fileInput" style={{ position: 'relative' }}>
                 <input

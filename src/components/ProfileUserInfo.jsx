@@ -1,13 +1,38 @@
 import { useEffect, useState } from "react";
 import UserProfilePic from "./UserProfilePic";
-import TagProfileInfo from "./TagProfileInfo";
+import UserTagProfileInfo from "./UserTagProfileInfo";
 
 function ProfileUserInfo() {
     const [profileName, setProfileName] = useState('');
-    
+    const [tags, setTags] = useState([]);
+
+
     useEffect(() => {
         getProfileName();
     }, []);
+
+    useEffect(()=>{
+        getTags();
+    }, []);
+
+    async function getTags(){
+
+        try {
+            const userId = localStorage.getItem("id propietario");
+            console.log(userId);
+            const response = await fetch(`/api/getUserTags/${userId}`, {
+                method: 'GET',
+                
+            });
+            const data = await response.json();
+
+            console.log(data);
+            setTags(data);
+            
+        } catch (error) {
+            console.error(err);
+        }
+    }
 
     
     async function getProfileName() {
@@ -24,6 +49,8 @@ function ProfileUserInfo() {
             console.error(err);
         }
     }
+
+    
 
     function reportUser(){
         const idReportedUser = localStorage.getItem("id propietario");
@@ -42,6 +69,17 @@ function ProfileUserInfo() {
             </div>
             <div>
                 <p className="profile-name">{profileName}</p>
+            </div>
+
+            <div className = "tag-container">
+
+            {tags.map((tag, index) => (
+            <UserTagProfileInfo
+                className = 'tag-entry'
+                key={index} // Remember to add a unique key when using map
+                tagname={tag.tagname}
+            />
+            ))}
             </div>
 
 

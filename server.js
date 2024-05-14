@@ -817,6 +817,38 @@ app.get('/api/renderReports', async (req, res)=>{
 
 })
 
+app.get('/api/getUserTags/:userId', async (req, res)=>{
+    const userId = req.params.userId;
+
+    console.log(userId);
+    try {
+        const profileIdQuery = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
+        const profileIdResponse = await db.query(profileIdQuery, [userId]);
+
+        console.log(profileIdResponse.rows);
+        const profileId = profileIdResponse.rows[0];
+        const profileUserId = profileId.id;
+        console.log("Perfil id "+ profileUserId);
+
+
+        try {
+            const getUserTagsQuery = `SELECT tags.tagname FROM tags INNER JOIN user_tags ON tags.idtag = user_tags.tag_id WHERE user_tags.user_id =$1`;
+            const getUserTags =  await db.query(getUserTagsQuery, [profileUserId]);
+
+           
+            const userTagsToSend = getUserTags.rows;
+            console.log(userTagsToSend);
+
+            res.status(200).json(userTagsToSend);
+            
+        } catch (error) {
+            res.status(500).json({error:"No se pudieron obtener los tags"})
+        }
+    } catch (error) {
+        res.status(500).json({error: "No se pudo obtener el id del perfil del usuario"})
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

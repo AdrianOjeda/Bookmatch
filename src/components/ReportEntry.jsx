@@ -6,7 +6,7 @@ function ReportEntry(props){
 
     function handleReport(){
 
-        props.onClick(props.motivo, props.evidencia, props.id)
+        props.onClick(props.motivo, props.evidencia, props.id, props.nombres)
 
         
     }

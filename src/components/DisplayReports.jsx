@@ -39,11 +39,11 @@ function DisplayReports(){
     console.log("Estos son los reportes ");
     console.log(reports);
 
-    function reportInfo( motivo, evidencia, id_reporte){
+    function reportInfo( motivo, evidencia, id_reporte, nombres){
 
         console.log("See report info "+ motivo+" "+evidencia+" "+id_reporte);
         localStorage.setItem("id reporte", id_reporte);
-
+        localStorage.setItem('nombre reportado', nombres);
         localStorage.setItem("evidencia reporte", evidencia);
         localStorage.setItem("motivo reporte", motivo);
         window.location.href = "/reportInfo.html"

@@ -71,6 +71,11 @@ body {
     color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
     text-decoration: underline;
+    transition: transform 0.2s;
+}
+
+.pageLink:hover{
+    transform: scale(1.1); 
 }
 
 /* Media queries */

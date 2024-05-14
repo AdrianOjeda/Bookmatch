@@ -7,7 +7,7 @@ function UserProfilePage() {
     return (
         <div>
             <HeaderReal />
-            <h1>Hola mundo</h1>
+            
             <div style={{ display: "flex" }}>
                 <div className="profile-info-container">
                     <ProfileUserInfo />

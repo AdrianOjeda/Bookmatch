@@ -1,7 +1,7 @@
 import { Tag } from "@mui/icons-material";
 
 
-function TagProfileInfo(props){
+function UserTagProfileInfo(props){
 
     return(
         <div>
@@ -12,4 +12,4 @@ function TagProfileInfo(props){
 
 }
 
-export default TagProfileInfo;
+export default UserTagProfileInfo;

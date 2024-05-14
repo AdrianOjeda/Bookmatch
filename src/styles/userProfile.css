@@ -113,12 +113,13 @@ body {
 .profile-info {
     width: 60%;
     height: auto;
-    background-color: #967259; /* Change background color to match header */
     display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
+    flex-direction: column;
+    align-items: center;
     margin: 10px;
-    border-radius: 10%;
+    background-color: #ffffff;
+    border: 3px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .Profile-Pic {
@@ -144,7 +145,7 @@ body {
 }
 
 .upload-button {
-    background-color: #FBEED3; /* Green */
+    background-color: #f7f3ec;
     border: none;
     color: black;
     padding: 10px 16px;
@@ -152,8 +153,10 @@ body {
     font-size: 16px;
     cursor: pointer;
     border-radius: 8px;
-    margin: 10px auto; /* Center horizontally and add some top margin */
+    margin: 10px auto;
+    border: 2px solid black;
 }
+
 
 .upload-button:hover {
     background-color: #fef7e6; /* Darker green */
@@ -179,19 +182,23 @@ body {
 .form-container {
     margin-bottom: 20px;
     width: 600px;
-    
+    background-color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.books-container h1 {
+    background-color: #FBEED3;
+}
+
+
 
 .book-detail-container {
     display: flex;
     align-items: center;
-    justify-content: center; /* Align items horizontally */
-    gap: 40px; /* Increase the gap between books */
-    background-color: #967259;
+    justify-content: center;
+    gap: 40px;
     padding: 5%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border-radius: 2%;
 }
 
 .book-detail-container img {
@@ -250,13 +257,14 @@ body {
 }
 
 .tag-container {
-    background-color: #FBEED3;
+    background-color: #f7f3ec;
     font-family: Arial, Helvetica, sans-serif;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Create four columns */
-    grid-gap: 0px; /* Add gap between grid items */
-    border-radius: 5px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0px;
+    border-radius: 2px;
     margin-bottom: 10px;
+    border: 1px solid black;
 }
 
 .tag-entry {
