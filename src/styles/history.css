@@ -6,7 +6,7 @@ body {
 }
 
 .header {
-    background-color: #AC8E6C;
+    background-color: #967259;
     color: #ffffff;
     text-align: center;
     padding: 7px 0;
@@ -17,7 +17,7 @@ body {
     justify-content: space-between;
     align-items: center;
     height: 80px;
-    background-color: #AC8E6C;
+    background-color: #967259;
     padding: 0 20px; 
 }
 

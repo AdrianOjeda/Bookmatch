@@ -64,13 +64,34 @@ function DisplayUserBooks() {
     
 
     async function borrowRequest(idLibro, idUsuario){
+        const idUserToken =  localStorage.getItem("token id");
 
-        console.log("borrow clicked " + idLibro + " id usuario " +idUsuario);
+
+
+        console.log("borrow clicked " + idLibro + " id usuario propietario" +idUsuario+ " mi Id "+ idUserToken);
+
+        try {
+            const loanRequest = await fetch(`/api/loanRequest/${idLibro}?idUsuario=${idUsuario}`,{
+                method: 'POST',
+                headers:{
+                    'Authorization':`Bearer ${idUserToken}`
+                }
+            })
+
+            if(loanRequest.ok){
+                const responseJson = await loanRequest.json();
+                alert(responseJson.message);
+            }
+
+
+        } catch (error) {
+            alert("No se pudo solicitar el prestamo")
+        }
     }
 
     return (
         <div className="books-container">
-            <h1 className="form-container" style = {{textAlign: 'center'}}>Estantería de {userName}</h1>
+            <h1 className="form-container" style = {{marginLeft: '35%'}}>Estantería de {userName}</h1>
             <div className="books-list">
                 {books.map(bookItem => (
                     

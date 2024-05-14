@@ -181,7 +181,7 @@ body {
 
 .form-container {
     margin-bottom: 20px;
-    width: 600px;
+    width: 800px;
     background-color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -247,13 +247,21 @@ body {
     padding: 5px;
     margin: 5px;
 
-    background-color: #FBEED3; /* Green */
-    border: none;
-    color: black;
+    
+    
     text-decoration: none;
     font-size: 16px;
     cursor: pointer;
-    border-radius: 8px;
+    
+
+    background-color: #f7f3ec;
+    border: none;
+    color: black;
+   
+    cursor: pointer;
+    border-radius: 2px;
+
+    border: 1px solid black;
     
 }
 

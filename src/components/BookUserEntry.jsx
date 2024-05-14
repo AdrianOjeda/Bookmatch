@@ -22,19 +22,19 @@ function BookUserEntry(props){
                     <p >Categorias: {props.tags.join(", ") }</p>
 
                     
-                </div>
-                <div className="actions">
-                
-                  <button onClick={handleDeleteClick}>Solicitar prestamo</button>
-                
+                  </div>
+                  <div className="actions">
                   
-                
-                </div>
-            </div>
-        </div>
+                    <button onClick={handleDeleteClick} className="upload-button">Solicitar prestamo</button>
+                  
+                    
+                  
+                  </div>
+              </div>
+          </div>
 
 
-      );
+        );
 
 
 

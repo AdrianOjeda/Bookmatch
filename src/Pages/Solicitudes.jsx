@@ -10,6 +10,11 @@ function Solicitudes() {
                         <h1>Solicitudes</h1>
                     </div>
                     <div className="pageLink">
+                        <p  onClick={()=>{window.location.href= "/history"}} >Historial</p>
+                    </div>
+                    
+                    <div className="pageLink">
+                        
                         <p onClick={()=>{window.history.back()}} >Regresar</p>
                     </div>
                 </div>

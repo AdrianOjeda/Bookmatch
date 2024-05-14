@@ -73,7 +73,7 @@ function DisplayBooks() {
 
     return (
         <div className="books-container">
-            <h1 className="form-container" style = {{textAlign: 'center'}}>Mi estantería</h1>
+            <h1 className="form-container" style = {{marginLeft: '35%'}}>Mi estantería</h1>
             <div className="books-list">
                 {books.map(bookItem => (
                     

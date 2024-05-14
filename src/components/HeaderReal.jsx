@@ -21,6 +21,7 @@ function HeaderReal() {
             <div>
                 <p className="pageLink" onClick={()=>{window.location.href= "/waitingList"}} >Lista de espera</p>
             </div>
+            
             <div>
                 <p className="pageLink" onClick={()=>{window.location.href= "/requests"}} >Solicitudes</p>
             </div>
@@ -30,6 +31,7 @@ function HeaderReal() {
             <div>
                 <p className="pageLink" onClick={()=>{window.location.href= "/profile"}} >Mi perfil</p>
             </div>
+            
             <div className="profilepic-container">
                 <ProfilePic
                 className = 'ProfilePic'

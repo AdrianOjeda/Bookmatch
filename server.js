@@ -192,9 +192,9 @@ app.post('/api/addBook', verifyToken, upload.single('image'), async (req, res) =
         console.log(tags);
         // Insert book data into the database, including the image filename or URL
         const insertQuery = `
-            INSERT INTO libro (titulo, autor, isbn, descripcion, idusuario, coverimage)
-            VALUES ($1, $2, $3, $4, $5, $6) RETURNING id_libro`;
-        const result = await db.query(insertQuery, [titulo, autor, isbn, descripcion, userId, imageName]); // Assuming filename is used to store the image
+            INSERT INTO libro (titulo, autor, isbn, descripcion, idusuario, coverimage, is_available)
+            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id_libro`;
+        const result = await db.query(insertQuery, [titulo, autor, isbn, descripcion, userId, imageName, true]); // Assuming filename is used to store the image
         console.log(result.rows);
 
         const bookId = result.rows[0].id_libro;
@@ -847,7 +847,73 @@ app.get('/api/getUserTags/:userId', async (req, res)=>{
     } catch (error) {
         res.status(500).json({error: "No se pudo obtener el id del perfil del usuario"})
     }
-})
+});
+
+
+app.post('/api/loanRequest/:idLibro', verifyToken, async (req, res)=>{
+
+    const idLibro = req.params.idLibro;
+    const idPropietario = req.query.idUsuario;
+
+    const idSolicitante = req.user.userId;
+
+    console.log(idLibro + " "+ idPropietario+" "+idSolicitante );
+
+    try {
+        const isAvalibaleCheckQuery = `SELECT is_available FROM libro WHERE id_libro = $1`;
+        const isAvaliableResponse = await db.query(isAvalibaleCheckQuery, [idLibro]);
+        console.log(isAvaliableResponse.rows[0].is_available);
+
+        if (isAvaliableResponse.rows[0].is_available === true) {
+
+            const currentDate = new Date();
+
+            
+            const formattedDate = currentDate.toISOString().split('T')[0];
+
+            const insertLoanQuery = `INSERT INTO loan_book (user_id, book_id, loan_date, status, id_propietario) VALUES ($1, $2, $3, $4, $5)`;
+            await db.query(insertLoanQuery, [idSolicitante, idLibro,formattedDate, 'waiting_confirmation', idPropietario ]);
+            try {
+                const updateBookAvalabilityQuery =`UPDATE libro SET is_available = $1 WHERE id_libro = $2`;
+                await db.query(updateBookAvalabilityQuery, [false, idLibro]);
+                res.status(200).json({message: "Se pudo realizar el intercambio"})
+                
+            } catch (error) {
+                res.status.json({error:"Intercambio pendeiente de confirmacion :)"})
+            }
+            
+        } else {
+            try {
+                const verifyWaitingList = `SELECT FROM waiting_list WHERE user_id = $1 AND book_id =$2 AND id_propietario =$3`;
+                const verifyWaitingListResponse = await db.query(verifyWaitingList, [idSolicitante, idLibro, idPropietario]);
+                console.log(verifyWaitingListResponse.rowCount);
+                if(verifyWaitingListResponse.rowCount >0){
+                    res.status(200).json({message: "Ya te has inscrito a la lista de espera de este libro!"});
+                }else{
+                    try {
+                        const currentDate = new Date();
+                        const formattedDate = currentDate.toISOString().split('T')[0];
+                        const insertWaitingListQuery = `INSERT INTO waiting_list (user_id, book_id, request_date, status, id_propietario) VALUES ($1, $2, $3, $4, $5)`;
+
+                        await db.query(insertWaitingListQuery,[idSolicitante, idLibro, formattedDate, 'waiting_confirmation', idPropietario]);
+                        res.status(200).json({message:"Estas en la lista de espera :)"});
+                        
+                    } catch (error) {
+                        res.status(500).json({error:"No se pudo inscribir a la lista de espera"})
+                    }
+                }
+            } catch (error) {
+                res.status(500).json({error: "no se pudo verificar la lista de espera"})
+            }
+            
+            
+        }
+
+        
+    } catch (error) {
+        res.status(500).json({error:"No se pudo realizar el intercambio"})
+    }
+} )
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
