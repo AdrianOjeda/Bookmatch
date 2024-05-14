@@ -23,6 +23,9 @@ function Solicitudes() {
                 <Request/>
                 <Request/>
                 <Request/>
+                <Request/>
+                <Request/>
+                <Request/>
                 <Footer/>
         </div>
     );

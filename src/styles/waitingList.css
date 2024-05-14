@@ -1,0 +1,145 @@
+body {
+    background-color: #FBEED3;
+    margin: 0;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    padding-bottom: 60px;
+}
+
+.header {
+    background-color: #AC8E6C;
+    color: #ffffff;
+    text-align: center;
+    padding: 7px 0;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    background-color: #AC8E6C;
+    padding: 0 20px; 
+}
+
+.title-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+.pageLink {
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 25px;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: underline;
+    transition: transform 0.2s;
+}
+.pageLink:hover{
+    transform: scale(1.1);
+}
+.body-container {
+  padding-bottom: 120px; /* Ajustar según sea necesario */
+}
+
+.elemento {
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.elemento img {
+  width: 150px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.info-container {
+  display: flex;
+  align-items: center;
+}
+
+.info-container .info {
+  flex: 1; /* Ocupa todo el espacio disponible */
+}
+
+.info-container .book-details {
+  display: flex;
+  justify-content: space-between; /* Distribuye los elementos horizontalmente */
+}
+
+.info-container .book-details p {
+  margin: 5px 0;
+}
+
+.info-container .book-status {
+  margin-left: auto; /* Colocar el estado al final de la fila */
+}
+.status {
+  margin-left: 40px;
+}
+
+
+.info p {
+  margin: 40px 50px 10px 30px; /* Añade margen entre los párrafos */
+}
+.info button{
+    margin: 40px 50px 10px 30px;
+}
+
+.info button {
+    background-color: #ffffff; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: 1px solid gray; /* Sin borde */
+    padding: 10px 10px; /* Espaciado interno */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px; /* Bordes redondeados */
+    transition-duration: 0.6s; /* Duración de la transición */
+    cursor: pointer; /* Cursor al pasar el mouse */
+    transition: transform 0.2s;
+  }
+  
+.info button:hover {
+    background-color: #f3f1f1; /* Cambio de color al pasar el mouse */
+    transform: scale(1.05);
+  }
+
+/* Estilos para el componente BookRequest */
+.solicitud-info {
+  background-color: #f2f2f2; /* Tono un poco más oscuro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.solicitud-info h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.solicitud-info p {
+  margin: 0;
+  line-height: 1.6;
+  color: #666;
+}
+
+/* Estilos para el footer */
+footer {
+  position: fixed;
+  font-family: Arial, sans-serif;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
