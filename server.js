@@ -1057,7 +1057,17 @@ app.post('/api/cancelLoanRequest', verifyToken, async (req, res)=>{
     try {
         const cancelWaitingListRequestQuery = `DELETE FROM waiting_list WHERE user_id =$1 AND book_id =$2 AND id_propietario =$3`;
         await db.query(cancelWaitingListRequestQuery, [userId, bookId, ownerId]);
-        res.status(200).json({message:"la solicitud de espera se elimino con exito :)"});
+        try {
+            const updateTurnQuery = `UPDATE waiting_list
+                                    SET turno = turno - 1
+                                    WHERE book_id = $1 AND id_propietario = $2`;
+            await db.query(updateTurnQuery, [bookId, ownerId]);
+            
+            
+            res.status(200).json({message:"la solicitud de espera se elimino con exito :)"});
+        } catch (error) {
+            res.status(500).json({error:"No se pudo cancelar la solicitud de espera!"});
+        }
     } catch (error) {
         res.status(500).json({error:"500: No se pudo eliminar la solicitud de la lista de espera"})
     }
