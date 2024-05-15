@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 function ReportContainer() {
@@ -5,8 +6,56 @@ function ReportContainer() {
     const motivoReporte = localStorage.getItem('motivo reporte');
     const evidenciaReporte = localStorage.getItem("evidencia reporte");
     const nombreReportado = localStorage.getItem('nombre reportado');
+    const idUserReportado =  localStorage.getItem("id reportado");
 
-    console.log(idReport + motivoReporte + evidenciaReporte + nombreReportado);
+    console.log(idReport + motivoReporte + evidenciaReporte + nombreReportado + idUserReportado);
+
+    const requestBody = {
+        idReporte: idReport,
+        idUserReportado: idUserReportado
+    };
+
+    console.log(requestBody);
+
+
+    async function addStrike(){
+
+        const addStrikeRequest = await fetch('/api/addStrike',{
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody),
+        })
+
+        if(addStrikeRequest.ok){
+            alert("Strike agregado");
+            window.location.href = '/reportFeed.html'
+        }else{
+            alert("No se pudo agregar el strike")
+            window.location.href = '/reportFeed.html'
+        }
+
+    }
+
+    async function ignoreStrike(){
+        const addStrikeRequest = await fetch('/api/ignoreStrikes',{
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody),
+        })
+
+        if(addStrikeRequest.ok){
+            alert("Se ha omitido el strike!");
+            window.location.href = '/reportFeed.html'
+        }else{
+            alert("No se pudo omitir el strike")
+            window.location.href = '/reportFeed.html'
+        }
+
+    }
 
     return (
         <div className="report-container container">
@@ -26,8 +75,8 @@ function ReportContainer() {
                 </div>
                 <div className="grid-item button-container">
                     <div className="buttons">
-                        <button>Añadir Strike</button>
-                        <button>Omitir Reporte</button>
+                        <button onClick={addStrike}>Añadir Strike</button>
+                        <button onClick = {ignoreStrike}>Omitir Reporte</button>
                     </div>
                 </div>
             </div>

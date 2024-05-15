@@ -76,7 +76,7 @@ body {
 }
 
 /* Media queries */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
     .divHeader {
         flex-direction: column;
         height: auto;
@@ -184,6 +184,7 @@ body {
     width: 800px;
     background-color: #ffffff;
     font-family: Arial, Helvetica, sans-serif;
+    
 }
 
 .books-container h1{
