@@ -94,6 +94,7 @@ body {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 70%;
 }
 
 .solicitud-info h2 {
@@ -119,4 +120,29 @@ footer {
   background-color: #000000;
   color: rgb(255, 255, 255);
   text-align: center;
+}
+
+
+.button{
+  margin: 40px 50px 10px 30px;
+}
+
+.button {
+  background-color: #ffffff; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: 1px solid gray; /* Sin borde */
+  padding: 10px 10px; /* Espaciado interno */
+  text-align: center; /* Alineación del texto */
+  text-decoration: none; /* Sin subrayado */
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 10px; /* Bordes redondeados */
+  transition-duration: 0.6s; /* Duración de la transición */
+  cursor: pointer; /* Cursor al pasar el mouse */
+  transition: transform 0.2s;
+}
+
+.button:hover {
+  background-color: #f3f1f1; /* Cambio de color al pasar el mouse */
+  transform: scale(1.05);
 }

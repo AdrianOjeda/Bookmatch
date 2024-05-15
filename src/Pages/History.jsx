@@ -1,8 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer.jsx"
 import ElementHistory from "../components/HistoryComponent.jsx";
 function History()
 {
+
+
+    const [historyElements, setHistoryElements]= useState([]);
+    useEffect(()=>{
+
+        fetchHistoryElements();
+    },[]);
+
+    async function fetchHistoryElements(){
+        const userId= localStorage.getItem('token id')
+
+        console.log("Token "+userId);
+
+        const HistoryElementsResponse = await fetch('/api/history',{
+            method:"GET",
+            headers:{
+                'Authorization':`Bearer ${userId}`
+
+            }
+        })
+
+        if(HistoryElementsResponse.ok){
+            const historyData = await HistoryElementsResponse.json();
+            setHistoryElements(historyData);
+            
+        }else{
+            alert("No se pudo obtener el historial")
+        }
+    }
+
+    console.log(historyElements);
     return (
         <div>
             <div className="header">
@@ -15,10 +46,23 @@ function History()
                     </div>
                 </div>
             </div>
-            {/* Despues de este header sigue los componentes */}
-                <ElementHistory status="Por confirmar" owner ="Adrian" date="09/05/2024"/>
-                <ElementHistory status="Rechazado" owner = "Jhovany" date="10-05-2024"/>
-                <ElementHistory status="Confirmado" owner = "Leo" date="11 de Mayo del 2024"/>
+            {historyElements.map((element)=>(
+                <ElementHistory
+                key ={element.loan_id}
+                date ={element.loan_date}
+                status={element.status}
+                userId={element.user_id}
+                idPropietario ={element.id_propietario}
+                image={element.coverimage}
+                titulo={element.titulo}
+                autor={element.autor}
+                isbn={element.isbn}
+                idLibro={element.id_libro}
+                descripcion={element.descripcion}
+                ownerName={element.owner_name}
+                ownerId={element.owner_id}
+                />
+            ))}
                 <Footer/>
         </div>
     );

@@ -1108,6 +1108,48 @@ app.get('/api/getRequests', verifyToken, async (req, res)=>{
         res.status(500).json({error:"500: No se pudo obtener las solicitudes"})
     }
 })
+
+
+app.get('/api/history', verifyToken, async (req, res)=>{
+    const userId = req.user.userId;
+
+    console.log("usuario id "+userId);
+
+    try {
+
+        const getHistoryQuery =`SELECT 
+        loan_book.loan_date,
+        loan_book.loan_id,
+        loan_book.status,
+        loan_book.user_id,
+        loan_book.id_propietario,
+        libro.coverimage,
+        libro.titulo,
+        libro.autor,
+        libro.isbn,
+        libro.id_libro,
+        libro.descripcion,
+        usuario.nombres AS owner_name,
+        usuario.id AS owner_id
+        FROM 
+            loan_book
+        INNER JOIN 
+            libro ON loan_book.book_id = libro.id_libro
+        INNER JOIN 
+            usuario ON loan_book.id_propietario = usuario.id
+        WHERE loan_book.user_id = $1`;
+
+        const getHistoryResponse = await db.query(getHistoryQuery,[userId]);
+
+        const getHistory = getHistoryResponse.rows;
+        console.log("Historial ");
+        console.log(getHistory);
+        res.status(200).json(getHistory);
+        
+    } catch (error) {
+        res.status(500).json({error: "No se pudo obtener el historial"})
+    }
+})
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
