@@ -49,6 +49,7 @@ function WaitingComponent(props){
             <div className="info-owner">
                     <p><span style={{fontWeight: "bold", textDecoration: "" }}>Propietario:</span> {props.owner}</p>
                     <p><span style={{fontWeight: "bold", textDecoration: "" }}>Fecha de solicitud:</span> {props.date}</p>
+                    <p><span style={{fontWeight: "bold", textDecoration: "" }}>Estado:</span> {props.status}</p>
             </div>
         </div>
 

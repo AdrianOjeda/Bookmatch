@@ -1062,7 +1062,7 @@ app.post('/api/cancelLoanRequest', verifyToken, async (req, res)=>{
                                     SET turno = turno - 1
                                     WHERE book_id = $1 AND id_propietario = $2`;
             await db.query(updateTurnQuery, [bookId, ownerId]);
-            
+
             
             res.status(200).json({message:"la solicitud de espera se elimino con exito :)"});
         } catch (error) {
@@ -1070,6 +1070,42 @@ app.post('/api/cancelLoanRequest', verifyToken, async (req, res)=>{
         }
     } catch (error) {
         res.status(500).json({error:"500: No se pudo eliminar la solicitud de la lista de espera"})
+    }
+})
+
+app.get('/api/getRequests', verifyToken, async (req, res)=>{
+    const userId = req.user.userId;
+    console.log(userId);
+
+    try {
+        const getRequestsQuery = `SELECT 
+                                loan_book.loan_date,
+                                loan_book.loan_id,
+                                loan_book.status,
+                                loan_book.user_id,
+                                loan_book.id_propietario,
+                                libro.coverimage,
+                                libro.titulo,
+                                libro.autor,
+                                libro.isbn,
+                                libro.id_libro,
+                                libro.descripcion,
+                                usuario.nombres AS requester_name,
+                                usuario.id AS requester_id
+                            FROM 
+                                loan_book
+                            INNER JOIN 
+                                libro ON loan_book.book_id = libro.id_libro
+                            INNER JOIN 
+                                usuario ON loan_book.user_id = usuario.id
+                            WHERE loan_book.id_propietario = $1`;
+        const requestResponse = await db.query(getRequestsQuery, [userId]);
+        const requestsToSend = requestResponse.rows;
+        console.log(requestsToSend);
+        res.status(200).json(requestsToSend);
+        
+    } catch (error) {
+        res.status(500).json({error:"500: No se pudo obtener las solicitudes"})
     }
 })
 app.listen(port, () => {

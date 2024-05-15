@@ -1,7 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Request from "../components/Request.jsx";
 import Footer from "../components/Footer.jsx"
 function Solicitudes() {
+
+
+    const [requests, setRequests] = useState([]);
+    useEffect(()=>{
+        fetchRequests();
+    },[])
+    async function fetchRequests(){
+
+        const idUser = localStorage.getItem("token id");
+        console.log(idUser);
+
+        const requestsResponse = await fetch('/api/getRequests',{
+            method:"GET",
+            headers:{
+                'Authorization':`Bearer ${idUser}`
+            }
+        })
+
+        if (requestsResponse.ok) {
+            const fetchedRequests = await requestsResponse.json();
+           
+            setRequests(fetchedRequests);
+
+            
+        }
+    }
+
+    console.log(requests);
     return (
         <div>
             <div className="header">
@@ -19,13 +47,24 @@ function Solicitudes() {
                     </div>
                 </div>
             </div>
-            {/* Despues de este header sigue los componentes */}
-                <Request/>
-                <Request/>
-                <Request/>
-                <Request/>
-                <Request/>
-                <Request/>
+            {requests.map((element)=>(
+
+                <Request
+                key={element.loan_id}
+                date ={element.loan_date}
+                status ={element.status}
+                requesterId = {element.user_id}
+                image = {element.coverimage}
+                titulo = {element.titulo}
+                autor={element.autor}
+                isbn={element.isbn}
+                idLibor={element.id_libro}
+                descripcion={element.descripcion}
+                requesterName={element.requester_name}
+
+                />
+            ))}
+                
                 <Footer/>
         </div>
     );

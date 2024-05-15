@@ -56,6 +56,7 @@ function List(){
             descripcion={element.descripcion}
             ownerId={element.owner_id}
             date={element.request_date}
+            status = {element.status}
             />
             ))}
                 <Footer/>
