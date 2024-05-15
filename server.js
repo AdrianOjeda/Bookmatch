@@ -876,66 +876,78 @@ app.post('/api/loanRequest/:idLibro', verifyToken, async (req, res)=>{
             try {
                 const updateBookAvalabilityQuery =`UPDATE libro SET is_available = $1 WHERE id_libro = $2`;
                 await db.query(updateBookAvalabilityQuery, [false, idLibro]);
-                res.status(200).json({message: "Se pudo realizar el intercambio"})
+                res.status(200).json({message: "Intercambio pendeiente de confirmacion :)"})
                 
             } catch (error) {
-                res.status.json({error:"Intercambio pendeiente de confirmacion :)"})
+                res.status(500).json({error:"No se pudo solicitar el intercambio"});
             }
             
         } else {
             try {
-                
-                const verifyWaitingList = `SELECT FROM waiting_list WHERE user_id = $1 AND book_id =$2 AND id_propietario =$3`;
-                const verifyWaitingListResponse = await db.query(verifyWaitingList, [idSolicitante, idLibro, idPropietario]);
-                console.log(verifyWaitingListResponse.rowCount);
-                if(verifyWaitingListResponse.rowCount >0){
-                    res.status(200).json({message: "Ya te has inscrito a la lista de espera de este libro!"});
-
-                }else{
+                const checkLoanBookQuery =`SELECT FROM loan_book WHERE user_id = $1 AND book_id =$2 AND id_propietario =$3`;
+                const verifyLoanBook = await db.query(checkLoanBookQuery, [idSolicitante, idLibro, idPropietario]);
+                if (verifyLoanBook.rowCount>0) {
+                    res.status(200).json({message:"Ya solicitaste prestamo, no puedes inscribirte a la lista de espera!"});
+                    
+                } else {
                     try {
-                        const checkExistenceInWaitingListQuery = `SELECT FROM waiting_list WHERE book_id =$1 AND id_propietario =$2`;
-                        const checkExistenceInWaitingList = await  db.query(checkExistenceInWaitingListQuery, [idLibro, idPropietario]);
-                        
-                        const ExistenceWaitingListRowCount = checkExistenceInWaitingList.rowCount;
-                        console.log("row count " +ExistenceWaitingListRowCount);
-
-                        if (ExistenceWaitingListRowCount === 0) {
-                            const currentDate = new Date();
-                            const formattedDate = currentDate.toISOString().split('T')[0];
-                            const insertWaitingListQuery = `INSERT INTO waiting_list (user_id, book_id, request_date, status, id_propietario, turno) VALUES ($1, $2, $3, $4, $5, $6)`;
-
-                            await db.query(insertWaitingListQuery,[idSolicitante, idLibro, formattedDate, 'waiting_confirmation', idPropietario, 1]);
-                            res.status(200).json({message:"Estas en la lista de espera :)"});
-                        } else {
+                
+                        const verifyWaitingList = `SELECT FROM waiting_list WHERE user_id = $1 AND book_id =$2 AND id_propietario =$3`;
+                        const verifyWaitingListResponse = await db.query(verifyWaitingList, [idSolicitante, idLibro, idPropietario]);
+                        console.log(verifyWaitingListResponse.rowCount);
+                        if(verifyWaitingListResponse.rowCount >0){
+                            res.status(200).json({message: "Ya te has inscrito a la lista de espera de este libro!"});
+        
+                        }else{
                             try {
-                                const getTurnQuery = `SELECT MAX(turno) AS max_turno FROM waiting_list WHERE book_id =$1 AND id_propietario =$2`;
-                                const getTurn = await db.query(getTurnQuery, [idLibro, idPropietario]);
-                                console.log("el turno es este: ");
-                                console.log(getTurn.rows[0].max_urno);
-                                let newTurn = getTurn.rows[0].max_turno + 1;
-                                console.log("nuevo turno " +newTurn);
-                                try {
+                                const checkExistenceInWaitingListQuery = `SELECT FROM waiting_list WHERE book_id =$1 AND id_propietario =$2`;
+                                const checkExistenceInWaitingList = await  db.query(checkExistenceInWaitingListQuery, [idLibro, idPropietario]);
+                                
+                                const ExistenceWaitingListRowCount = checkExistenceInWaitingList.rowCount;
+                                console.log("row count " +ExistenceWaitingListRowCount);
+        
+                                if (ExistenceWaitingListRowCount === 0) {
                                     const currentDate = new Date();
                                     const formattedDate = currentDate.toISOString().split('T')[0];
                                     const insertWaitingListQuery = `INSERT INTO waiting_list (user_id, book_id, request_date, status, id_propietario, turno) VALUES ($1, $2, $3, $4, $5, $6)`;
-
-                                    await db.query(insertWaitingListQuery,[idSolicitante, idLibro, formattedDate, 'waiting_confirmation', idPropietario,newTurn ]);
+        
+                                    await db.query(insertWaitingListQuery,[idSolicitante, idLibro, formattedDate, 'waiting_confirmation', idPropietario, 1]);
                                     res.status(200).json({message:"Estas en la lista de espera :)"});
-                                    
-                                } catch (error) {
-                                    res.status(500).json({error: "No se pudo agregar a la lista de espera!"});
-                                }
-                        
+                                } else {
+                                    try {
+                                        const getTurnQuery = `SELECT MAX(turno) AS max_turno FROM waiting_list WHERE book_id =$1 AND id_propietario =$2`;
+                                        const getTurn = await db.query(getTurnQuery, [idLibro, idPropietario]);
+                                        console.log("el turno es este: ");
+                                        console.log(getTurn.rows[0].max_urno);
+                                        let newTurn = getTurn.rows[0].max_turno + 1;
+                                        console.log("nuevo turno " +newTurn);
+                                        try {
+                                            const currentDate = new Date();
+                                            const formattedDate = currentDate.toISOString().split('T')[0];
+                                            const insertWaitingListQuery = `INSERT INTO waiting_list (user_id, book_id, request_date, status, id_propietario, turno) VALUES ($1, $2, $3, $4, $5, $6)`;
+        
+                                            await db.query(insertWaitingListQuery,[idSolicitante, idLibro, formattedDate, 'waiting_confirmation', idPropietario,newTurn ]);
+                                            res.status(200).json({message:"Estas en la lista de espera :)"});
+                                            
+                                        } catch (error) {
+                                            res.status(500).json({error: "No se pudo agregar a la lista de espera!"});
+                                        }
+                                
+                                    } catch (error) {
+                                        res.status.json({erro:"No se pudo insertar el turno"})
+                                    }
+                                }   
                             } catch (error) {
-                                res.status.json({erro:"No se pudo insertar el turno"})
+                                res.status(500).json({error:"No se pudo inscribir a la lista de espera"})
                             }
-                        }   
+                        }
                     } catch (error) {
-                        res.status(500).json({error:"No se pudo inscribir a la lista de espera"})
+                        res.status(500).json({error: "no se pudo verificar la lista de espera"})
                     }
                 }
+                
             } catch (error) {
-                res.status(500).json({error: "no se pudo verificar la lista de espera"})
+                res.status(500).json({error:"No se pudo verificar disponibilidad"})
             }
             
             
@@ -1010,6 +1022,7 @@ app.get('/api/WaitingList', verifyToken, async (req, res)=>{
         libro.titulo,
         libro.autor,
         libro.isbn,
+        libro.id_libro,
         libro.descripcion,
         usuario.nombres AS owner_name,
         usuario.id AS owner_id
@@ -1033,7 +1046,22 @@ app.get('/api/WaitingList', verifyToken, async (req, res)=>{
     }
     
 })
+app.post('/api/cancelLoanRequest', verifyToken, async (req, res)=>{
 
+    const userId = req.user.userId;
+    console.log("userId: "+userId);
+
+    const {ownerId, bookId}= req.body;
+    console.log(ownerId +" "+bookId);
+
+    try {
+        const cancelWaitingListRequestQuery = `DELETE FROM waiting_list WHERE user_id =$1 AND book_id =$2 AND id_propietario =$3`;
+        await db.query(cancelWaitingListRequestQuery, [userId, bookId, ownerId]);
+        res.status(200).json({message:"la solicitud de espera se elimino con exito :)"});
+    } catch (error) {
+        res.status(500).json({error:"500: No se pudo eliminar la solicitud de la lista de espera"})
+    }
+})
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

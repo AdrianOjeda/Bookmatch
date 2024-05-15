@@ -45,7 +45,8 @@ function List(){
             
             {waitingListElements.map((element) => (
             <WaitingComponent 
-            key={element.waiting_id} 
+            key={element.waiting_id}
+            bookId = {element.id_libro} 
             turn={element.turno} 
             owner={element.owner_name} 
             img = {element.coverimage}
