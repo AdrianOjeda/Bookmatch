@@ -1,11 +1,9 @@
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
 
 function BookFeedEntry(props){
 
   function handlePrestamo() {
-    props.onClick(props.id);
+    props.onClick(props.id, props.propietarioId);
   }
   function handlePropietario(){
 

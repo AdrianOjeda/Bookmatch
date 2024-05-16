@@ -9,11 +9,7 @@ function BooksFeed() {
         fetchBooks();
     }, []);
 
-    async function solicitarPrestamo(id){
-
-        console.log("clicked "+ id);
-       
-    }
+    
 
     async function perfilPropietario(idPropietario){
         console.log("Propietario "+idPropietario);
@@ -39,6 +35,32 @@ function BooksFeed() {
         } catch (error) {
             alert("No se pudo cargar el feed")
         }
+    }
+
+    async function solicitarPrestamo(idLibro, idUsuario){
+        const idUserToken =  localStorage.getItem("token id");
+
+
+
+        console.log("borrow clicked " + idLibro + " id usuario propietario" +idUsuario+ " mi Id "+ idUserToken);
+        try {
+            const loanRequest = await fetch(`/api/loanRequest/${idLibro}?idUsuario=${idUsuario}`,{
+                method: 'POST',
+                headers:{
+                    'Authorization':`Bearer ${idUserToken}`
+                }
+            })
+
+            if(loanRequest.ok){
+                const responseJson = await loanRequest.json();
+                alert(responseJson.message);
+            }
+
+
+        } catch (error) {
+            alert("No se pudo solicitar el prestamo")
+        }
+        
     }
 
     return (
