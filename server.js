@@ -82,7 +82,7 @@ app.post('/api/register', upload.single('image'), async (req, res) => {
 
         if (!req.file) {
             // Handle the case where no file was uploaded
-            return res.status(400).json({ error: 'No image uploaded' });
+            return res.status(400).json({ error: 'No se subio la credencial' });
         }
         const image = req.file; // Access the uploaded file
         const imageName = image.filename; // Store the filename
@@ -92,12 +92,12 @@ app.post('/api/register', upload.single('image'), async (req, res) => {
 
             if(checkEmailValidation.rowCount > 0){
                 res.setHeader('Content-Type', 'application/json');
-                res.status(400).json({ error: 'Email already exists!!' });
+                res.status(400).json({ error: 'El correo ya existe!!' });
                 console.log(checkEmailValidation.rowCount);
             }else{
                 if(password !== repetirPassword){
                     res.setHeader('Content-Type', 'application/json');
-                    res.status(400).json({ error: 'Passwords dont match!!' });
+                    res.status(400).json({ error: 'Las contraseñas no coinciden' });
                     console.log("passwords dont match!");
                 }else{
                     try{
@@ -128,7 +128,7 @@ app.post('/api/register', upload.single('image'), async (req, res) => {
                 }
                 
         }else{
-            res.status(400).json({ error: 'Email format incorrect!!' });
+            res.status(400).json({ error: 'El dominio del correo no es valido!!' });
         }
         
 
@@ -178,6 +178,7 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ error: 'Failed to login user' });
     }
 });
+
 
 
 app.post('/api/addBook', verifyToken, upload.single('image'), async (req, res) => {

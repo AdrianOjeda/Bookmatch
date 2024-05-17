@@ -3,6 +3,8 @@ import InputForm from './InputForm';
 
 import BadgeIcon from '@mui/icons-material/Badge';
 
+import swal from 'sweetalert';
+
 function RegisterForm() {
 
     const initialFormData = {
@@ -66,10 +68,11 @@ function RegisterForm() {
     
             setFormData(initialFormData);
             setSelectedFile(null);
-            alert('User registered successfully');
+            swal({icon:"success", title:"Usuario registrado exitosamente" })
             window.location.href = "/customizeProfile"
         } catch (error) {
-            alert('User registration failed: ' + error.message);
+            swal({icon:"error", title:"No se pudo realizar el registro del usuario", className: "historyAlert", text: `Motivo: ${error.message}` })
+            
             console.error('User registration failed:', error);
         }
     };

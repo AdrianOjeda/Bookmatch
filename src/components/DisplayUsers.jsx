@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import UsersValidationEntry from './UsersValidationEntry';
-
+import swal from 'sweetalert';
 function DisplayUsers() {
     const [users, setUsers] = useState([]);
 
@@ -44,7 +44,7 @@ function DisplayUsers() {
         });
 
         if (response.ok) {
-            alert("El usuario se valido con exito");
+            swal({icon:"success", title:"El usuario se valido con exito"})
             setUsers({
                 ...users,
                 usersInfo: fetchedUsers.filter(user => user.id !== id)
@@ -68,7 +68,7 @@ function DisplayUsers() {
             });
 
             if (response.ok) {
-                alert("El usuario se rechazo con exito");
+                swal({icon:"success", title:"Usuario rechazado con exito"})
                 setUsers({
                     ...users,
                     usersInfo: fetchedUsers.filter(user => user.id !== id)

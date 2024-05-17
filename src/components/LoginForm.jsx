@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import InputForm from './InputForm'
-
+import swal from 'sweetalert';
 
 function LoginForm(){
     const [formData, setFormData] = useState({
@@ -30,33 +30,40 @@ function LoginForm(){
             if (!response.ok) {
                 throw new Error('Login failed');
             }
-
+            
             const data = await response.json();
             const tokenId = data.token;
 
             const typeAccount =  data.tokenTypeAccount;
             const isVerified = data.isVerified;
-            alert("is admin " + typeAccount + " is verified "+isVerified );
+            
+            
             // Assuming the API response contains a token
             localStorage.setItem('token id', tokenId);
             // Redirect to feed page or handle login success in other ways
-            if(typeAccount === false && isVerified === false){
+
+            
+            swal({icon:"success", title:"Autenticacion exitosa"}).then(()=>{
+
+                if(typeAccount === false && isVerified === false){
                 
-                window.location.href = "/notVerified";
-
-            }if(typeAccount === true && isVerified === true){
-
-                window.location.href = '/adminFeed';
-            }
-            if (typeAccount === false && isVerified ===  true){
-                window.location.href = '/feedreal';
-            }
+                    window.location.href = "/notVerified";
+    
+                }else if(typeAccount === true && isVerified === true){
+    
+                    window.location.href = '/adminFeed';
+                }
+                else if (typeAccount === false && isVerified ===  true){
+                    window.location.href = '/feedreal';
+                }
+            })
+            
+            
 
             
             
         } catch (error) {
-            alert('Login failed: ' + error.message);
-            console.error('Login failed:', error);
+            swal({icon:"error", title:"Credenciales invalidas"})
         }
     };
 

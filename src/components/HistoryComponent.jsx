@@ -1,9 +1,36 @@
 import React from "react";
 import BookRequest from "./BookRequest";
+
+import swal from 'sweetalert';
+
 function ElementHistory(props){
 
-    async function finalizarPrestamo(){
+    function finalizarPrestamo(){
         console.log("click");
+
+        const ownerId = props.ownerId;
+        const bookId = props.idLibro;
+
+        const idToSend={
+            bookId: bookId,
+            ownerId: ownerId
+        }
+
+        console.log(idToSend);
+        swal({icon:"success", 
+            title:"Prestamo finalizado",
+            className: "historyAlert", 
+            text: `El prestamo con ${props.ownerName} finalizó correctamente` }).then(async ()=>{
+                const endLoan = await fetch('/api/endLoan',{
+                    method:"POST",
+                    body: JSON.stringify(idToSend),
+
+                })
+                
+            })
+
+
+        
     }
 
     function goToProfile(){
