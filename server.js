@@ -163,7 +163,7 @@ app.post('/api/login', async (req, res) => {
                 //const tokenTypeAccount = jwt.sign({typeAccount: resTokenTypeAccount.rows[0].typeAccount}, 'secret-key');
                 const tokenTypeAccount = resTokenTypeAccount.rows[0].is_admin;
                 const isVerified = resTokenTypeAccount.rows[0].is_verified;
-                res.status(200).json({ message: 'User logged in successfully', token, tokenTypeAccount, isVerified });
+                res.status(200).json({ message: 'Inicio de sesion exitoso', token, tokenTypeAccount, isVerified });
             } catch (error) {
                 console.error('Error generating token or setting user ID:', error);
             }
@@ -1149,6 +1149,83 @@ app.get('/api/history', verifyToken, async (req, res)=>{
         
     } catch (error) {
         res.status(500).json({error: "No se pudo obtener el historial"})
+    }
+});
+
+app.post('/api/endLoan',verifyToken, async (req, res)=>{
+    const userId = req.user.userId;
+    console.log(userId);
+    const {bookId, ownerId}=req.body;
+    console.log(bookId +" "+ ownerId);
+
+    try {
+        const checkExistenceInWaitingListQuery = `SELECT FROM waiting_list WHERE id_propietario =$1 AND book_id =$2`;
+        const checkExistenceInWaitingListResponse = await db.query(checkExistenceInWaitingListQuery, [ownerId, bookId]);
+
+        console.log(checkExistenceInWaitingListResponse.rowCount);
+        //checa que este en la lista de espera, si esta, se resta el turno y se inserta el menor a la tabla loan book, si no, se actualiza el estado
+
+        if (checkExistenceInWaitingListResponse.rowCount===0) {
+            console.log("No hay en la lista de espera");
+            try {
+                const deleteLoanQuery = `DELETE FROM loan_book WHERE id_propietario =$1 AND book_id =$2`;
+                await db.query(deleteLoanQuery, [ownerId, bookId]);
+                try {
+                    const updateState = `UPDATE libro SET is_available = $1 WHERE id_libro =$2 AND idusuario =$3`;
+                    await db.query(updateState, [true, bookId, ownerId]);
+                    res.status(200).json({message:"Prestamo finalizado con exito"})
+                } catch (error) {
+                    res.status(500).json({error: "No se pudo actualizar el estado del libro"})
+                }
+            } catch (error) {
+                
+                res.status(500).json({error:"No se pudo borrar el prestamo"})
+            }
+
+        } else {
+            try {
+                const updateTurnQuery = `UPDATE waiting_list SET turno = turno -1 WHERE id_propietario =$1 AND book_id =$2`;
+                await db.query(updateTurnQuery, [ownerId, bookId]);
+                try {
+                    const getNextBookToInsertQuery =`SELECT * FROM waiting_list WHERE turno =$1 AND id_propietario =$2 AND book_id =$3`;
+                    const getNextBookToInsert = await db.query(getNextBookToInsertQuery, [0, ownerId, bookId]);
+                    console.log("LISTAAAAA");
+                    console.log(getNextBookToInsert.rows[0]);
+                    const nextBookToInsert = getNextBookToInsert.rows[0];
+                    const {waiting_id, user_id, book_id, request_date, status, id_propietario} =nextBookToInsert;
+                    console.log(waiting_id + " "+user_id+" "+book_id+" "+request_date+" "+status+" "+id_propietario);
+
+                    try {
+                        const insertNewBookQuery = `INSERT INTO loan_book (user_id, book_id, loan_date, status, id_propietario) 
+                                                    VALUES ($1,$2,$3,$4,$5)`;
+                        await db.query(insertNewBookQuery, [user_id, book_id,request_date, status,id_propietario ]);
+                        try {
+                            const deleteWaitingListElementQuery = `DELETE FROM waiting_list WHERE id_propietario =$1 AND book_id =$2 AND user_id =$3 AND turno = $4`;
+                            await db.query(deleteWaitingListElementQuery, [id_propietario,book_id,user_id,0]);
+                            try {
+                                const deleteLoanBookQuery = `DELETE FROM loan_book WHERE id_propietario=$1 AND book_id=$2 AND user_id=$3`;
+                                await db.query(deleteLoanBookQuery, [id_propietario, book_id, userId]);
+                                res.status(200).json({message:"Se finalizo el prestamo con exito"});
+                            } catch (error) {
+                                res.status(500).json({error:"No se pudo borrar el prestamo pasado"})
+                            }
+                        } catch (error) {
+                            res.status(500).json({error:"No se pudo borrar el de la lista de espera"})
+                        }
+                    } catch (error) {
+                        res.status(500).json({error:"No se pudo insertar el prestamo"})
+                    }
+                    
+                } catch (error) {
+                    res.status(500).json({error:"No se pudo obtener el turno 0"})
+                }
+            } catch (error) {
+                res.status(500).json({error:"2"})
+            }
+            console.log("Hay existencia en la lista de espera");
+        }
+    } catch (error) {
+        res.status(500).json({error:"No se pudo checar la lista de espera"})
     }
 })
 app.listen(port, () => {

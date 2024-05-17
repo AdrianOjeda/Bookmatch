@@ -21,11 +21,20 @@ function ElementHistory(props){
             title:"Prestamo finalizado",
             className: "historyAlert", 
             text: `El prestamo con ${props.ownerName} finalizó correctamente` }).then(async ()=>{
+                const userId = localStorage.getItem("token id");
+                console.log(userId);
                 const endLoan = await fetch('/api/endLoan',{
                     method:"POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization':`Bearer ${userId}`
+                    },
                     body: JSON.stringify(idToSend),
 
                 })
+                if(endLoan.ok){
+                    window.location.reload();
+                }
                 
             })
 
