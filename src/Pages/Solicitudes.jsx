@@ -58,7 +58,7 @@ function Solicitudes() {
                 titulo = {element.titulo}
                 autor={element.autor}
                 isbn={element.isbn}
-                idLibor={element.id_libro}
+                idLibro={element.id_libro}
                 descripcion={element.descripcion}
                 requesterName={element.requester_name}
 

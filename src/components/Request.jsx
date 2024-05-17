@@ -3,6 +3,8 @@ import BookRequest from "./BookRequest";
 import Solicitante from "./Solicitante";
 function Request(props)
 {
+
+    console.log("Id libro "+props.idLibro);
     return <div className="solicitud">
         <div>
            <img src={`/uploads/${props.image}`} alt="cover image" />
@@ -15,6 +17,8 @@ function Request(props)
         </div>
         <Solicitante
         solicitante = {props.requesterName}
+        requesterId = {props.requesterId}
+        bookId = {props.idLibro}
         />
     </div>
 }

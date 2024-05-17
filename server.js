@@ -1228,6 +1228,87 @@ app.post('/api/endLoan',verifyToken, async (req, res)=>{
         res.status(500).json({error:"No se pudo checar la lista de espera"})
     }
 })
+
+app.post('/api/rejectRequest', verifyToken, async (req, res)=>{
+    const userId = req.user.userId;
+    console.log(userId);
+    const {requesterId, bookId} = req.body;
+    console.log(requesterId+" "+bookId);
+    
+
+    try {
+        const checkExistenceInWaitingListQuery = `SELECT FROM waiting_list WHERE id_propietario =$1 AND book_id =$2`;
+        const checkExistenceInWaitingListResponse = await db.query(checkExistenceInWaitingListQuery, [userId, bookId]);
+        ///console.log(checkExistenceInWaitingListResponse);
+        console.log(checkExistenceInWaitingListResponse.rowCount);
+        //checa que este en la lista de espera, si esta, se resta el turno y se inserta el menor a la tabla loan book, si no, se actualiza el estado
+
+        if (checkExistenceInWaitingListResponse.rowCount===0) {
+            console.log("No hay en la lista de espera");
+            try {
+                const deleteLoanQuery = `DELETE FROM loan_book WHERE id_propietario =$1 AND book_id =$2 AND user_id =$3`;
+                await db.query(deleteLoanQuery, [userId, bookId, requesterId]);
+                try {
+                    const updateState = `UPDATE libro SET is_available = $1 WHERE id_libro =$2 AND idusuario =$3`;
+                    await db.query(updateState, [true, bookId, userId]);
+                    res.status(200).json({message:"Prestamo rechazado con exito"})
+                } catch (error) {
+                    res.status(500).json({error: "No se pudo actualizar el estado del libro"})
+                }
+            } catch (error) {
+                
+                res.status(500).json({error:"No se pudo rechazar el prestamo"})
+            }
+
+        }else{
+            console.log("Si hay en la lista de espera");
+            
+            try {
+                const updateTurnQuery = `UPDATE waiting_list SET turno = turno -1 WHERE id_propietario =$1 AND book_id =$2`;
+                await db.query(updateTurnQuery, [userId, bookId]);
+                try {
+                    const getNextBookToInsertQuery =`SELECT * FROM waiting_list WHERE turno =$1 AND id_propietario =$2 AND book_id =$3`;
+                    const getNextBookToInsert = await db.query(getNextBookToInsertQuery, [0, userId, bookId]);
+                    console.log("LISTAAAAA");
+                    console.log(getNextBookToInsert.rows[0]);
+                    const nextBookToInsert = getNextBookToInsert.rows[0];
+                    const {waiting_id, user_id, book_id, request_date, status, id_propietario} =nextBookToInsert;
+                    console.log(waiting_id + " "+user_id+" "+book_id+" "+request_date+" "+status+" "+id_propietario);
+                    try {
+                        const insertNewBookQuery = `INSERT INTO loan_book (user_id, book_id, loan_date, status, id_propietario) 
+                                                    VALUES ($1,$2,$3,$4,$5)`;
+                        await db.query(insertNewBookQuery, [user_id, book_id,request_date, status,id_propietario ]);
+                        try {
+                            const deleteWaitingListElementQuery = `DELETE FROM waiting_list WHERE id_propietario =$1 AND book_id =$2 AND user_id =$3 AND turno = $4`;
+                            await db.query(deleteWaitingListElementQuery, [userId,book_id,user_id,0]);
+                            try {
+                                const deleteLoanBookQuery = `DELETE FROM loan_book WHERE id_propietario=$1 AND book_id=$2 AND user_id=$3`;
+                                await db.query(deleteLoanBookQuery, [userId, book_id, requesterId]);
+                                res.status(200).json({message:"Se rechazo el prestamo con exito"});
+                            } catch (error) {
+                                res.status(500).json({error:"No se pudo borrar al usuario de loan"})
+                            }
+                        } catch (error) {
+                            res.status(500).json({error:"Ya no se que poner"})
+                        }
+                        
+                    } catch (error) {
+                        res.status(500).json({error:"No se pudo insertar el nuevo libro"})
+                    }
+                    
+                } catch (error) {
+                    res.status(500).json({error:"No se pudo obetener un libro con turno cero"})
+                }
+                
+            } catch (error) {
+                res.status(500).json({error:"No se pudo reducir el turno"})
+            }
+        }
+        
+    } catch (error) {
+        res.status
+    }
+})
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
