@@ -26,7 +26,15 @@ function Messages() {
     }
 
     const handleChatClick = (chat) => {
+        // Set the selected chat
         setSelectedChat(chat);
+        console.log("loan Id "+ chat.loanId);
+        // Store values in local storage
+        localStorage.setItem("selectedChatId", chat.loan_id);
+        localStorage.setItem("selectedChatName", chat.other_user_name);
+       
+        localStorage.setItem("otherUserId", chat.other_user_id)
+        localStorage.setItem("id propietario", chat.other_user_id)
     };
 
     console.log(chatList);
@@ -47,9 +55,11 @@ function Messages() {
                     {chatList.map((chat) => (
                         <NameChats
                             key={chat.loan_id}
+                            loanId={chat.loan_id}
                             name={chat.other_user_name}
                             profilePic={chat.other_user_profile_pic}
                             title={chat.libro_titulo}
+                           
                             onClick={() => handleChatClick(chat)}
                         />
                     ))}

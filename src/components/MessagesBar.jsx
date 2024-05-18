@@ -1,10 +1,14 @@
 import React from "react";
-
+import SendIcon from '@mui/icons-material/Send';
 function MessagesBar(props){
     return(
         <div className="text-messages">
             <input type="text" placeholder="Enviar mensaje" name="messages-bar" className="messages-bar"/>
-            <button className="button" onClick={()=> alert("Click")} >Aceptar</button>
+            <SendIcon
+            className="button"
+            onClick={()=> alert("Click")}
+            />
+            
         </div>
     );
 }

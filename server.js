@@ -1339,13 +1339,18 @@ app.get('/api/getChats', verifyToken, async (req, res)=>{
     const userId =  req.user.userId;
     console.log(userId);
     try {
-        const getChatsQuery=`SELECT lb.loan_id,
+        const getChatsQuery=`SELECT 
+                            lb.loan_id,
                             u1.id AS user1_id,
                             u1.nombres AS user1_nombres,
                             u1.apellidos AS user1_apellidos,
                             u2.id AS user2_id,
                             u2.nombres AS user2_nombres,
                             u2.apellidos AS user2_apellidos,
+                            CASE 
+                                WHEN m.sender_id != $1 THEN u2.id -- If authenticated user is receiver
+                                WHEN m.sender_id = $1 THEN u1.id -- If authenticated user is sender
+                            END AS other_user_id,
                             CASE 
                                 WHEN m.sender_id != $1 THEN pu2.profile_pic -- If authenticated user is receiver
                                 WHEN m.sender_id = $1 THEN pu1.profile_pic -- If authenticated user is sender
@@ -1361,14 +1366,22 @@ app.get('/api/getChats', verifyToken, async (req, res)=>{
                                 WHEN m.sender_id != $1 THEN u2.nombres || ' ' || u2.apellidos -- If authenticated user is receiver
                                 WHEN m.sender_id = $1 THEN u1.nombres || ' ' || u1.apellidos -- If authenticated user is sender
                             END AS other_user_name
-                    FROM public.loan_book lb
-                    JOIN public.usuario u1 ON lb.user_id = u1.id
-                    JOIN public.usuario u2 ON lb.id_propietario = u2.id
-                    JOIN public.libro l ON lb.book_id = l.id_libro
-                    JOIN public.messages m ON lb.loan_id = m.loan_id
-                    LEFT JOIN public.perfil_usuario pu1 ON u1.id = pu1.user_id -- Profile pic of the authenticated user
-                    LEFT JOIN public.perfil_usuario pu2 ON u2.id = pu2.user_id -- Profile pic of the other user
-                    WHERE m.sender_id = $1 OR m.receiver_id = $1`;
+                        FROM 
+                            public.loan_book lb
+                        JOIN 
+                            public.usuario u1 ON lb.user_id = u1.id
+                        JOIN 
+                            public.usuario u2 ON lb.id_propietario = u2.id
+                        JOIN 
+                            public.libro l ON lb.book_id = l.id_libro
+                        JOIN 
+                            public.messages m ON lb.loan_id = m.loan_id
+                        LEFT JOIN 
+                            public.perfil_usuario pu1 ON u1.id = pu1.user_id -- Profile pic of the authenticated user
+                        LEFT JOIN 
+                            public.perfil_usuario pu2 ON u2.id = pu2.user_id -- Profile pic of the other user
+                        WHERE 
+                            m.sender_id = $1 OR m.receiver_id = $1`;
         const getChatsResponse = await db.query(getChatsQuery, [userId])
 
         console.log(getChatsResponse.rows);

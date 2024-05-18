@@ -2,9 +2,11 @@
 .chat-user-info-header {
     display: flex;
     align-items: center;
-    background-color: rgb(99, 99, 99);
-    padding: 10px;
+    background-color: #c69b7c;
     border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    
     width: 100%;
 }
 
@@ -13,6 +15,7 @@
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
+    margin-left: 20px;
 }
 
 .chat-user-info-text {
@@ -38,23 +41,28 @@ html, body {
     background-color: #FBEED3;
     margin: 0;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    padding-bottom: 60px;
-    height: 90%;
+    height: 100%;
+    padding: 0;
+}
+
+#root, .Chat-Page, .chat-frame {
+    height: 100vh;
 }
 
 .header {
-    background-color: #292929;
+    background-color: #412307;
     color: #ffffff;
     text-align: right;
     padding: 7px 0;
+    margin: 0%;
 }
 
 .header-container {
     display: flex;
     justify-content: space-between;
-    align-items: right;
+    align-items: center;
     height: 80px;
-    background-color: #292929;
+    background-color: #412307;
     padding: 0 20px;
 }
 
@@ -62,12 +70,13 @@ html, body {
     flex-grow: 1;
     display: flex;
     justify-content: left;
-    align-items: right;
+    align-items: center;
 }
 
 .title-container h1 {
     font-size: 35px;
     margin: 20px 10px;
+    color: #FBEED3;
 }
 
 .pageLink {
@@ -81,17 +90,14 @@ html, body {
 }
 
 .chats-Container {
-    height: 100%;
-    background-color: rgb(148, 148, 148);
-    width: 20%;
-    border-right: .5px solid black;
+    background-color: #412307;
+    width: 40%;
+    border-right: 0.5px solid #4A4A4A;
+    overflow-y: auto;
+    height: calc(100vh - 80px); /* Full height minus the header height */
 }
 
 .Chat-Page {
-    height: 100%;
-}
-
-#root, .Chat-Page, .chat-frame {
     height: 100%;
 }
 
@@ -117,56 +123,101 @@ footer {
 .profile-container {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #ffffff;
+    padding: 10px;
+    background-color: #c69b7c;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
-.profile-container p {
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    font-size: 25px;
+.profile-container:hover{
+    background-color: #e4c4ad;
+}
+
+
+.profile-container img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-container .profile-info {
+    margin-left: 15px;
+}
+
+.profile-container .profile-info p {
+    margin: 0;
+    font-size: 18px;
     color: #ffffff;
-    text-align: center;
+}
+
+.profile-container .profile-info .profile-name {
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .chat-frame {
     display: flex;
-    height: 90vh;
-}
-
-.chats-Container {
-    width: 25%;
-    overflow-y: auto;
+    height: calc(100vh - 80px); /* Full height minus the header height */
 }
 
 .chat-Window {
-    width: 100%;
+    width: 60%; /* Adjusted according to your needs */
     background-color: #fff9f0;
-    justify-content: flex-end;
-    height: 95%;
+    height: calc(100vh - 80px); /* Full height minus the header height */
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
 }
 
 .Window-chat {
     width: 100%;
     background-color: #fff9f0;
-    justify-content: flex-end;
-    height: 90%;
-}
-
-.chat-Window-Messages {
-    width: 100%;
-    background-color: #fff9f0;
-    justify-content: flex-end;
     height: 100%;
     display: flex;
     flex-direction: column;
+    border-radius: 10px;
+}
+
+.chat-Window-Messages {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #fff9f0;
 }
 
 /* Style for the user profile container */
 .user-profile-container {
     display: flex;
     align-items: center;
-    background-color: rgb(99, 99, 99);
-    padding: 10px;
+    background-color: #6B4E38;
+    padding: 15px;
     border-bottom: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.user-profile-container img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-profile-container .user-profile-info {
+    margin-left: 15px;
+}
+
+.user-profile-container .user-profile-info p {
+    margin: 0;
+    font-size: 18px;
+    color: #FBEED3;
+}
+
+.user-profile-container .user-profile-info .user-profile-name {
+    font-size: 22px;
+    font-weight: bold;
 }
 
 /* Style for the text messages container */
@@ -174,20 +225,20 @@ footer {
     display: flex;
     align-items: center;
     padding: 10px;
-    background-color: cadetblue;
+    background-color: #c69b7c;
     border-top: 1px solid #ccc;
 }
 
 /* Style for the button */
 .button {
     margin-left: 10px;
+    cursor: pointer;
 }
 
 /* Style for the messages bar */
 .messages-bar {
-    flex: 1;
-    width: 400px;
-    height: 30px;
+    width: 100%; /* Full width of the parent */
+    height: 50px;
     border: solid 1px #ffffff;
     outline: none;
     background-repeat: no-repeat;
@@ -207,7 +258,7 @@ footer {
 
 .user-profile-container p {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    font-size: 30px;
+    font-size: 20px;
     color: #ffffff;
     text-align: center;
     margin-left: 30px;
