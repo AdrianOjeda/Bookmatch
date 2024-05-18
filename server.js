@@ -962,6 +962,61 @@ app.post('/api/loanRequest/:idLibro', verifyToken, async (req, res)=>{
     }
 } )
 
+app.get('/api/feedBooksSearch/:search', verifyToken, async (req, res) => {
+    const userId = req.user.userId;
+    const search = req.params.search;
+
+    try {
+        const getIdProfileQuery = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
+        const idProfileResponse = await db.query(getIdProfileQuery, [userId]);
+        const profileId = idProfileResponse.rows[0].id;
+
+        const matchingBooksQuery = `
+            SELECT 
+                libro.id_libro, 
+                libro.titulo, 
+                libro.autor, 
+                libro.isbn, 
+                libro.descripcion, 
+                libro.coverimage, 
+                usuario.nombres, 
+                usuario.id,
+                ARRAY_AGG(tags.tagname) AS tagsArray
+            FROM 
+                libro 
+            INNER JOIN 
+                usuario ON usuario.id = libro.idusuario 
+            LEFT JOIN 
+                libro_tags ON libro_tags.libroid = libro.id_libro
+            LEFT JOIN 
+                tags ON tags.idtag = libro_tags.tagid
+            WHERE 
+                libro.titulo ILIKE '%' || $1 || '%'
+                AND usuario.id != $2 
+            GROUP BY 
+                libro.id_libro, 
+                libro.titulo, 
+                libro.autor, 
+                libro.isbn, 
+                libro.descripcion, 
+                libro.coverimage, 
+                usuario.nombres, 
+                usuario.id;
+        `;
+
+        const matchingBooksResponse = await db.query(matchingBooksQuery, [search, userId]);
+        const booksJSON = matchingBooksResponse.rows;
+
+        const rowCount = matchingBooksResponse.rowCount; // Obtener el número de filas devueltas
+
+        res.status(200).json({ rowCount, booksJSON }); // Enviar rowCount junto con booksJSON
+    } catch (error) {
+        res.status(500).json({ error: "No se pudieron obtener los libros" });
+    }
+});
+
+
+
 app.post('/api/addStrike', async(req, res)=>{
     const {idReporte, idUserReportado} = req.body;
 
