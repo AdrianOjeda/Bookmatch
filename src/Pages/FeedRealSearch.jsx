@@ -1,8 +1,8 @@
 import React from "react";
 import HeaderReal from "../components/HeaderReal";
-import BooksFeed from "../components/BooksFeed";
+import BooksFeedSearch from "../components/BooksFeedSearch";
 
-function FeedReal()
+function FeedRealSearch()
 {
 
     return <div>
@@ -10,7 +10,7 @@ function FeedReal()
             <HeaderReal/>
         </div>
         <div>
-            <BooksFeed/>
+            <BooksFeedSearch/>
         </div>
         
 
@@ -18,4 +18,4 @@ function FeedReal()
 
 }
 
-export default FeedReal
+export default FeedRealSearch

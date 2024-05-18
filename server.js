@@ -690,6 +690,64 @@ app.get('/api/feedBooks', verifyToken,  async (req, res)=>{
     }
 })
 
+app.get('/api/feedBooksSearch/:search', verifyToken,  async (req, res)=>{
+    const userId = req.user.userId;
+    const search = req.params.search;  
+    console.log("aqui " + search) 
+    console.log("El id del usuario: " +userId);
+
+    try {
+        
+        try {
+            const matchingBooksQuery = `
+            SELECT 
+                libro.id_libro, 
+                libro.titulo, 
+                libro.autor, 
+                libro.isbn, 
+                libro.descripcion, 
+                libro.coverimage, 
+                usuario.nombres, 
+                usuario.id,
+                ARRAY_AGG(tags.tagname) AS tagsArray
+            FROM 
+                libro 
+            INNER JOIN 
+                usuario ON usuario.id = libro.idusuario 
+            LEFT JOIN 
+                libro_tags ON libro_tags.libroid = libro.id_libro
+            LEFT JOIN 
+                tags ON tags.idtag = libro_tags.tagid
+            WHERE 
+                libro.titulo ILIKE  '%' || $1 || '%'
+                AND usuario.id != $2 
+            GROUP BY 
+                libro.id_libro, 
+                libro.titulo, 
+                libro.autor, 
+                libro.isbn, 
+                libro.descripcion, 
+                libro.coverimage, 
+                usuario.nombres, 
+                usuario.id;
+        `; 
+            
+        const matchingBooksResponse = await db.query(matchingBooksQuery, [search, userId]);
+        const booksJSON = matchingBooksResponse.rows;
+
+        const rowCount = matchingBooksResponse.rowCount; // Obtener el número de filas devueltas
+
+        res.status(200).json({ rowCount, booksJSON });
+        } catch (error) {
+            res.status(500).json({error: "No se pudieron obtener los libros"})
+        }
+
+        
+        
+    } catch (error) {
+        res.status(500).json({error: "No se pudieron cargar los libros"})
+    }
+})
 
 
 app.get("/api/getUserName/:userId", async (req, res)=>{
@@ -1379,6 +1437,9 @@ app.get('/api/getChats', verifyToken, async (req, res)=>{
         res.status(500).json({error:"No se pudieron cargar los chats"})
     }
 })
+
+
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });

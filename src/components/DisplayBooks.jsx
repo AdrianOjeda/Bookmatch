@@ -88,6 +88,7 @@ function DisplayBooks() {
                         tags={bookItem.tagsarray}
                         onDelete={deleteBook}
                         onClick={editBook}
+                        required
                     />
                 ))}
             </div>
