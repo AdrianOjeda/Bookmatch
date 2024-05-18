@@ -1341,7 +1341,7 @@ app.get('/api/getChats', verifyToken, async (req, res)=>{
     const userId =  req.user.userId;
     console.log(userId);
     try {
-        const getChatsQuery=`SELECT 
+        const getChatsQuery=`SELECT DISTINCT ON (lb.loan_id) 
                             lb.loan_id,
                             u1.id AS user1_id,
                             u1.nombres AS user1_nombres,
@@ -1383,7 +1383,9 @@ app.get('/api/getChats', verifyToken, async (req, res)=>{
                         LEFT JOIN 
                             public.perfil_usuario pu2 ON u2.id = pu2.user_id -- Profile pic of the other user
                         WHERE 
-                            m.sender_id = $1 OR m.receiver_id = $1`;
+                            m.sender_id = $1 OR m.receiver_id = $1
+                        ORDER BY 
+                            lb.loan_id, m.sent_at DESC`;
         const getChatsResponse = await db.query(getChatsQuery, [userId])
 
         console.log(getChatsResponse.rows);
@@ -1441,7 +1443,7 @@ app.listen(port, () => {
                   WHERE loan_id = $1
                   ORDER BY sent_at ASC;`;
               const { rows: messages } = await db.query(messagesQuery, [idChat]);
-  
+            
               socket.emit('messages', messages);
           } catch (error) {
               console.error('Error retrieving messages from the database:', error);

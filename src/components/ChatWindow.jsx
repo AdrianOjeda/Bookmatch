@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import MessagesBar from "./MessagesBar";
 import ChatUserInfo from "./ChatUserInfo";
 
+
 function ChatWindow({ name, profilePic, title, socket }) {
     const [messages, setMessages] = useState([]);
     const otherUserId = localStorage.getItem("otherUserId");
@@ -39,9 +40,9 @@ function ChatWindow({ name, profilePic, title, socket }) {
             <ChatUserInfo name={name} profilePic={profilePic} title={title} />
             <div className="chat-Window-Messages">
                 {messages.map((message, index) => (
-                    <div key={index} className={`message ${message.sender_id === userId ? 'Enviado' : 'Recibido'}`}>
-                        <p>{message.message_text} {`Mensaje ${message.sender_id == userId ? 'enviado' : 'recibido'}`}</p>
-                        <small>{new Date(message.sent_at).toLocaleString()}</small>
+                    <div key={index} className={`message ${message.sender_id === userId ? '.sent' : '.received'}`}>
+                        <p>{message.message_text} </p>
+                        <small>{`Mensaje ${message.sender_id == userId ? 'enviado' : 'recibido'}`} {new Date(message.sent_at).toLocaleString()}</small>
                     </div>
                 ))}
             </div>
