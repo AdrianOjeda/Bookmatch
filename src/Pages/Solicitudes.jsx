@@ -51,6 +51,7 @@ function Solicitudes() {
 
                 <Request
                 key={element.loan_id}
+                loanId={element.loan_id}
                 date ={element.loan_date}
                 status ={element.status}
                 requesterId = {element.user_id}

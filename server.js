@@ -1099,8 +1099,8 @@ app.get('/api/getRequests', verifyToken, async (req, res)=>{
                                 libro ON loan_book.book_id = libro.id_libro
                             INNER JOIN 
                                 usuario ON loan_book.user_id = usuario.id
-                            WHERE loan_book.id_propietario = $1`;
-        const requestResponse = await db.query(getRequestsQuery, [userId]);
+                            WHERE loan_book.id_propietario = $1 AND loan_book.status =$2`;
+        const requestResponse = await db.query(getRequestsQuery, [userId, 'waiting_confirmation']);
         const requestsToSend = requestResponse.rows;
         console.log(requestsToSend);
         res.status(200).json(requestsToSend);
@@ -1307,6 +1307,76 @@ app.post('/api/rejectRequest', verifyToken, async (req, res)=>{
         
     } catch (error) {
         res.status
+    }
+})
+
+app.post('/api/acceptRequest', verifyToken, async (req, res)=>{
+    const userId =  req.user.userId;
+    const {requesterId, bookId, loanId} = req.body;
+    console.log("mi id: "+ userId);
+    console.log("Libro: "+bookId+" El id del otro "+ requesterId+" Loan id: "+loanId);
+    try {
+        const updateStatus = `UPDATE loan_book SET status =$1 WHERE loan_id = $2 AND book_id=$3 AND id_propietario =$4`;
+        await db.query(updateStatus, ['accepted', loanId, bookId, userId]);
+
+        try {
+            const insertChatQuery =`INSERT INTO messages (loan_id, sender_id, receiver_id, message_text)
+                                    VALUES($1,$2,$3,$4)`;
+            await db.query(insertChatQuery, [loanId, userId, requesterId, "tu prestamo ha sido aceptado!"]);
+            res.status(200).json({message:"Prestamo aceptado"});
+        } catch (error) {
+            res.status(500).json({error:"No se pudo iniciar chat"});
+        }
+        
+    } catch (error) {
+        res.status(500).json({error:"No se pudo aceptar el prestamo"})
+    }
+
+    
+})
+
+app.get('/api/getChats', verifyToken, async (req, res)=>{
+    const userId =  req.user.userId;
+    console.log(userId);
+    try {
+        const getChatsQuery=`SELECT lb.loan_id,
+                            u1.id AS user1_id,
+                            u1.nombres AS user1_nombres,
+                            u1.apellidos AS user1_apellidos,
+                            u2.id AS user2_id,
+                            u2.nombres AS user2_nombres,
+                            u2.apellidos AS user2_apellidos,
+                            CASE 
+                                WHEN m.sender_id != $1 THEN pu2.profile_pic -- If authenticated user is receiver
+                                WHEN m.sender_id = $1 THEN pu1.profile_pic -- If authenticated user is sender
+                            END AS other_user_profile_pic,
+                            l.id_libro,
+                            l.titulo AS libro_titulo,
+                            l.autor AS libro_autor,
+                            l.isbn AS libro_isbn,
+                            l.descripcion AS libro_descripcion,
+                            l.coverimage AS libro_coverimage,
+                            l.is_available AS libro_is_available,
+                            CASE 
+                                WHEN m.sender_id != $1 THEN u2.nombres || ' ' || u2.apellidos -- If authenticated user is receiver
+                                WHEN m.sender_id = $1 THEN u1.nombres || ' ' || u1.apellidos -- If authenticated user is sender
+                            END AS other_user_name
+                    FROM public.loan_book lb
+                    JOIN public.usuario u1 ON lb.user_id = u1.id
+                    JOIN public.usuario u2 ON lb.id_propietario = u2.id
+                    JOIN public.libro l ON lb.book_id = l.id_libro
+                    JOIN public.messages m ON lb.loan_id = m.loan_id
+                    LEFT JOIN public.perfil_usuario pu1 ON u1.id = pu1.user_id -- Profile pic of the authenticated user
+                    LEFT JOIN public.perfil_usuario pu2 ON u2.id = pu2.user_id -- Profile pic of the other user
+                    WHERE m.sender_id = $1 OR m.receiver_id = $1`;
+        const getChatsResponse = await db.query(getChatsQuery, [userId])
+
+        console.log(getChatsResponse.rows);
+        const chats = getChatsResponse.rows;
+        res.status(200).json(chats)
+        
+    } catch (error) {
+        res.status(500).json({error:"No se pudieron cargar los chats"})
     }
 })
 app.listen(port, () => {

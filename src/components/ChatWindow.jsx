@@ -1,17 +1,16 @@
 import React from "react";
-import BookRequest from "./BookRequest";
 import MessagesBar from "./MessagesBar";
 import ChatUserInfo from "./ChatUserInfo";
-function ChatWindow(props){
-    return(
+
+function ChatWindow({ name, profilePic, title }) {
+    return (
         <div className="Window-chat">
-            <ChatUserInfo name ="Cesar"/>
+            <ChatUserInfo name={name} profilePic={profilePic} title={title} />
             <div className="chat-Window-Messages">
-                <MessagesBar/>
+                <MessagesBar />
             </div>
         </div>
-        
-        
     );
 }
+
 export default ChatWindow;

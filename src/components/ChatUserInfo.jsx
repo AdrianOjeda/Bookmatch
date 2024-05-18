@@ -1,11 +1,15 @@
 import React from "react";
 
-function ChatUserInfo(props){
-    return(
-        <div className="user-profile-container">
-            <img className="pefil-picture" src="src\assets\logo.png" alt="Esta es la imagen de perfil del usuario" />
-            <p>{props.name}</p>
+function ChatUserInfo({ name, profilePic, title }) {
+    return (
+        <div className="chat-user-info-header">
+            <img className="chat-user-info-image" src={`/uploads/${profilePic}`} alt="Profile" />
+            <div className="chat-user-info-text">
+                <p className="chat-user-info-name">{name}</p>
+                <p className="chat-user-info-title">{title}</p>
+            </div>
         </div>
     );
 }
+
 export default ChatUserInfo;

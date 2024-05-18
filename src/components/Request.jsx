@@ -19,6 +19,7 @@ function Request(props)
         solicitante = {props.requesterName}
         requesterId = {props.requesterId}
         bookId = {props.idLibro}
+        loanId={props.loanId}
         />
     </div>
 }

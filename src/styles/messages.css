@@ -1,10 +1,45 @@
+/* ChatUserInfo styles */
+.chat-user-info-header {
+    display: flex;
+    align-items: center;
+    background-color: rgb(99, 99, 99);
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+
+.chat-user-info-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.chat-user-info-text {
+    margin-left: 15px;
+}
+
+.chat-user-info-name {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 20px;
+    color: #ffffff;
+    margin: 0;
+}
+
+.chat-user-info-title {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 15px;
+    color: #ffffff;
+    margin: 0;
+}
+
+/* Other existing styles */
 html, body {
     background-color: #FBEED3;
     margin: 0;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     padding-bottom: 60px;
     height: 90%;
-    
 }
 
 .header {
@@ -20,19 +55,21 @@ html, body {
     align-items: right;
     height: 80px;
     background-color: #292929;
-    padding: 0 20px; 
+    padding: 0 20px;
 }
 
 .title-container {
     flex-grow: 1;
     display: flex;
-    justify-content: left; 
-    align-items: right; 
+    justify-content: left;
+    align-items: right;
 }
-.title-container h1{
+
+.title-container h1 {
     font-size: 35px;
     margin: 20px 10px;
 }
+
 .pageLink {
     margin-right: 20px;
     margin-left: 20px;
@@ -42,18 +79,22 @@ html, body {
     font-family: Arial, Helvetica, sans-serif;
     text-decoration: underline;
 }
+
 .chats-Container {
     height: 100%;
     background-color: rgb(148, 148, 148);
     width: 20%;
     border-right: .5px solid black;
 }
-.Chat-Page{
+
+.Chat-Page {
     height: 100%;
 }
-#root, .Chat-Page, .chat-frame{
+
+#root, .Chat-Page, .chat-frame {
     height: 100%;
 }
+
 footer {
     position: fixed;
     font-family: Arial, sans-serif;
@@ -63,98 +104,108 @@ footer {
     background-color: #000000;
     color: rgb(255, 255, 255);
     text-align: center;
-  }
-.pefil-picture{
+}
+
+.pefil-picture {
     width: 100px;
-  }
-.profile-container{
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 20px;
+}
+
+.profile-container {
     display: flex;
     align-items: center;
     border-bottom: 1px solid white;
-  }
-.profile-container p{
+}
+
+.profile-container p {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     font-size: 25px;
     color: #ffffff;
     text-align: center;
-  }
-  .chat-frame {
+}
+
+.chat-frame {
     display: flex;
-    height: 90vh; /* Ajustado para ocupar el 90% de la altura de la ventana */
+    height: 90vh;
 }
 
 .chats-Container {
-    width: 25%; /* Ajustado según tus necesidades */
-    overflow-y: auto; /* Agrega scroll si hay muchos chats */
+    width: 25%;
+    overflow-y: auto;
 }
 
 .chat-Window {
-    width: 100%; /* Ajustado según tus necesidades */
-    background-color: #fff9f0; /* Color de fondo para visualización */
-    justify-content: flex-end; /* Asegura que los elementos hijos se alineen en la parte inferior */
-    height: 95%; /* Asegura que ocupe toda la altura disponible */
+    width: 100%;
+    background-color: #fff9f0;
+    justify-content: flex-end;
+    height: 95%;
 }
+
 .Window-chat {
-    width: 100%; /* Ajustado según tus necesidades */
-    background-color: #fff9f0; /* Color de fondo para visualización */
-    justify-content: flex-end; /* Asegura que los elementos hijos se alineen en la parte inferior */
-    height: 90%; /* Asegura que ocupe toda la altura disponible */
+    width: 100%;
+    background-color: #fff9f0;
+    justify-content: flex-end;
+    height: 90%;
 }
+
 .chat-Window-Messages {
-    width: 100%; /* Ajustado según tus necesidades */
-    background-color: #fff9f0; /* Color de fondo para visualización */
-    justify-content: flex-end; /* Asegura que los elementos hijos se alineen en la parte inferior */
-    height: 100%; /* Asegura que ocupe toda la altura disponible */
+    width: 100%;
+    background-color: #fff9f0;
+    justify-content: flex-end;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-
-/* Estilo para el contenedor del perfil del usuario */
+/* Style for the user profile container */
 .user-profile-container {
     display: flex;
-    align-items: center; /* Alinea verticalmente los elementos dentro del contenedor del perfil */
-    background-color: rgb(99, 99, 99); /* Color de fondo para distinguirlo */
+    align-items: center;
+    background-color: rgb(99, 99, 99);
     padding: 10px;
-    border-bottom: 1px solid #ccc; /* Línea inferior para separación */
+    border-bottom: 1px solid #ccc;
 }
 
-/* Estilo para el contenedor de mensajes de texto */
+/* Style for the text messages container */
 .text-messages {
     display: flex;
-    align-items: center; /* Alinea verticalmente los elementos dentro del text-messages */
-    padding: 10px; /* Espacio interno para un mejor diseño */
-    background-color: cadetblue; /* Color de fondo */
-    border-top: 1px solid #ccc; /* Línea superior para separación */
+    align-items: center;
+    padding: 10px;
+    background-color: cadetblue;
+    border-top: 1px solid #ccc;
 }
 
-/* Estilo para el botón */
+/* Style for the button */
 .button {
-    margin-left: 10px; /* Espacio entre el botón y el input */
+    margin-left: 10px;
 }
 
-/* Estilo para la barra de mensajes */
+/* Style for the messages bar */
 .messages-bar {
-    flex: 1; /* Asegura que el input ocupe todo el espacio restante */
+    flex: 1;
     width: 400px;
     height: 30px;
     border: solid 1px #ffffff;
     outline: none;
     background-repeat: no-repeat;
     background-position: 10px center;
-    background-size: 15px; 
-    padding-left: 40px; 
+    background-size: 15px;
+    padding-left: 40px;
     margin-top: 10px;
     margin-bottom: 10px;
-    border-radius: 40px; /* Bordes redondeados */
+    border-radius: 40px;
 }
 
-/* Estilo adicional para contenedores específicos */
+/* Additional style adjustments for specific containers */
 .title-container .profile-container {
     border-bottom: 0px;
     margin-left: 50px;
 }
-.user-profile-container p{
+
+.user-profile-container p {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     font-size: 30px;
     color: #ffffff;
