@@ -8,6 +8,7 @@ function Messages() {
 
     useEffect(() => {
         fetchChatList();
+        getMyId();
     }, []);
 
     async function fetchChatList() {
@@ -25,10 +26,27 @@ function Messages() {
         }
     }
 
+    async function getMyId (){
+
+        const userId = localStorage.getItem("token id");
+
+        const getId = await fetch('/api/getMyId',{
+            method:"GET",
+            headers:{
+                'Authorization':`Bearer ${userId}`,
+            }
+        })
+        if (getId.ok) {
+            const myId = await getId.json();
+            console.log(myId);
+            localStorage.setItem("user loged id", myId);
+        }
+    }
+
     const handleChatClick = (chat) => {
         // Set the selected chat
         setSelectedChat(chat);
-        console.log("loan Id "+ chat.loanId);
+        
         // Store values in local storage
         localStorage.setItem("selectedChatId", chat.loan_id);
         localStorage.setItem("selectedChatName", chat.other_user_name);

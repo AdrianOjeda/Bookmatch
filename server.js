@@ -5,7 +5,8 @@ import pg from "pg";
 import sha1 from 'sha1';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
-
+import { Server as SocketIOServer } from 'socket.io';
+import http from 'http';
 
 const app = express();
 const port = 3000;
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cors());
 app.use(bodyParser.json());
+
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
@@ -1392,10 +1394,72 @@ app.get('/api/getChats', verifyToken, async (req, res)=>{
         res.status(500).json({error:"No se pudieron cargar los chats"})
     }
 })
+
+app.get('/api/getMyId', verifyToken, async(req, res)=>{
+    try {
+        const userId = req.user.userId;
+        console.log("este es el id " +userId);
+        res.status(200).json(userId);
+    } catch (error) {
+        res.status(500).json({error:"No se pudo decodificar el id"});
+    }
+
+})
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
   
-
-
   
+  // Your existing Express middleware and routes
+  // ...
+  
+  // Socket.IO integration
+  const server = http.createServer(app);
+  const io = new SocketIOServer(server);
+  
+  io.on('connection', (socket) => {
+      console.log('Client connected');
+      // Socket.IO event handlers
+      // ...
+  });
+  
+
+  // Start WebSocket server on a different port
+const websocketServer = http.createServer();
+const websocketPort = 3001;
+
+const websocketIO = new SocketIOServer(websocketServer, {
+    path: '/socket.io',
+    cors: {
+      origin: 'http://localhost:5173',
+      methods: ["GET", "POST"]
+    }
+  });
+websocketIO.on('connection', (socket) => {
+  console.log('WebSocket client connected');
+  console.log('Client connected');
+
+    socket.on('getMessages', async ({ userId, otherUserId, idChat }) => {
+        
+        console.log('Received getMessages event from client with data:', { userId, otherUserId, idChat });
+
+        try {
+            const messagesQuery = `
+                SELECT * FROM messages
+                WHERE loan_id = $1
+                ORDER BY sent_at ASC;
+            `;
+            const { rows: messages } = await db.query(messagesQuery, [idChat]);
+
+            socket.emit('messages', messages);
+        } catch (error) {
+            console.error('Error retrieving messages from the database:', error);
+            socket.emit('error', 'An error occurred while retrieving messages');
+        }
+    });
+
+});
+
+websocketServer.listen(websocketPort, () => {
+  console.log(`WebSocket server is running on http://localhost:${websocketPort}/socket.io`);
+});
