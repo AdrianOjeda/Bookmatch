@@ -1417,49 +1417,63 @@ app.listen(port, () => {
   const server = http.createServer(app);
   const io = new SocketIOServer(server);
   
-  io.on('connection', (socket) => {
-      console.log('Client connected');
-      // Socket.IO event handlers
-      // ...
+  const websocketServer = http.createServer();
+  const websocketPort = 3001;
+  
+  const websocketIO = new SocketIOServer(websocketServer, {
+      path: '/socket.io',
+      cors: {
+          origin: 'http://localhost:5173',
+          methods: ["GET", "POST"]
+      }
   });
   
-
-  // Start WebSocket server on a different port
-const websocketServer = http.createServer();
-const websocketPort = 3001;
-
-const websocketIO = new SocketIOServer(websocketServer, {
-    path: '/socket.io',
-    cors: {
-      origin: 'http://localhost:5173',
-      methods: ["GET", "POST"]
-    }
+  websocketIO.on('connection', (socket) => {
+      console.log('WebSocket client connected');
+      console.log('Client connected');
+  
+      socket.on('getMessages', async ({ userId, otherUserId, idChat }) => {
+          console.log('Received getMessages event from client with data:', { userId, otherUserId, idChat });
+  
+          try {
+              const messagesQuery = `
+                  SELECT * FROM messages
+                  WHERE loan_id = $1
+                  ORDER BY sent_at ASC;`;
+              const { rows: messages } = await db.query(messagesQuery, [idChat]);
+  
+              socket.emit('messages', messages);
+          } catch (error) {
+              console.error('Error retrieving messages from the database:', error);
+              socket.emit('error', 'An error occurred while retrieving messages');
+          }
+      });
+  
+      socket.on('sendMessage', async ({ userId, otherUserId, idChat, text, timestamp }) => {
+          console.log('Received sendMessage event from client with data:', { userId, otherUserId, idChat, text, timestamp });
+  
+          try {
+              const newMessageQuery = `
+                  INSERT INTO messages (sender_id, receiver_id, loan_id, message_text, sent_at)
+                  VALUES ($1, $2, $3, $4, $5)
+                  RETURNING *;
+              `;
+              const { rows: newMessages } = await db.query(newMessageQuery, [userId, otherUserId, idChat, text, timestamp]);
+  
+              const newMessage = newMessages[0];
+              websocketIO.emit('newMessage', newMessage); // Broadcast the new message to all connected clients
+          } catch (error) {
+              console.error('Error saving new message to the database:', error);
+              socket.emit('error', 'An error occurred while saving the new message');
+          }
+      });
+  
+      socket.on('disconnect', () => {
+          console.log('WebSocket client disconnected');
+      });
   });
-websocketIO.on('connection', (socket) => {
-  console.log('WebSocket client connected');
-  console.log('Client connected');
-
-    socket.on('getMessages', async ({ userId, otherUserId, idChat }) => {
-        
-        console.log('Received getMessages event from client with data:', { userId, otherUserId, idChat });
-
-        try {
-            const messagesQuery = `
-                SELECT * FROM messages
-                WHERE loan_id = $1
-                ORDER BY sent_at ASC;
-            `;
-            const { rows: messages } = await db.query(messagesQuery, [idChat]);
-
-            socket.emit('messages', messages);
-        } catch (error) {
-            console.error('Error retrieving messages from the database:', error);
-            socket.emit('error', 'An error occurred while retrieving messages');
-        }
-    });
-
-});
-
-websocketServer.listen(websocketPort, () => {
-  console.log(`WebSocket server is running on http://localhost:${websocketPort}/socket.io`);
-});
+  
+  websocketServer.listen(websocketPort, () => {
+      console.log(`WebSocket server listening on port ${websocketPort}`);
+  });
+  
