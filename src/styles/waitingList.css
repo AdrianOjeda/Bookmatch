@@ -152,10 +152,13 @@ footer {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 10%;
+  margin-top: 0%;
   text-align: center; /* Center the text inside the container */
 }
-
+.empty-list-container img{
+width: 600px;
+opacity: 0.6;
+}
 .empty-list-title {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */

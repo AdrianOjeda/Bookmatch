@@ -71,7 +71,13 @@ function Messages() {
             </div>
             <div className="chat-frame">
                 <div className="chats-Container">
-                    {chatList.map((chat) => (
+                {chatList.length === 0 ? (
+                    <div className="empty-list-container">
+                        <h1 className="empty-list-title">No tienes chats disponibles</h1>
+                        <img src="src/assets/logo.png" alt="Imagen default de logo" />
+                    </div>
+                ) : (
+                    chatList.map((chat) => (
                         <NameChats
                             key={chat.loan_id}
                             loanId={chat.loan_id}
@@ -80,7 +86,8 @@ function Messages() {
                             title={chat.libro_titulo}
                             onClick={() => handleChatClick(chat)}
                         />
-                    ))}
+                    ))
+                )}
                 </div>
                 <div className="chat-Window">
                     {selectedChat && (
