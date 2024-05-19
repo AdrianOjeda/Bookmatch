@@ -47,24 +47,29 @@ function Solicitudes() {
                     </div>
                 </div>
             </div>
-            {requests.map((element)=>(
-
-                <Request
-                key={element.loan_id}
-                loanId={element.loan_id}
-                date ={element.loan_date}
-                status ={element.status}
-                requesterId = {element.user_id}
-                image = {element.coverimage}
-                titulo = {element.titulo}
-                autor={element.autor}
-                isbn={element.isbn}
-                idLibro={element.id_libro}
-                descripcion={element.descripcion}
-                requesterName={element.requester_name}
-
-                />
-            ))}
+            {requests.length === 0 ? (
+                <div className="empty-list-container">
+                    <img src="src\assets\logo.png" alt="Imagen default de logo" />
+                    <h1 className="empty-list-title">No tienes solicitudes pendientes</h1>
+                </div>
+            ) : (
+                requests.map((element) => (
+                    <Request
+                        key={element.loan_id}
+                        loanId={element.loan_id}
+                        date={element.loan_date}
+                        status={element.status}
+                        requesterId={element.user_id}
+                        image={element.coverimage}
+                        titulo={element.titulo}
+                        autor={element.autor}
+                        isbn={element.isbn}
+                        idLibro={element.id_libro}
+                        descripcion={element.descripcion}
+                        requesterName={element.requester_name}
+                    />
+                ))
+            )}
                 
                 <Footer/>
         </div>

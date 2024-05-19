@@ -42,6 +42,7 @@ function List() {
             
             {waitingListElements.length === 0 ? (
                 <div className="empty-list-container">
+                    <img src="src\assets\logo.png" alt="Imagen default de logo" />
                     <h1 className="empty-list-title">No estás en ninguna lista de espera</h1>
                 </div>
                 
