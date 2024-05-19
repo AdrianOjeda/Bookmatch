@@ -94,8 +94,13 @@ function DisplayUserBooks() {
         <div className="books-container">
             <h1 className="form-container" style = {{marginLeft: '35%'}}>Estantería de {userName}</h1>
             <div className="books-list">
-                {books.map(bookItem => (
-                    
+            {books.length === 0 ? (
+                <div className="empty-list-container">
+                    <img src="src/assets/logo.png" alt="Imagen default de logo" />
+                    <h1 className="empty-list-title">No tiene libros disponibles</h1>
+                </div>
+            ) : (
+                books.map(bookItem => (
                     <BookUserEntry
                         key={bookItem.id_libro}
                         id={bookItem.id_libro}
@@ -106,10 +111,10 @@ function DisplayUserBooks() {
                         descripcion={bookItem.descripcion}
                         coverimage={bookItem.coverimage} // Render the image from Base64 string
                         tags={bookItem.tagsarray}
-                        
                         onClick={borrowRequest}
                     />
-                ))}
+                ))
+            )}
             </div>
         </div>
     );

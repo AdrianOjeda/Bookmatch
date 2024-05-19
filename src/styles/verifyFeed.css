@@ -22,7 +22,7 @@ body {
   margin: 0;
   flex-grow: 1; 
   text-align: center;
-  padding-left:150px;
+  padding-left:230px;
 }
 
 .botonRegresar {
@@ -88,4 +88,20 @@ body {
 
 .validateUserContainer p {
   margin-right: 8px; /* Adjust the spacing between the text and the icon */
+}
+.empty-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 0%;
+  text-align: center; /* Center the text inside the container */
+}
+.empty-list-container img{
+  width: 450px;
+  opacity: 0.6;
+  }
+.empty-list-title {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
 }

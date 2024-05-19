@@ -31,9 +31,8 @@ function ReportContainer() {
         if(addStrikeRequest.ok){
             //alert("Strike agregado");
 
-            const message = await addStrikeRequest.json();
-            
             swal({icon:"success",title:`${message.message}`}).then(() => {
+
                 window.location.href = '/reportFeed.html'
             });
             
@@ -57,7 +56,7 @@ function ReportContainer() {
 
         if(addStrikeRequest.ok){
             //alert("Se ha omitido el strike!");
-            swal({icon:"succes",title:"Se ha omitido el strike!"}).then(()=>{
+            swal({icon:"success",title:"Se ha omitido el strike!"}).then(()=>{
                 window.location.href = '/reportFeed.html'
             })
             

@@ -104,8 +104,10 @@ function Feed() {
             setFormData(initialFormData);
             setSelectedFile(null);
             //alert('Book added successfully');
+
             swal({icon:"success",title:"Libro añadido"})
             }
+
         } catch (error) {
             //alert('Book registration failed: ' + error.message);
             swal({icon:"error",title:"No se pudo registrar el libro"});
