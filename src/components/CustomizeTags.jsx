@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TagSelection from '../components/TagSelection.jsx';
 import Footer from '../components/Footer.jsx'
-
+import swal from 'sweetalert'
 
 function CustomizeTags() {
     
@@ -14,7 +14,7 @@ function CustomizeTags() {
 
             try{
                 const idUsuario = localStorage.getItem('token id');
-                alert(idUsuario);
+                //alert(idUsuario);
                
                 console.log(selectedTags);
                 console.log("Selected tags: ");
@@ -38,8 +38,14 @@ function CustomizeTags() {
                 })
 
                 if(postProfile.ok){
-                    alert("Perfil actualizado!");
-                    window.location.href = 'profile.html';
+                    //alert("Perfil actualizado!");
+                    swal({
+                        icon:'success',
+                        title: "Perfil actualizado"
+                    }).then(()=>{
+                        window.location.href = 'profile.html';
+
+                    })
 
                     
                 }

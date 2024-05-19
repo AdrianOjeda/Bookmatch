@@ -26,6 +26,7 @@ body {
     display: flex;
     justify-content: center; 
     align-items: center; 
+    margin-left:85px;
 }
 .pageLink {
     margin-right: 20px;
@@ -144,4 +145,18 @@ footer {
   background-color: #000000;
   color: rgb(255, 255, 255);
   text-align: center;
+}
+
+.empty-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10%;
+  text-align: center; /* Center the text inside the container */
+}
+
+.empty-list-title {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
 }

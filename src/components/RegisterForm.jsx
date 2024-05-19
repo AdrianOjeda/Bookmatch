@@ -68,8 +68,11 @@ function RegisterForm() {
     
             setFormData(initialFormData);
             setSelectedFile(null);
-            swal({icon:"success", title:"Usuario registrado exitosamente" })
-            window.location.href = "/customizeProfile"
+            swal({icon:"success", title:"Usuario registrado exitosamente" }).then(()=>{
+
+                window.location.href = "/customizeProfile"
+
+            })
         } catch (error) {
             swal({icon:"error", title:"No se pudo realizar el registro del usuario", className: "historyAlert", text: `Motivo: ${error.message}` })
             

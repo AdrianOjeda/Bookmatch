@@ -12,15 +12,16 @@ function MessagesBar({ socket }) {
 
     const handleSendMessage = () => {
         if (message.trim() !== '') {
-            // Emit the sendMessage event to the WebSocket server
+            const localTimestamp = new Date().toLocaleString();
+            
             socket.emit('sendMessage', {
                 userId: localStorage.getItem("user loged id"),
                 otherUserId: localStorage.getItem("otherUserId"),
                 idChat: localStorage.getItem("selectedChatId"),
                 text: message,
-                timestamp: new Date()
+                timestamp: localTimestamp
             });
-            // Clear the input field after sending the message
+            
             setMessage('');
         } else {
             alert("Message cannot be empty");

@@ -291,7 +291,9 @@ footer {
 
 .message.sent {
     align-self: flex-end;
-    background-color: #dcf8c6;
+    background-color: #d3c9c1;
+    margin-right: 2px;
+    margin-left: auto;
 }
 
 .message.received {

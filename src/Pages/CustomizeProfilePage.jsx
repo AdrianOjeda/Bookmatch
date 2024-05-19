@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TagSelection from '../components/TagSelection.jsx';
 import Footer from '../components/Footer.jsx'
-
+import swal from 'sweetalert';
 
 function CustomizeProfilePage() {
     const [profilePic, setProfilePic] = useState(null); // Estado para almacenar el nombre del archivo
@@ -18,15 +18,23 @@ function CustomizeProfilePage() {
     async function handleSubmit(selectedTags) { //selectedTags es el arreglo de ids que se envian al backend
         
         if (profilePic === null) {
-            alert("Debes subir una foto de perfil!");
+            //alert("Debes subir una foto de perfil!");
+
+            swal({
+                icon:'info',
+                title:'Debes subir una foto de perfil!'
+            })
         }else if(selectedTags.length === 0){
-            alert("Selecciona al menos 1 tag");
+            swal({
+                icon:'info',
+                title:'Selecciona al menos 1 tag'
+            })
 
         } else {
 
             try{
                 const idUsuario = localStorage.getItem('idRegisteredUsuario');
-                alert(idUsuario);
+                //alert(idUsuario);
                 const profileDataToSend = new FormData();
                 console.log(selectedTags);
                 console.log(profilePic);
@@ -44,11 +52,19 @@ function CustomizeProfilePage() {
                 })
 
                 if(postProfile.ok){
-                    alert("Perfil actualizado!");
-                    window.location.href = 'notVerified.html';
+                    //alert("Perfil actualizado!");
+                    swal({
+                        icon:'success',
+                        title:'Perfil personalizado con éxito'
+                    }).then(()=>{
+
+                        window.location.href = 'notVerified.html';
+                    }).then(()=>{
+                        window.history.replaceState({}, '', '/login');
+                    })
 
                     // Replace the current history entry with a new one
-                    window.history.replaceState({}, '', '/login');
+                    
                 }
             }catch(error){
                 console.log(error);
