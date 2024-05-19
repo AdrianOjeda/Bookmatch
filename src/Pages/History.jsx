@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer.jsx"
 import ElementHistory from "../components/HistoryComponent.jsx";
+import swal from 'sweetalert';
 function History()
 {
 
@@ -29,7 +30,8 @@ function History()
             setHistoryElements(historyData);
             
         }else{
-            alert("No se pudo obtener el historial")
+            //alert("No se pudo obtener el historial")
+            swal({icon:"warning",title:"No se pudo obtener el historial"})
         }
     }
 

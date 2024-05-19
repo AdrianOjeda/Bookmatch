@@ -54,7 +54,11 @@ function BooksFeedSearch() {
                 }
             }
         } catch (error) {
-            alert("No se pudo cargar el feed")
+            //alert("No se pudo cargar el feed")
+            swal({
+                icon:"error",
+                title:"No se pudo cargar el feed"
+            })
         }
     }
 
@@ -79,7 +83,11 @@ function BooksFeedSearch() {
 
 
         } catch (error) {
-            alert("No se pudo solicitar el prestamo")
+            //alert("No se pudo solicitar el prestamo")
+            swal({
+                icon:"error",
+                title:"No se pudo solicitar el prestamo"
+            })
         }
         
     }

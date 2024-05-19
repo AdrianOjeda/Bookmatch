@@ -1,6 +1,6 @@
 
 import React from 'react';
-
+import swal from 'sweetalert';
 function ReportContainer() {
     const idReport = localStorage.getItem('id reporte');
     const motivoReporte = localStorage.getItem('motivo reporte');
@@ -29,11 +29,16 @@ function ReportContainer() {
         })
 
         if(addStrikeRequest.ok){
-            alert("Strike agregado");
-            window.location.href = '/reportFeed.html'
+            //alert("Strike agregado");
+            swal({icon:"succes",title:"Strike agregado"}).then(() => {
+                window.location.href = '/reportFeed.html'
+            });
+            
         }else{
-            alert("No se pudo agregar el strike")
-            window.location.href = '/reportFeed.html'
+            //alert("No se pudo agregar el strike")
+            swal({icon:"error",title:"No se pudo agregar el strike"}).then(() => {
+                window.location.href = '/reportFeed.html'
+            });
         }
 
     }
@@ -48,11 +53,16 @@ function ReportContainer() {
         })
 
         if(addStrikeRequest.ok){
-            alert("Se ha omitido el strike!");
-            window.location.href = '/reportFeed.html'
+            //alert("Se ha omitido el strike!");
+            swal({icon:"succes",title:"Se ha omitido el strike!"}).then(()=>{
+                window.location.href = '/reportFeed.html'
+            })
+            
         }else{
-            alert("No se pudo omitir el strike")
-            window.location.href = '/reportFeed.html'
+            //alert("No se pudo omitir el strike")
+            swal({icon:"error",title:"No se pudo omitir el strike!"}).then(()=>{
+                window.location.href = '/reportFeed.html'
+            })
         }
 
     }

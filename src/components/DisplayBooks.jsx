@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import BookEntry from './BookEntry';
-
+import swal from 'sweetalert';
 function DisplayBooks() {
     const [books, setBooks] = useState([]);
 
@@ -65,7 +65,11 @@ function DisplayBooks() {
         try {
             localStorage.setItem('tokenLibro', id);
         } catch (error) {
-            alert('Login failed: ' + error.message);
+            //alert('Login failed: ' + error.message);
+            swal({
+                icon:"error", 
+                title:'Login failed: ' + error.message
+                });
             console.error('Login failed:', error);
         }
         window.location.href = '/editBookForm';

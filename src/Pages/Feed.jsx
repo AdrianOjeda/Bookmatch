@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InputForm from '../components/InputForm';
 //import jwt_decode from 'jwt-decode';
 import FolderIcon from '@mui/icons-material/Folder';
+import swal from 'sweetalert';
 
 function Feed() {
     const initialFormData = {
@@ -70,9 +71,11 @@ function Feed() {
             console.log(selectedTags);
             console.log(formBookData.image);
             if(selectedTags.length === 0){
-                alert("Elige al menos 1 tag")
+                //alert("Elige al menos 1 tag")
+                swal({icon:"info",title:"Elige al menos 1 tag"})
             }else if(!formBookData.image){
-                alert("Debes subir una foto de portada")
+                //alert("Debes subir una foto de portada")
+                swal({icon:"info",title:"Debes subir una foto de portada"})
             }else{
             const token = localStorage.getItem('token id');
             const formData = new FormData();
@@ -100,10 +103,12 @@ function Feed() {
             // Reset the form data after successful registration
             setFormData(initialFormData);
             setSelectedFile(null);
-            alert('Book added successfully');
+            //alert('Book added successfully');
+            swal({icon:"succes",title:"Book added successfully"})
             }
         } catch (error) {
-            alert('Book registration failed: ' + error.message);
+            //alert('Book registration failed: ' + error.message);
+            swal({icon:"error",title:"Book registration failed:", text:error.message});
             console.error('Book registration failed:', error);
         }
     };
