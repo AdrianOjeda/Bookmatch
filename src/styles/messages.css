@@ -319,13 +319,13 @@ footer {
     text-align: center; /* Center the text inside the container */
   }
   .empty-list-container img{
-  width: 600px;
-  opacity: 0.4;
-  }
+    width: 450px;
+    opacity: 0.4;
+    }
   .empty-list-title {
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
     color: rgb(251, 238, 211);
-    font-size: 35px;
+    font-size: 30px;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   }
