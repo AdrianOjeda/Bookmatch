@@ -1,7 +1,7 @@
 
 import ReportEntry from "./ReportEntry";
 import {useState, useEffect} from 'react';
-
+import swal from 'sweetalert';
 
 function DisplayReports(){
 
@@ -29,11 +29,13 @@ function DisplayReports(){
 
                 setReports(reportsData.reportsInfo);
             }else{
-                alert("No se pudieron cargar los reportes!");
+                //alert("No se pudieron cargar los reportes!");
+                swal({icon:"error",title:"No se pudieron cargar los reportes!"});
             }
             
         } catch (error) {
-            alert("No sepudieron cargar los reportes");
+            //alert("No sepudieron cargar los reportes");
+            swal({icon:"error",title:"No se pudieron cargar los reportes"});
         }
     }
     console.log("Estos son los reportes ");

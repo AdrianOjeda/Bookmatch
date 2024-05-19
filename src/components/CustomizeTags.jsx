@@ -8,7 +8,11 @@ function CustomizeTags() {
     async function handleSubmit(selectedTags) { //selectedTags es el arreglo de ids que se envian al backend
         
          if(selectedTags.length === 0){
-            alert("Selecciona al menos 1 tag");
+            //alert("Selecciona al menos 1 tag");
+            swal({
+                icon:"info",
+                title:"Selecciona al menos 1 tag"
+            });
 
         } else {
 

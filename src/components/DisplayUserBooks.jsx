@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import BookUserEntry from './BookUserEntry';
-
+import swal from 'sweetalert';
 function DisplayUserBooks() {
     const [books, setBooks] = useState([]);
     const [userName, setName] = useState('');
@@ -85,7 +85,8 @@ function DisplayUserBooks() {
 
 
         } catch (error) {
-            alert("No se pudo solicitar el prestamo")
+            //alert("No se pudo solicitar el prestamo")
+            swal({icon:"error",title:"No se pudo solicitar el prestamo"})
         }
     }
 

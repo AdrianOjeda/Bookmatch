@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BookFeedEntry from './BookFeedEntry';
 import '../styles/booksFeed.css'; // Import your CSS file for styling
-
+import swal from 'sweetalert';
 function BooksFeed() {
     const [books, setBooks] = useState([]);
 
@@ -33,7 +33,11 @@ function BooksFeed() {
                 setBooks(booksData);
             }
         } catch (error) {
-            alert("No se pudo cargar el feed")
+            //alert("No se pudo cargar el feed")
+            swal({
+                icon:"error",
+                title:"No se pudo cargar el feed"
+                })
         }
     }
 
@@ -58,7 +62,11 @@ function BooksFeed() {
 
 
         } catch (error) {
-            alert("No se pudo solicitar el prestamo")
+            //alert("No se pudo solicitar el prestamo")
+            swal({
+                icon:"error",
+                title:"No se pudo solicitar el prestamo"
+            })
         }
         
     }

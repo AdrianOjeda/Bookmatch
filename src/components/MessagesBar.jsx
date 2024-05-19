@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SendIcon from '@mui/icons-material/Send';
-
+import swal from 'sweetalert';
 function MessagesBar({ socket }) {
     const [message, setMessage] = useState('');
 
@@ -24,7 +24,8 @@ function MessagesBar({ socket }) {
             
             setMessage('');
         } else {
-            alert("Message cannot be empty");
+            //alert("Message cannot be empty");
+            swal({icon:"info",title:"Message cannot be empty"})
         }
     };
 

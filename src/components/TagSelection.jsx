@@ -46,7 +46,7 @@ function ParentComponent({ onSubmit }) {
     // Submit selected tags to backend
     function handleSubmit(event) {
         event.preventDefault();
-        alert( selectedTags);
+        //alert( selectedTags);
         console.log(selectedTags);
         
         

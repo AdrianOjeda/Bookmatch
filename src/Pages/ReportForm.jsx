@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import InputForm from '../components/InputForm';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import BadgeIcon from '@mui/icons-material/Badge';
-
+import swal from 'sweetalert';
 function ReportForm() {
 
     const initialFormData = {
@@ -51,7 +51,8 @@ function ReportForm() {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'No se pudo realizar el reporte');
             }else{
-                alert("El reporte se realizo con exito :)")
+                //alert("El reporte se realizo con exito :)")
+                swal({icon:"succes",title:"El reporte se realizo con exito"})
             }
     
             setFormData(initialFormData);
@@ -59,7 +60,8 @@ function ReportForm() {
             
         
         } catch (error) {
-            alert('User registration failed: ' + error.message);
+            //alert('User registration failed: ' + error.message);
+            swal({icon:"error",title:"User registration failed:",text:error.message})
             console.error('User registration failed:', error);
         }
     };

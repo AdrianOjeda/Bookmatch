@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InputForm from '../components/InputForm';
 //import jwt_decode from 'jwt-decode';
 import FolderIcon from '@mui/icons-material/Folder';
-
+import swal from 'sweetalert';
 function BookForm() {
     const initialFormData = {
         titulo: '',
@@ -94,10 +94,13 @@ function BookForm() {
             // Reset the form data after successful registration
             setFormData(initialFormData);
             setSelectedFile(null);
-            alert('Libro actualizado :)');
-            window.location.href = "/profile"
+            //alert('Libro actualizado :)');
+            swal({icon:"succes",title:"Libro actualizado con exito"}).then(()=>{                
+                window.location.href = "/profile"
+            })
         } catch (error) {
-            alert('Book registration failed: ' + error.message);
+            //alert('Book registration failed: ' + error.message);
+            swal({icon:"succes",title:"Book registration failed:",text:error.message})
             console.error('Book registration failed:', error);
         }
     };
