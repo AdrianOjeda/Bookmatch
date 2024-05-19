@@ -145,36 +145,45 @@ app.post('/api/login', async (req, res) => {
     const { correo, password } = req.body;
     console.log(req.body);
     try {
-        const hashedPassword = sha1(password);
-        const credentialsValidationQuery = `SELECT id, correo, password FROM usuario WHERE correo = $1 AND password = $2`;
-        const checkCredentialsValidation = await db.query(credentialsValidationQuery, [correo, hashedPassword]);
-       
-        const tokenIdQuery = `SELECT id FROM usuario WHERE correo = $1`;
-        const resTokenIdQuery =  await  db.query(tokenIdQuery, [correo]);
+        const checkIfExists = `SELECT * FROM usuario WHERE correo = $1`;
+        const checkIfExistsResponse = await db.query(checkIfExists,[correo]);
+        if (checkIfExistsResponse.rowCount==0) {
+            res.status(200).json({message:"La cuenta no existe", icon:"error"})
+
+
+        } else {
+            const hashedPassword = sha1(password);
+            const credentialsValidationQuery = `SELECT id, correo, password FROM usuario WHERE correo = $1 AND password = $2`;
+            const checkCredentialsValidation = await db.query(credentialsValidationQuery, [correo, hashedPassword]);
         
-        const tokenTypeAccount = `SELECT is_admin, is_verified FROM usuario where correo = $1`;
-        const resTokenTypeAccount =  await db.query(tokenTypeAccount, [correo]); 
-
-        console.log(resTokenTypeAccount.rows[0].is_admin);
-        console.log("is verified "+resTokenTypeAccount.rows[0].is_verified);
-
-        if(checkCredentialsValidation.rowCount === 1 && resTokenIdQuery.rowCount === 1){
+            const tokenIdQuery = `SELECT id FROM usuario WHERE correo = $1`;
+            const resTokenIdQuery =  await  db.query(tokenIdQuery, [correo]);
             
-            try {
-                const token = jwt.sign({ userId: resTokenIdQuery.rows[0].id }, 'your-secret-key');
-                //const tokenTypeAccount = jwt.sign({typeAccount: resTokenTypeAccount.rows[0].typeAccount}, 'secret-key');
-                const tokenTypeAccount = resTokenTypeAccount.rows[0].is_admin;
-                const isVerified = resTokenTypeAccount.rows[0].is_verified;
-                res.status(200).json({ message: 'Inicio de sesion exitoso', token, tokenTypeAccount, isVerified });
-            } catch (error) {
-                console.error('Error generating token or setting user ID:', error);
+            const tokenTypeAccount = `SELECT is_admin, is_verified FROM usuario where correo = $1`;
+            const resTokenTypeAccount =  await db.query(tokenTypeAccount, [correo]); 
+
+            console.log(resTokenTypeAccount.rows[0].is_admin);
+            console.log("is verified "+resTokenTypeAccount.rows[0].is_verified);
+
+            if(checkCredentialsValidation.rowCount === 1 && resTokenIdQuery.rowCount === 1){
+                
+                try {
+                    const token = jwt.sign({ userId: resTokenIdQuery.rows[0].id }, 'your-secret-key');
+                    //const tokenTypeAccount = jwt.sign({typeAccount: resTokenTypeAccount.rows[0].typeAccount}, 'secret-key');
+                    const tokenTypeAccount = resTokenTypeAccount.rows[0].is_admin;
+                    const isVerified = resTokenTypeAccount.rows[0].is_verified;
+                    res.status(200).json({ message: 'Inicio de sesion exitoso', icon:'success', token, tokenTypeAccount, isVerified });
+                } catch (error) {
+                    console.error('Error generating token or setting user ID:', error);
+                }
+                
+                
+            }else{
+                res.setHeader('Content-Type', 'application/json');
+                res.status(400).json({ error: 'Incorrect password or email' });
             }
-            
-            
-        }else{
-            res.setHeader('Content-Type', 'application/json');
-            res.status(400).json({ error: 'Incorrect password or email' });
         }
+        
             
     } catch (error) {
         res.status(500).json({ error: 'Failed to login user' });
@@ -1017,40 +1026,77 @@ app.get('/api/feedBooksSearch/:search', verifyToken, async (req, res) => {
 
 
 
-app.post('/api/addStrike', async(req, res)=>{
-    const {idReporte, idUserReportado} = req.body;
+app.post('/api/addStrike', async (req, res) => {
+    const { idReporte, idUserReportado } = req.body;
 
     console.log(idReporte, idUserReportado);
 
     try {
-        const getCurrentStrikesQuery = `SELECT strikes FROM usuario WHERE id =$1`;
+        await db.query('BEGIN');
+
+        // Obtener strikes actuales
+        const getCurrentStrikesQuery = `SELECT strikes FROM usuario WHERE id = $1`;
         const getCurrentStrikes = await db.query(getCurrentStrikesQuery, [idUserReportado]);
+
+        if (getCurrentStrikes.rows.length === 0) {
+            throw new Error("Usuario no encontrado");
+        }
+
         console.log("Strikes actuales: ");
         console.log(getCurrentStrikes.rows[0].strikes);
-        let updateStrikes = getCurrentStrikes.rows[0].strikes +1;
+
+        let updateStrikes = getCurrentStrikes.rows[0].strikes + 1;
         console.log(updateStrikes);
-        try {
-            const addStrikeQuery = `UPDATE usuario SET strikes = $1 WHERE id =$2`;
-            await db.query(addStrikeQuery, [updateStrikes, idUserReportado]);
-            try {
-                const deleteReportQuery = `DELETE FROM reportes WHERE id_reporte=$1 AND id_usuario=$2`;
-                await db.query(deleteReportQuery, [idReporte, idUserReportado]);
-                res.status(200).json({message:"El strike se agrego con exito!"})
-            } catch (error) {
-                res.status.json({error:"No se pudo borrar el reporte!"});
-            }
+
+        if (updateStrikes > 2) {
+            // Eliminar datos relacionados en otras tablas dependientes de perfil_usuario primero
+            const perfilUsuarioQuery = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
+            const perfilUsuarioResult = await db.query(perfilUsuarioQuery, [idUserReportado]);
             
-        } catch (error) {
-            res.status(500).json({error:"No se pudo agregar nuevo strike!"})
+            if (perfilUsuarioResult.rows.length > 0) {
+                const perfilUsuarioId = perfilUsuarioResult.rows[0].id;
+                await db.query(`DELETE FROM user_tags WHERE user_id = $1`, [perfilUsuarioId]);
+            }
+
+            // Eliminar préstamos relacionados antes de eliminar libros
+            await db.query(`DELETE FROM loan_book USING libro WHERE loan_book.book_id = libro.id_libro AND libro.idusuario = $1`, [idUserReportado]);
+
+            // Eliminar datos relacionados en otras tablas
+            await db.query(`DELETE FROM libro_tags USING libro WHERE libro_tags.libroid = libro.id_libro AND libro.idusuario = $1`, [idUserReportado]);
+            await db.query(`DELETE FROM libro WHERE idusuario = $1`, [idUserReportado]);
+            await db.query(`DELETE FROM perfil_usuario WHERE user_id = $1`, [idUserReportado]);
+            await db.query(`DELETE FROM reportes WHERE id_usuario = $1`, [idUserReportado]);
+            await db.query(`DELETE FROM messages WHERE sender_id = $1 OR receiver_id = $1`, [idUserReportado]);
+            await db.query(`DELETE FROM waiting_list WHERE user_id = $1`, [idUserReportado]);
+
+            // Eliminar el usuario
+            await db.query(`DELETE FROM usuario WHERE id = $1`, [idUserReportado]);
+
+            // Eliminar el reporte
+            await db.query(`DELETE FROM reportes WHERE id_reporte = $1 AND id_usuario = $2`, [idReporte, idUserReportado]);
+
+            await db.query('COMMIT');
+            res.status(200).json({ message: "El usuario fue eliminado por exceder los strikes permitidos." });
+        } else {
+            // Actualizar strikes
+            const addStrikeQuery = `UPDATE usuario SET strikes = $1 WHERE id = $2`;
+            await db.query(addStrikeQuery, [updateStrikes, idUserReportado]);
+
+            // Eliminar el reporte
+            const deleteReportQuery = `DELETE FROM reportes WHERE id_reporte = $1 AND id_usuario = $2`;
+            await db.query(deleteReportQuery, [idReporte, idUserReportado]);
+
+            await db.query('COMMIT');
+            res.status(200).json({ message: "El strike se agregó con éxito!" });
         }
-        
 
     } catch (error) {
-        res.status(500).json({error:"No se pudieron obtener los strikes!!"})
+        await db.query('ROLLBACK');
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
     }
-    
+});
 
-})
 
 app.post('/api/ignoreStrikes', async (req, res)=>{
     const {idReporte, idUserReportado} = req.body;

@@ -52,7 +52,7 @@ function ReportForm() {
                 throw new Error(errorData.error || 'No se pudo realizar el reporte');
             }else{
                 //alert("El reporte se realizo con exito :)")
-                swal({icon:"succes",title:"El reporte se realizo con exito"})
+                swal({icon:"success",title:"El reporte se realizo con exito"})
             }
     
             setFormData(initialFormData);
@@ -61,7 +61,7 @@ function ReportForm() {
         
         } catch (error) {
             //alert('User registration failed: ' + error.message);
-            swal({icon:"error",title:"User registration failed:",text:error.message})
+            swal({icon:"error",title:"No se pudo registrar el usuario"})
             console.error('User registration failed:', error);
         }
     };
