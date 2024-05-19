@@ -52,7 +52,7 @@ function ReportForm() {
                 throw new Error(errorData.error || 'No se pudo realizar el reporte');
             }else{
                 //alert("El reporte se realizo con exito :)")
-                swal({icon:"succes",title:"El reporte se realizo con exito"})
+                swal({icon:"success",title:"El reporte se realizo con exito"})
             }
     
             setFormData(initialFormData);

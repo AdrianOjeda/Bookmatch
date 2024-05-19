@@ -95,12 +95,12 @@ function BookForm() {
             setFormData(initialFormData);
             setSelectedFile(null);
             //alert('Libro actualizado :)');
-            swal({icon:"succes",title:"Libro actualizado con exito"}).then(()=>{                
+            swal({icon:"success",title:"Libro actualizado con exito"}).then(()=>{                
                 window.location.href = "/profile"
             })
         } catch (error) {
             //alert('Book registration failed: ' + error.message);
-            swal({icon:"succes",title:"Book registration failed:",text:error.message})
+            swal({icon:"error",title:"Book registration failed:",text:error.message})
             console.error('Book registration failed:', error);
         }
     };

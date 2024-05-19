@@ -83,19 +83,26 @@ function DisplayUsers() {
 
     return (
         <div className='listContainer'>
-            {fetchedUsers.map(usersItem => (
-                <UsersValidationEntry
-                    key={usersItem.id}
-                    id={usersItem.id}
-                    nombres={usersItem.nombres}
-                    apellidos={usersItem.apellidos}
-                    codigo={usersItem.codigo}
-                    correo={usersItem.correo}
-                    credencial={usersItem.credencial}
-                    onDelete={deleteUser}
-                    onClick={validateUser}
-                />
-            ))}
+            {fetchedUsers.length === 0 ? (
+                <div className="empty-list-container">
+                    <img src="src/assets/logo.png" alt="Imagen default de logo" />
+                    <h1 className="empty-list-title">No hay usuarios para validar</h1>
+                </div>
+            ) : (
+                fetchedUsers.map(usersItem => (
+                    <UsersValidationEntry
+                        key={usersItem.id}
+                        id={usersItem.id}
+                        nombres={usersItem.nombres}
+                        apellidos={usersItem.apellidos}
+                        codigo={usersItem.codigo}
+                        correo={usersItem.correo}
+                        credencial={usersItem.credencial}
+                        onDelete={deleteUser}
+                        onClick={validateUser}
+                    />
+                ))
+)}
         </div>
     );
 }

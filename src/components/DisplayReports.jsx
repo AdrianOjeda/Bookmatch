@@ -56,21 +56,28 @@ function DisplayReports(){
     return(
 
         <div className='listContainer'>
-            {reports.map(reportItem =>(
-                <ReportEntry
-                key = {reportItem.id_reporte}
-                profilePic = {reportItem.profile_pic}
-                motivo ={reportItem.motivo}
-                id = {reportItem.id_reporte}
-                evidencia = {reportItem.evidencia}
-                idUsuario = {reportItem.id_usuario}
-                nombres = {reportItem.nombres}
-                apellidos = {reportItem.apellidos}
-                codigo = {reportItem.codigo}
-                correo = {reportItem.correo}
-                onClick = {reportInfo}
-                />
-            ))}
+            {reports.length === 0 ? (
+                <div className="empty-list-container">
+                    <img src="src/assets/logo.png" alt="Imagen default de logo" />
+                    <h1 className="empty-list-title">No hay reportes en este momento</h1>
+                </div>
+            ) : (
+                reports.map(reportItem => (
+                    <ReportEntry
+                        key={reportItem.id_reporte}
+                        profilePic={reportItem.profile_pic}
+                        motivo={reportItem.motivo}
+                        id={reportItem.id_reporte}
+                        evidencia={reportItem.evidencia}
+                        idUsuario={reportItem.id_usuario}
+                        nombres={reportItem.nombres}
+                        apellidos={reportItem.apellidos}
+                        codigo={reportItem.codigo}
+                        correo={reportItem.correo}
+                        onClick={reportInfo}
+                    />
+                ))
+            )}
             
         </div>
     )

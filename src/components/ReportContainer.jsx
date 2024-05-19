@@ -30,7 +30,7 @@ function ReportContainer() {
 
         if(addStrikeRequest.ok){
             //alert("Strike agregado");
-            swal({icon:"succes",title:"Strike agregado"}).then(() => {
+            swal({icon:"success",title:"Strike agregado"}).then(() => {
                 window.location.href = '/reportFeed.html'
             });
             
@@ -54,7 +54,7 @@ function ReportContainer() {
 
         if(addStrikeRequest.ok){
             //alert("Se ha omitido el strike!");
-            swal({icon:"succes",title:"Se ha omitido el strike!"}).then(()=>{
+            swal({icon:"success",title:"Se ha omitido el strike!"}).then(()=>{
                 window.location.href = '/reportFeed.html'
             })
             
