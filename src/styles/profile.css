@@ -297,4 +297,5 @@ body {
   .empty-list-title {
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
+    font-family: Arial, Helvetica, sans-serif;
   }

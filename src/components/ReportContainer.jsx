@@ -30,7 +30,9 @@ function ReportContainer() {
 
         if(addStrikeRequest.ok){
             //alert("Strike agregado");
-            swal({icon:"success",title:"Strike agregado"}).then(() => {
+
+            swal({icon:"success",title:`${message.message}`}).then(() => {
+
                 window.location.href = '/reportFeed.html'
             });
             

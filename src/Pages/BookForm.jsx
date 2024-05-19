@@ -100,7 +100,9 @@ function BookForm() {
             })
         } catch (error) {
             //alert('Book registration failed: ' + error.message);
-            swal({icon:"error",title:"Book registration failed:",text:error.message})
+
+            swal({icon:"error",title:"No se pudo actualizar el libro"})
+
             console.error('Book registration failed:', error);
         }
     };

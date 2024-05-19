@@ -43,7 +43,7 @@ function LoginForm(){
             // Redirect to feed page or handle login success in other ways
 
             
-            swal({icon:"success", title:"Autenticacion exitosa"}).then(()=>{
+            swal({icon:`${data.icon}`, title:`${data.message}`}).then(()=>{
 
                 if(typeAccount === false && isVerified === false){
                 

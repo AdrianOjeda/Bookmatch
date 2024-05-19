@@ -1,5 +1,7 @@
 import React from "react";
 import BookRequest from "./BookRequest";
+
+import swal from "sweetalert";
 function WaitingComponent(props){
 
     async function cancelarEspera(){
@@ -25,8 +27,15 @@ function WaitingComponent(props){
 
         if(cancelLoanRequest.ok){
             const message = await cancelLoanRequest.json();
-            alert(message.message);
-            window.location.reload();
+            //alert(message.message);
+            swal({
+                icon:'success',
+                title:`${message.message}`
+            }).then(()=>{
+                window.location.reload();
+
+            })
+            
         }
     }
     
