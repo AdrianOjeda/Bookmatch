@@ -61,7 +61,7 @@ function ReportForm() {
         
         } catch (error) {
             //alert('User registration failed: ' + error.message);
-            swal({icon:"error",title:"No se pudo registrar el usuario"})
+            swal({icon:"error",title:"No se pudo reportar al usuario"})
             console.error('User registration failed:', error);
         }
     };

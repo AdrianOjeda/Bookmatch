@@ -78,7 +78,9 @@ function BooksFeedSearch() {
 
             if(loanRequest.ok){
                 const responseJson = await loanRequest.json();
-                alert(responseJson.message);
+                swal({
+                    icon:"success",
+                    title:`${responseJson.message}`});
             }
 
 

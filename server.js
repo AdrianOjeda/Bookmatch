@@ -524,7 +524,7 @@ app.get("/api/getProfilePic", verifyToken, async (req, res)=>{
     }catch(err){
 
 
-        res.status.json({erro:"No se pudo obetener la foto de perfil!"});
+        res.status(500).json({erro:"No se pudo obetener la foto de perfil!"});
     }    
 });
 
@@ -915,7 +915,7 @@ app.post('/api/loanRequest/:idLibro', verifyToken, async (req, res)=>{
             try {
                 const updateBookAvalabilityQuery =`UPDATE libro SET is_available = $1 WHERE id_libro = $2`;
                 await db.query(updateBookAvalabilityQuery, [false, idLibro]);
-                res.status(200).json({message: "Intercambio pendeiente de confirmacion :)"})
+                res.status(200).json({message: "Intercambio pendiente de confirmacion :)"})
                 
             } catch (error) {
                 res.status(500).json({error:"No se pudo solicitar el intercambio"});
@@ -1069,25 +1069,75 @@ app.post('/api/addStrike', async (req, res) => {
             throw new Error("Usuario no encontrado");
         }
 
-        console.log("Strikes actuales: ");
-        console.log(getCurrentStrikes.rows[0].strikes);
+        console.log("Strikes actuales: ", getCurrentStrikes.rows[0].strikes);
 
         let updateStrikes = getCurrentStrikes.rows[0].strikes + 1;
         console.log(updateStrikes);
 
         if (updateStrikes > 2) {
+            // Check if the user was on a loan
+            const checkLoanQuery = `SELECT * FROM loan_book WHERE user_id = $1`;
+            const checkLoanResult = await db.query(checkLoanQuery, [idUserReportado]);
+            console.log("Check loan result: ", checkLoanResult.rows);
+
+            if (checkLoanResult.rows.length > 0) {
+                // The user was on a loan, check for the same book in the waiting list
+                const loanedBooks = checkLoanResult.rows.map(row => row.book_id);
+                console.log("Loaned books: ", loanedBooks);
+
+                if (loanedBooks.length > 0) {
+                    const checkWaitingListQuery = `
+                        SELECT waiting_id, turno, user_id, book_id, id_propietario
+                        FROM waiting_list 
+                        WHERE book_id = ANY($1::int[])
+                    `;
+                    const checkWaitingListResult = await db.query(checkWaitingListQuery, [loanedBooks]);
+                    console.log("Check waiting list result: ", checkWaitingListResult.rows);
+
+                    if (checkWaitingListResult.rows.length > 0) {
+                        for (const waitingBook of checkWaitingListResult.rows) {
+                            // Ensure the structure of the waitingBook is as expected
+                            console.log(`Processing waiting book: ${JSON.stringify(waitingBook)}`);
+
+                            // Subtract 1 from the turno column
+                            const updatedTurn = waitingBook.turno - 1;
+                            console.log(`Updating turno for waiting book ID ${waitingBook.waiting_id} to ${updatedTurn}`);
+
+                            if (!isNaN(updatedTurn) && updatedTurn === 0) {
+                                // If turno becomes 0, insert into the loan table with current date
+                                const loanDate = new Date(); // current date and time
+                                await db.query(`INSERT INTO loan_book (user_id, book_id, loan_date, id_propietario, status) VALUES ($1, $2, $3, $4, $5)`, 
+                                    [waitingBook.user_id, waitingBook.book_id, loanDate, waitingBook.id_propietario, 'waiting_confirmation']);
+                                // Remove the waiting list entry
+                                await db.query(`DELETE FROM waiting_list WHERE waiting_id = $1`, [waitingBook.waiting_id]);
+                            } else if (!isNaN(updatedTurn)) {
+                                // Update the turno column if the updatedTurn is a valid number
+                                await db.query(`UPDATE waiting_list SET turno = $1 WHERE waiting_id = $2`, [updatedTurn, waitingBook.waiting_id]);
+                            }
+                        }
+                    } else {
+                        // If no entries in the waiting list, set the book as available
+                        await db.query(`UPDATE libro SET is_available = true WHERE id_libro = ANY($1::int[])`, [loanedBooks]);
+                    }
+                }
+            }
+
             // Eliminar datos relacionados en otras tablas dependientes de perfil_usuario primero
             const perfilUsuarioQuery = `SELECT id FROM perfil_usuario WHERE user_id = $1`;
             const perfilUsuarioResult = await db.query(perfilUsuarioQuery, [idUserReportado]);
-            
+            console.log("Perfil usuario result: ", perfilUsuarioResult.rows);
+
             if (perfilUsuarioResult.rows.length > 0) {
                 const perfilUsuarioId = perfilUsuarioResult.rows[0].id;
                 await db.query(`DELETE FROM user_tags WHERE user_id = $1`, [perfilUsuarioId]);
             }
 
             // Eliminar préstamos relacionados antes de eliminar libros
-            await db.query(`DELETE FROM loan_book USING libro WHERE loan_book.book_id = libro.id_libro AND libro.idusuario = $1`, [idUserReportado]);
+            await db.query(`DELETE FROM loan_book WHERE user_id = $1`, [idUserReportado]);
 
+            await db.query(`DELETE FROM loan_book WHERE id_propietario = $1`, [idUserReportado]);
+            //await db.query(`DELETE FROM waiting_list WHERE id_propietario = $1`, [idUserReportado]);
+            await db.query(`DELETE FROM loan_book WHERE id_propietario = $1`, [idUserReportado]);
             // Eliminar datos relacionados en otras tablas
             await db.query(`DELETE FROM libro_tags USING libro WHERE libro_tags.libroid = libro.id_libro AND libro.idusuario = $1`, [idUserReportado]);
             await db.query(`DELETE FROM libro WHERE idusuario = $1`, [idUserReportado]);
@@ -1123,6 +1173,7 @@ app.post('/api/addStrike', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 
 app.post('/api/ignoreStrikes', async (req, res)=>{
@@ -1607,3 +1658,5 @@ app.listen(port, () => {
       console.log(`WebSocket server listening on port ${websocketPort}`);
   });
   
+
+
