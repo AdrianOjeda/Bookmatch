@@ -279,31 +279,58 @@ app.get('/api/renderBooks', verifyToken, async (req, res) => {
 
 
 
-app.delete('/api/deleteBook/:id', verifyToken, async (req, res)=>{
-    try{
-        const userId = req.user.userId;
-        const bookId = req.params.id;
-        console.log("user id: "+ userId);
-        console.log("book id "+ bookId);
+app.delete('/api/deleteBook/:id', verifyToken, async (req, res) => {
+    const userId = req.user.userId;
+    const bookId = req.params.id;
 
+    console.log("user id: " + userId);
+    console.log("book id " + bookId);
+
+    try {
+        await db.query('BEGIN'); // Start transaction
+
+        // Delete tags associated with the book
         const deleteTagsQuery = `DELETE FROM libro_tags WHERE libroid = $1`;
         await db.query(deleteTagsQuery, [bookId]);
 
-        try {
-            const deleteBookQuery = `DELETE FROM libro where id_libro =$1 AND idusuario = $2`;
-            await db.query(deleteBookQuery, [bookId, userId]);
-            res.status(200).json({message: "so far so good!"})
-        } catch (error) {
-            res.status(500).json({error: "No se pudo borrar el libro"})
+        // Delete book from waiting list
+        const deleteBookFromWL = `DELETE FROM waiting_list WHERE book_id=$1`;
+        await db.query(deleteBookFromWL, [bookId]);
+
+        // Get loan ID for the book
+        const getLoanId = `SELECT loan_id FROM loan_book WHERE book_id = $1`;
+        const loanIdResponse = await db.query(getLoanId, [bookId]);
+        if (loanIdResponse.rows.length > 0) {
+            const loan_id = loanIdResponse.rows[0].loan_id;
+
+            // Delete messages associated with the loan
+            const deleteBookChat = `DELETE FROM messages WHERE loan_id = $1`;
+            await db.query(deleteBookChat, [loan_id]);
+
+            // Delete the loan record
+            const deleteLoanBook = `DELETE FROM loan_book WHERE book_id = $1`;
+            await db.query(deleteLoanBook, [bookId]);
         }
 
-    }catch(error){
+        // Delete the book
+        const deleteBookQuery = `DELETE FROM libro WHERE id_libro = $1 AND idusuario = $2`;
+        const deleteBookResult = await db.query(deleteBookQuery, [bookId, userId]);
 
-        res.status(500).json({error: 'No se pudieron borrar los tags'})
+        // Check if the book was successfully deleted
+        if (deleteBookResult.rowCount === 0) {
+            throw new Error('El libro no fue encontrado o no pertenece al usuario.');
+        }
+
+        await db.query('COMMIT'); // Commit transaction
+        res.status(200).json({ message: "El libro y sus datos asociados se borraron correctamente." });
+
+    } catch (error) {
+        await db.query('ROLLBACK'); // Rollback transaction in case of error
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
     }
-    
-
 });
+
 
 app.post('/api/verifyUser/:id', async (req, res)=>{
     const idUser =  req.params.id;
