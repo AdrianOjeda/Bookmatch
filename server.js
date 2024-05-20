@@ -1137,7 +1137,7 @@ app.post('/api/addStrike', async (req, res) => {
 
             await db.query(`DELETE FROM loan_book WHERE id_propietario = $1`, [idUserReportado]);
             //await db.query(`DELETE FROM waiting_list WHERE id_propietario = $1`, [idUserReportado]);
-            await db.query(`DELETE FROM loan_book WHERE id_propietario = $1`, [idUserReportado]);
+            await db.query(`DELETE FROM waiting_list WHERE id_propietario = $1`, [idUserReportado]);
             // Eliminar datos relacionados en otras tablas
             await db.query(`DELETE FROM libro_tags USING libro WHERE libro_tags.libroid = libro.id_libro AND libro.idusuario = $1`, [idUserReportado]);
             await db.query(`DELETE FROM libro WHERE idusuario = $1`, [idUserReportado]);
